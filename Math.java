@@ -37,3 +37,18 @@ public static double Divide(int a, int b) {
     }
 }
 
+
+/********************************
+Developer: Jabari Thompson
+University ID: 240125608
+Function: Max - This function takes two integers as input and returns the maximum one.
+********************************/
+public int Max(int a, int b) {
+    if (a > b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+
