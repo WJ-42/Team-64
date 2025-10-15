@@ -25,3 +25,15 @@ public static double Divide(int a, int b) {
     }
     return (double) a / b;
 }
+
+    /********************************
+    Developer: Faalila Katharsa Shaik Mohamed
+    University ID: 240157540
+    Function: Subtract - This function takes two integers as input,
+              subtracts the second from the first, and returns the result.
+    ********************************/
+    public int Sub(int x, int y) {
+        return x - y;
+    }
+}
+
