@@ -52,8 +52,8 @@ public int Max(int a, int b) {
 }
 
 /********************************
-Developer: Omobolaji [Your Full Name]
-University ID: [Your Aston ID]
+Developer: Omobolaji Ganiu Adebola
+University ID: 240106205
 Function: Multi – returns product of two integers
 ********************************/
 public int Multi(int x, int y) {
