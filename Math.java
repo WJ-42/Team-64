@@ -1,6 +1,6 @@
 /********************************
 Developer: Waleed Ahmed
-University ID: 240048820
+University ID: 240048282
 Function: Power – returns base raised to exponent (both ints)
 ********************************/
 public int Power(int base, int exponent) {
