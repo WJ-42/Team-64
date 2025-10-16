@@ -35,7 +35,7 @@ public static double Divide(int a, int b) {
     public int Sub(int x, int y) {
         return x - y;
     }
-}
+
 
 
 /********************************
@@ -49,6 +49,15 @@ public int Max(int a, int b) {
     } else {
         return b;
     }
+}
+
+/********************************
+Developer: Omobolaji [Your Full Name]
+University ID: [Your Aston ID]
+Function: Multi – returns product of two integers
+********************************/
+public int Multi(int x, int y) {
+    return x * y;
 }
 
 
