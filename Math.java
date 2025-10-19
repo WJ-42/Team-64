@@ -61,3 +61,12 @@ public int Multi(int x, int y) {
 }
 
 
+/********************************
+Developer: Hayyan Abdul-Awwal
+University ID: 240364333
+Function: Mod - takes two integers and returns the remainder
+********************************/
+public int Mod(int x, int y) {
+	return x % y;
+}
+
