@@ -220,6 +220,19 @@ function renderBasketPage() {
         `;
 
         container.appendChild(row);
+
+        // Add listeners directly to buttons
+        row.querySelectorAll('.qty-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = Number(btn.getAttribute('data-id'));
+                const action = btn.getAttribute('data-action');
+                if (action === 'increase') {
+                    updateQuantity(id, 1);
+                } else if (action === 'decrease') {
+                    updateQuantity(id, -1);
+                }
+            });
+        });
     });
 
     summary.innerHTML = `
@@ -227,20 +240,6 @@ function renderBasketPage() {
         <button id="clearBasketBtn" class="btn-secondary" style="margin-right: 1rem;">Clear basket</button>
         <button id="mockCheckoutBtn" class="btn-primary">Proceed to checkout</button>
     `;
-
-    container.addEventListener("click", event => {
-        const button = event.target.closest("button.qty-btn");
-        if (!button) {
-            return;
-        }
-        const id = Number(button.getAttribute("data-id"));
-        const action = button.getAttribute("data-action");
-        if (action === "increase") {
-            updateQuantity(id, 1);
-        } else if (action === "decrease") {
-            updateQuantity(id, -1);
-        }
-    }, { once: true });
 
     const checkoutBtn = document.getElementById("mockCheckoutBtn");
     if (checkoutBtn) {
