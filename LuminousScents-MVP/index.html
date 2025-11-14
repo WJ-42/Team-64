@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Luminous Scents - Home</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/main.js" defer></script>
 </head>
 <body data-page="home">
+    <div class="parallax-stars">
+        <canvas id="starfield"></canvas>
+    </div>
     <header class="main-header">
         <div class="logo">
             <img src="images/luminous-logo.png" alt="Luminous Scents logo" class="logo-image">
@@ -27,10 +33,9 @@
         <!-- HERO SECTION -->
         <section class="hero">
             <div class="hero-text">
-                <h2>Discover your signature scent</h2>
+                <h2>Awaken your senses to the artistry of fragrance</h2>
                 <p>
-                    Browse curated fragrances, learn about their notes, and build a basket ready for checkout.
-                    This MVP shows the core flow of the Luminous Scents shopping experience.
+                    Indulge in meticulously curated scents, each telling a story of elegance and desire. Embark on a journey to discover the perfume that whispers your unique essence, crafted for those who appreciate the finer nuances of olfactory luxury.
                 </p>
                 <a href="products.html" class="btn-primary">Browse fragrances</a>
             </div>
@@ -39,14 +44,12 @@
         <!-- HOW IT WORKS -->
         <section class="info-grid">
             <div class="info-column">
-                <h3>How Luminous Scents works</h3>
+                <h3>The Luminous Scents Experience</h3>
                 <p>
-                    This platform is designed as an educational fragrance shop. Users can explore perfumes,
-                    understand their composition, and place orders through a simple basket flow.
+                    At Luminous Scents, we invite you to explore a world where every scent is a masterpiece, carefully selected to elevate your personal style. Our boutique offers a sanctuary for fragrance enthusiasts, where discovery meets sophistication in an intimate, guided journey.
                 </p>
                 <p>
-                    In later iterations the team will extend this with more detailed note filtering and
-                    a personalised recommendation quiz that uses previous choices and preferences.
+                    Each fragrance unfolds its story through layers of exquisite notes, inviting you to find the perfect expression of your individuality and refinement.
                 </p>
             </div>
             <div class="info-column">
@@ -54,48 +57,48 @@
                     <li>
                         <span class="step-number">1</span>
                         <div>
-                            <h4>Browse fragrances</h4>
-                            <p>Use the Fragrances page to see a curated list with price and key scent notes.</p>
+                            <h4>Curate your collection</h4>
+                            <p>Immerse yourself in our exclusive selection, where each fragrance unfolds its layers of notes, revealing hidden depths of allure.</p>
                         </div>
                     </li>
                     <li>
                         <span class="step-number">2</span>
                         <div>
-                            <h4>Add to basket</h4>
-                            <p>Add items you like. The basket stores your choices in the browser so you can review them.</p>
+                            <h4>Personalize your essence</h4>
+                            <p>Select scents that resonate with your soul, adding them to your bespoke basket as you craft your signature symphony.</p>
                         </div>
                     </li>
                     <li>
                         <span class="step-number">3</span>
                         <div>
-                            <h4>Review and checkout</h4>
-                            <p>Open the Basket page to adjust quantities and view a running total for your order.</p>
+                            <h4>Complete your transformation</h4>
+                            <p>Review your chosen treasures, adjust your selections, and finalize your order with the confidence of refined taste.</p>
                         </div>
                     </li>
                 </ol>
             </div>
         </section>
 
-        <!-- MVP FEATURES SECTION -->
+        <!-- OUR PROMISE FEATURES SECTION -->
         <section class="feature-section">
-            <h3>What this MVP delivers</h3>
+            <h3>Our Promise of Extraordinary Fragrance Experiences</h3>
             <div class="feature-grid">
                 <article class="feature-card">
-                    <h4>Core E-commerce flow</h4>
+                    <h4>Intimate Discovery Journey</h4>
                     <p>
-                        Users can move from browsing to an active basket with quantity control and total calculation.
+                        From the first inhalation to the final selection, we guide you through a personalized odyssey of scents, ensuring every choice reflects your discerning palate.
                     </p>
                 </article>
                 <article class="feature-card">
-                    <h4>Basic account handling</h4>
+                    <h4>Bespoke Membership</h4>
                     <p>
-                        The account page form demonstrates input validation for registration and login using JavaScript.
+                        Join our circle of fragrance connoisseurs with seamless account access, where your preferences are cherished and your experiences tailored to perfection.
                     </p>
                 </article>
                 <article class="feature-card">
-                    <h4>Extensible design</h4>
+                    <h4>Timeless Elegance</h4>
                     <p>
-                        The layout and navigation are ready to support future features such as recommendations and filters.
+                        Our foundation is built on sophistication and adaptability, ready to unveil new chapters in fragrance innovation that honor your unique story.
                     </p>
                 </article>
             </div>

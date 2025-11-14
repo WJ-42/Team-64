@@ -100,6 +100,9 @@ function renderProductsPage() {
         `;
 
         container.appendChild(card);
+
+        applyScrollReveal(card);
+        card.querySelectorAll('h3, p, .btn-primary').forEach(el => applyScrollReveal(el));
     });
 
     container.addEventListener("click", event => {
@@ -184,6 +187,12 @@ function renderBasketPage() {
     }
 }
 
+// Scroll reveal helper function
+function applyScrollReveal(element) {
+    element.classList.add('scroll-reveal');
+    observer.observe(element);
+}
+
 // Simple front end auth validation
 
 function setupAuthForm() {
@@ -206,12 +215,16 @@ function setupAuthForm() {
         if (!email || !password) {
             message.textContent = "Please enter both email and password.";
             message.style.color = "#ff8080";
+            message.classList.remove('show');
+            setTimeout(() => message.classList.add('show'), 10);
             return;
         }
 
         if (password.length < 6) {
             message.textContent = "Password must be at least 6 characters.";
             message.style.color = "#ff8080";
+            message.classList.remove('show');
+            setTimeout(() => message.classList.add('show'), 10);
             return;
         }
 
@@ -221,15 +234,94 @@ function setupAuthForm() {
             message.textContent = "Login successful in this demo. Real authentication will be added later.";
         }
         message.style.color = "#a5ff9f";
+        message.classList.remove('show');
+        setTimeout(() => message.classList.add('show'), 10);
 
         localStorage.setItem("luminousScentsUserEmail", email);
     });
+}
+
+// Starfield canvas effect
+
+function initStarfield() {
+    const canvas = document.getElementById("starfield");
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+
+    const stars = [];
+    const starCount = 250;
+
+    function createStars() {
+        stars.length = 0;
+        for (let i = 0; i < starCount; i++) {
+            stars.push({
+                x: Math.random() * w,
+                y: Math.random() * h,
+                size: Math.random() * 1.2 + 0.3,
+                speed: Math.random() * 0.3 + 0.05,
+                alpha: Math.random() * 0.6 + 0.2,
+                isGold: true // all stars gold now
+            });
+        }
+    }
+
+    function drawStars() {
+        ctx.clearRect(0, 0, w, h);
+
+        for (let s of stars) {
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+
+            const gradient = ctx.createRadialGradient(
+                s.x, s.y, 0,
+                s.x, s.y, s.size * 4
+            );
+
+            gradient.addColorStop(0, `rgba(245, 210, 120, ${s.alpha})`);
+            gradient.addColorStop(1, `rgba(0, 0, 0, 0)`);
+
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            s.x += s.speed * 0.2;
+            if (s.x > w) s.x = 0;
+        }
+    }
+
+    function twinkle() {
+        for (let s of stars) {
+            s.alpha += (Math.random() - 0.5) * 0.02;
+            s.alpha = Math.min(Math.max(s.alpha, 0.15), 0.7);
+        }
+    }
+
+    function loop() {
+        drawStars();
+        twinkle();
+        requestAnimationFrame(loop);
+    }
+
+    window.addEventListener("resize", () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+        createStars();
+    });
+
+    createStars();
+    loop();
 }
 
 // Page initialiser
 
 document.addEventListener("DOMContentLoaded", () => {
     const page = document.body.getAttribute("data-page");
+
+    // Initialize starfield on all pages
+    initStarfield();
 
     if (page === "home") {
         setupAuthForm();
@@ -239,3 +331,24 @@ document.addEventListener("DOMContentLoaded", () => {
         renderBasketPage();
     }
 });
+// Scroll reveal animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+        } else {
+            entry.target.classList.remove('revealed');
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.main-header, .site-footer, .hero-text, .hero-text h2, .hero-text p, .page-header, .page-header h2, .page-header p, .card, .card h3, .card p, .card .btn-primary, .feature-card, .feature-card h4, .feature-card p, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .info-column h3, .info-column p, .steps-list li, .step-number, .feature-section h3, .auth-section, .auth-form').forEach(el => {
+    el.classList.add('scroll-reveal');
+    observer.observe(el);
+});
+
