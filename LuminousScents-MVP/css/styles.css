@@ -247,6 +247,24 @@ main {
     box-shadow: 0 6px 18px rgba(240, 194, 75, 0.6), 0 0 10px rgba(240, 194, 75, 0.4), 0 0 25px rgba(240, 194, 75, 0.5);
 }
 
+.btn-secondary {
+    display: inline-block;
+    padding: 0.6rem 1.4rem;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #f6f6f6;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
 /* Auth form */
 
 .auth-section {
@@ -657,4 +675,51 @@ main {
     .auth-section {
         margin-top: 2.5rem;
     }
+}
+
+.custom-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) !important;
+    background: linear-gradient(135deg, rgba(18, 18, 30, 0.95) 0%, rgba(18, 18, 30, 0.9) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(240, 194, 75, 0.3);
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    min-width: 300px;
+    text-align: center;
+    animation: fadeInUp 0.3s ease-out;
+    opacity: 1 !important;
+}
+
+.custom-alert-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.custom-alert p {
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.custom-alert button {
+    background: #f0c24b;
+    color: #111119;
+    border: none;
+    padding: 0.6rem 2rem;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.custom-alert button:hover {
+    background: #ffd463;
+    transform: scale(1.05);
 }

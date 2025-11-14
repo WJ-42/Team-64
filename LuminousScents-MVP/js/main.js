@@ -25,6 +25,59 @@ const products = [
         description: "Soft floral scent with a creamy sandalwood base."
     }
 ];
+function customAlert(message) {
+    const overlay = document.createElement('div');
+    overlay.className = 'custom-alert-overlay';
+
+    const alertBox = document.createElement('div');
+    alertBox.className = 'custom-alert';
+    alertBox.innerHTML = `
+        <p>${message}</p>
+        <button id="customAlertBtn">OK</button>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(alertBox);
+
+    const closeAlert = () => {
+        overlay.remove();
+        alertBox.remove();
+    };
+
+    document.getElementById('customAlertBtn').addEventListener('click', closeAlert);
+    overlay.addEventListener('click', closeAlert);
+}
+
+function customConfirm(message, onConfirm) {
+    const overlay = document.createElement('div');
+    overlay.className = 'custom-alert-overlay';
+
+    const alertBox = document.createElement('div');
+    alertBox.className = 'custom-alert';
+    alertBox.innerHTML = `
+        <p>${message}</p>
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <button id="confirmYes" class="btn-primary">Yes</button>
+            <button id="confirmNo" class="btn-secondary">Cancel</button>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(alertBox);
+
+    const closeDialog = () => {
+        overlay.remove();
+        alertBox.remove();
+    };
+
+    document.getElementById('confirmYes').addEventListener('click', () => {
+        closeDialog();
+        onConfirm();
+    });
+
+    document.getElementById('confirmNo').addEventListener('click', closeDialog);
+    overlay.addEventListener('click', closeDialog);
+}
 
 const BASKET_STORAGE_KEY = "luminousScentsBasket";
 
@@ -56,7 +109,7 @@ function addToBasket(productId) {
         basket.push({ productId, quantity: 1 });
     }
     saveBasket(basket);
-    alert("Added to basket");
+    customAlert("Added to basket");
 }
 
 function updateQuantity(productId, change) {
@@ -162,6 +215,7 @@ function renderBasketPage() {
 
     summary.innerHTML = `
         <p><strong>Total:</strong> £${total.toFixed(2)}</p>
+        <button id="clearBasketBtn" class="btn-secondary" style="margin-right: 1rem;">Clear basket</button>
         <button id="mockCheckoutBtn" class="btn-primary">Proceed to checkout</button>
     `;
 
@@ -182,7 +236,17 @@ function renderBasketPage() {
     const checkoutBtn = document.getElementById("mockCheckoutBtn");
     if (checkoutBtn) {
         checkoutBtn.addEventListener("click", () => {
-            alert("Checkout flow will be implemented in the full version. For MVP this is a demo only.");
+            customAlert("Checkout flow will be implemented in the full version. For MVP this is a demo only.");
+        });
+    }
+
+    const clearBtn = document.getElementById("clearBasketBtn");
+    if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+            customConfirm("Are you sure you want to clear your basket?", () => {
+                localStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify([]));
+                renderBasketPage();
+            });
         });
     }
 }
@@ -212,22 +276,28 @@ function setupAuthForm() {
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
 
-        if (!email || !password) {
-            message.textContent = "Please enter both email and password.";
-            message.style.color = "#ff8080";
-            message.classList.remove('show');
-            setTimeout(() => message.classList.add('show'), 10);
+        // Custom validation with styled messages
+        if (!email) {
+            customAlert("Please enter your email address.");
+            return;
+        }
+
+        if (!email.includes('@')) {
+            customAlert("Please enter a valid email address with an '@' symbol.");
+            return;
+        }
+
+        if (!password) {
+            customAlert("Please enter a password.");
             return;
         }
 
         if (password.length < 6) {
-            message.textContent = "Password must be at least 6 characters.";
-            message.style.color = "#ff8080";
-            message.classList.remove('show');
-            setTimeout(() => message.classList.add('show'), 10);
+            customAlert("Password must be at least 6 characters long.");
             return;
         }
 
+        // Rest of the existing success logic...
         if (isNewUser.checked) {
             message.textContent = "Account created locally for MVP. In the full system this will be stored securely.";
         } else {
