@@ -341,10 +341,10 @@ function initStarfield() {
             stars.push({
                 x: Math.random() * w,
                 y: Math.random() * h,
-                size: Math.random() * 1.2 + 0.3,
+                size: Math.random() * 1.8 + 0.5,
                 speed: Math.random() * 0.3 + 0.05,
-                alpha: Math.random() * 0.6 + 0.2,
-                isGold: true // all stars gold now
+                alpha: Math.random() * 0.5 + 0.5,
+                isGold: true
             });
         }
     }
@@ -364,8 +364,9 @@ function initStarfield() {
                 s.x + parallaxX, s.y + parallaxY, s.size * 4
             );
 
-            gradient.addColorStop(0, `rgba(245, 210, 120, ${s.alpha})`);
-            gradient.addColorStop(1, `rgba(0, 0, 0, 0)`);
+            gradient.addColorStop(0, `rgba(255, 220, 130, ${s.alpha})`);
+            gradient.addColorStop(0.4, `rgba(245, 210, 120, ${s.alpha * 0.6})`);
+            gradient.addColorStop(1, `rgba(240, 194, 75, 0)`);
 
             ctx.fillStyle = gradient;
             ctx.fill();
