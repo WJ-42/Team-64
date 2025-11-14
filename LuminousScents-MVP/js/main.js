@@ -39,6 +39,9 @@ function customAlert(message) {
     document.body.appendChild(overlay);
     document.body.appendChild(alertBox);
 
+    alertBox.classList.remove('scroll-reveal', 'revealed');
+    overlay.classList.remove('scroll-reveal', 'revealed');
+
     const closeAlert = () => {
         overlay.remove();
         alertBox.remove();
@@ -64,6 +67,9 @@ function customConfirm(message, onConfirm) {
 
     document.body.appendChild(overlay);
     document.body.appendChild(alertBox);
+
+    alertBox.classList.remove('scroll-reveal', 'revealed');
+    overlay.classList.remove('scroll-reveal', 'revealed');
 
     const closeDialog = () => {
         overlay.remove();
@@ -304,8 +310,12 @@ function setupAuthForm() {
             message.textContent = "Login successful in this demo. Real authentication will be added later.";
         }
         message.style.color = "#a5ff9f";
-        message.classList.remove('show');
-        setTimeout(() => message.classList.add('show'), 10);
+        message.style.opacity = "0";
+        message.classList.remove('scroll-reveal', 'revealed', 'show');
+        setTimeout(() => {
+            message.style.opacity = "1";
+            message.classList.add('show');
+        }, 10);
 
         localStorage.setItem("luminousScentsUserEmail", email);
     });
@@ -427,6 +437,16 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
+// Prevent observer from catching dynamically added elements
+const originalObserve = observer.observe;
+observer.observe = function(element) {
+    if (element.classList.contains('custom-alert') || 
+        element.classList.contains('custom-alert-overlay') ||
+        element.closest('.custom-alert')) {
+        return;
+    }
+    originalObserve.call(this, element);
+};
 document.querySelectorAll('.main-header, .site-footer, .hero-text, .hero-text h2, .hero-text p, .page-header, .page-header h2, .page-header p, .card, .card h3, .card p, .card .btn-primary, .feature-card, .feature-card h4, .feature-card p, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .info-column h3, .info-column p, .steps-list li, .step-number, .feature-section h3, .auth-section, .auth-form').forEach(el => {
     el.classList.add('scroll-reveal');
     observer.observe(el);
