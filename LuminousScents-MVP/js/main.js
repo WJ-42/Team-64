@@ -273,12 +273,15 @@ function initStarfield() {
         ctx.clearRect(0, 0, w, h);
 
         for (let s of stars) {
+            const parallaxX = mouseX * (s.size / 2);
+            const parallaxY = mouseY * (s.size / 2);
+            
             ctx.beginPath();
-            ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+            ctx.arc(s.x + parallaxX, s.y + parallaxY, s.size, 0, Math.PI * 2);
 
             const gradient = ctx.createRadialGradient(
-                s.x, s.y, 0,
-                s.x, s.y, s.size * 4
+                s.x + parallaxX, s.y + parallaxY, 0,
+                s.x + parallaxX, s.y + parallaxY, s.size * 4
             );
 
             gradient.addColorStop(0, `rgba(245, 210, 120, ${s.alpha})`);
@@ -312,6 +315,13 @@ function initStarfield() {
     });
 
     createStars();
+    let mouseX = 0;
+    let mouseY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 20;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 20;
+    });
     loop();
 }
 
