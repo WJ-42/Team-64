@@ -385,7 +385,6 @@ function initStarfield() {
 
     function loop() {
         drawStars();
-        drawTrail();
         twinkle();
         requestAnimationFrame(loop);
     }
@@ -412,9 +411,10 @@ function initStarfield() {
 document.addEventListener("DOMContentLoaded", () => {
     const page = document.body.getAttribute("data-page");
 
-    // Initialize starfield on all pages
     initStarfield();
+    initMouseTrail();
 
+    // rest of the code...
     if (page === "home") {
         setupAuthForm();
     } else if (page === "products") {
@@ -455,30 +455,61 @@ document.querySelectorAll('.main-header, .site-footer, .hero-text, .hero-text h2
 });
 
 
-// Mouse trail effect
-const trail = [];
-const trailLength = 60;
-
-window.addEventListener('mousemove', (e) => {
-    trail.push({ x: e.clientX, y: e.clientY, alpha: 1 });
-    if (trail.length > trailLength) {
-        trail.shift();
-    }
-});
-
-function drawTrail() {
-    const canvas = document.getElementById('starfield');
+function initMouseTrail() {
+    const canvas = document.getElementById('trailCanvas');
     if (!canvas) return;
+    
     const ctx = canvas.getContext('2d');
     
-    for (let i = 0; i < trail.length; i++) {
-        const point = trail[i];
-        const alpha = (i / trail.length) * 0.6;
-        const size = (i / trail.length) * 4;
-        
-        ctx.beginPath();
-        ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(240, 194, 75, ${alpha})`;
-        ctx.fill();
+    function updateCanvasSize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
+    
+    updateCanvasSize();
+    
+    const points = [];
+    const maxAge = 1000;
+    
+    window.addEventListener('mousemove', (e) => {
+        points.push({
+            x: e.clientX,
+            y: e.clientY,
+            time: Date.now()
+        });
+    });
+    
+    window.addEventListener('mouseleave', () => {
+        points.length = 0;
+    });
+    
+    window.addEventListener('resize', updateCanvasSize);
+    
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const now = Date.now();
+        
+        for (let i = points.length - 1; i >= 0; i--) {
+            if (now - points[i].time > maxAge) {
+                points.splice(i, 1);
+            }
+        }
+        
+        points.forEach((point) => {
+            const age = now - point.time;
+            const life = 1 - (age / maxAge);
+            const alpha = life * 0.6;
+            const size = life * 3;
+            
+            ctx.beginPath();
+            ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(240, 194, 75, ${alpha})`;
+            ctx.fill();
+        });
+        
+        requestAnimationFrame(animate);
+    }
+    
+    animate();
 }
