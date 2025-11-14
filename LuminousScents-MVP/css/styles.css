@@ -124,7 +124,7 @@ h3, h4, h5, h6 {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 0.5rem 2rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     background: linear-gradient(135deg, rgba(18, 18, 30, 0.4) 0%, rgba(18, 18, 30, 0.25) 100%);
     backdrop-filter: blur(32px);
@@ -139,14 +139,20 @@ h3, h4, h5, h6 {
 .logo {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .logo-image {
-    width: 95px;
-    height: 95px;
+    width: 140px;
+    height: 140px;
     object-fit: contain;
     border-radius: 999px;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .logo-text h1 {
@@ -164,7 +170,7 @@ h3, h4, h5, h6 {
     margin-left: 1rem;
     text-decoration: none;
     color: #f6f6f6;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     transition: color 0.3s ease;
 }
 
