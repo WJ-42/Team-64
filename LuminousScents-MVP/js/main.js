@@ -385,6 +385,7 @@ function initStarfield() {
 
     function loop() {
         drawStars();
+        drawTrail();
         twinkle();
         requestAnimationFrame(loop);
     }
@@ -453,3 +454,31 @@ document.querySelectorAll('.main-header, .site-footer, .hero-text, .hero-text h2
     observer.observe(el);
 });
 
+
+// Mouse trail effect
+const trail = [];
+const trailLength = 60;
+
+window.addEventListener('mousemove', (e) => {
+    trail.push({ x: e.clientX, y: e.clientY, alpha: 1 });
+    if (trail.length > trailLength) {
+        trail.shift();
+    }
+});
+
+function drawTrail() {
+    const canvas = document.getElementById('starfield');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    
+    for (let i = 0; i < trail.length; i++) {
+        const point = trail[i];
+        const alpha = (i / trail.length) * 0.6;
+        const size = (i / trail.length) * 4;
+        
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(240, 194, 75, ${alpha})`;
+        ctx.fill();
+    }
+}
