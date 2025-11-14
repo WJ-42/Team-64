@@ -148,6 +148,9 @@ function renderProductsPage() {
         card.className = "card";
 
         card.innerHTML = `
+            <div class="product-image-container ${product.id === 1 ? 'aurora-oud-image' : ''}">
+                <img src="images/${product.id === 1 ? 'aurora-oud.png' : product.id === 2 ? 'citrus-dawn.png' : 'velvet-iris.png'}" alt="${product.name}" class="product-image">
+            </div>
             <h3>${product.name}</h3>
             <p>${product.brand}</p>
             <p><strong>Notes:</strong> ${product.notes}</p>
@@ -156,7 +159,7 @@ function renderProductsPage() {
             <button class="btn-primary" data-product-id="${product.id}">
                 Add to basket
             </button>
-        `;
+                `;
 
         container.appendChild(card);
 
