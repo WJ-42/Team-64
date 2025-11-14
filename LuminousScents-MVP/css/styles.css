@@ -307,6 +307,17 @@ main {
     margin-bottom: 1.25rem;
     letter-spacing: 0.8px;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(240, 194, 75, 0.3), 0 0 40px rgba(240, 194, 75, 0.15);
+    background: linear-gradient(90deg, #f0c24b 0%, #f0c24b 50%, #f6f6f6 50%, #f6f6f6 100%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: background-position 0.5s ease;
+}
+
+.hero-text h2:hover {
+    background-position: 0% 0;
 }
 
 .hero-text p {
@@ -442,6 +453,17 @@ main {
     letter-spacing: 0.7px;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(240, 194, 75, 0.3), 0 0 40px rgba(240, 194, 75, 0.15);
     margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #f0c24b 0%, #f0c24b 50%, #f6f6f6 50%, #f6f6f6 100%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: background-position 0.5s ease;
+}
+
+.page-header h2:hover {
+    background-position: 0% 0;
 }
 
 /* Product cards */
@@ -734,6 +756,17 @@ main {
     text-align: center;
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 20px rgba(240, 194, 75, 0.3);
     animation: fadeInUp 0.8s ease-out 0.1s both;
+    background: linear-gradient(90deg, #f0c24b 0%, #f0c24b 50%, #f6f6f6 50%, #f6f6f6 100%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: background-position 0.5s ease;
+}
+
+.feature-section h3:hover {
+    background-position: 0% 0;
 }
 
 .feature-grid {
