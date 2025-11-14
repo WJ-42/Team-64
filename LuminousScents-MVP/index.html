@@ -9,17 +9,22 @@
 <body data-page="home">
     <header class="main-header">
         <div class="logo">
-            <h1>Luminous Scents</h1>
-            <p>Illuminating the story behind every fragrance</p>
+            <img src="images/luminous-logo.png" alt="Luminous Scents logo" class="logo-image">
+            <div class="logo-text">
+                <h1>Luminous Scents</h1>
+                <p>Illuminating the story behind every fragrance</p>
+            </div>
         </div>
         <nav class="navbar">
             <a href="index.html">Home</a>
             <a href="products.html">Fragrances</a>
             <a href="basket.html">Basket</a>
+            <a href="account.html">Account</a>
         </nav>
     </header>
 
     <main>
+        <!-- HERO SECTION -->
         <section class="hero">
             <div class="hero-text">
                 <h2>Discover your signature scent</h2>
@@ -31,37 +36,7 @@
             </div>
         </section>
 
-        <section class="auth-section">
-            <h3>Create an account or log in</h3>
-            <p class="small-text">
-                For the MVP this form only validates input on the front end. There is no real backend yet.
-            </p>
-
-            <form id="authForm" class="auth-form">
-                <div class="form-row">
-                    <label for="authEmail">Email address</label>
-                    <input type="email" id="authEmail" name="authEmail" required>
-                </div>
-
-                <div class="form-row">
-                    <label for="authPassword">Password</label>
-                    <input type="password" id="authPassword" name="authPassword" minlength="6" required>
-                </div>
-
-                <div class="form-row">
-                    <label>
-                        <input type="checkbox" id="isNewUser">
-                        I am a new customer
-                    </label>
-                </div>
-
-                <button type="submit" class="btn-primary">Continue</button>
-
-                <p id="authMessage" class="form-message"></p>
-            </form>
-        </section>
-
-        <!-- New section: how it works -->
+        <!-- HOW IT WORKS -->
         <section class="info-grid">
             <div class="info-column">
                 <h3>How Luminous Scents works</h3>
@@ -101,7 +76,7 @@
             </div>
         </section>
 
-        <!-- New section: what this MVP includes -->
+        <!-- MVP FEATURES SECTION -->
         <section class="feature-section">
             <h3>What this MVP delivers</h3>
             <div class="feature-grid">
@@ -114,7 +89,7 @@
                 <article class="feature-card">
                     <h4>Basic account handling</h4>
                     <p>
-                        The homepage form demonstrates input validation for registration and login using JavaScript.
+                        The account page form demonstrates input validation for registration and login using JavaScript.
                     </p>
                 </article>
                 <article class="feature-card">
