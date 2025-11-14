@@ -210,13 +210,15 @@ h3, h4, h5, h6 {
 
 .logo-text h1 {
     font-size: 1.8rem;
-    background: linear-gradient(90deg, #f0c24b 0%, #f0c24b 50%, #f6f6f6 50%, #f6f6f6 100%);
+    color: #e8e8e8;
+    background: linear-gradient(90deg, #f0c24b 0%, #f0c24b 50%, #e8e8e8 50%, #e8e8e8 100%);
     background-size: 200% 100%;
     background-position: 100% 0;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     transition: background-position 0.5s ease;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(240, 194, 75, 0.3), 0 0 40px rgba(240, 194, 75, 0.15);
 }
 
 .logo-text h1:hover {
