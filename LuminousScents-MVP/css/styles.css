@@ -91,6 +91,17 @@ h3, h4, h5, h6 {
         transform: translateY(0);
     }
 }
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.85);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
 /* Scroll reveal animations */
 .scroll-reveal {
     opacity: 0;
@@ -697,8 +708,7 @@ main {
     z-index: 1000;
     min-width: 300px;
     text-align: center;
-    animation: fadeInUp 0.3s ease-out;
-    opacity: 1 !important;
+    animation: fadeInScale 0.4s ease-out forwards;
 }
 
 .custom-alert-overlay {
@@ -706,7 +716,7 @@ main {
     inset: 0;
     background: rgba(0, 0, 0, 0.7);
     z-index: 999;
-    animation: fadeIn 0.3s ease-out;
+    animation: fadeIn 0.2s ease-out;
 }
 
 .custom-alert p {
