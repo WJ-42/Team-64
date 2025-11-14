@@ -311,7 +311,8 @@ function setupAuthForm() {
         } else {
             message.textContent = "Login successful in this demo. Real authentication will be added later.";
         }
-        message.style.color = "#a5ff9f";
+        message.style.color = "#ffffff";
+        message.style.textShadow = "0 0 10px rgba(240, 194, 75, 0.6), 0 0 20px rgba(240, 194, 75, 0.3)";
         message.style.opacity = "0";
         message.classList.remove('scroll-reveal', 'revealed', 'show');
         setTimeout(() => {
