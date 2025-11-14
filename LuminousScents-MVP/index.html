@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Luminous Scents - Home</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/main.js" defer></script>
+</head>
+<body data-page="home">
+    <header class="main-header">
+        <div class="logo">
+            <h1>Luminous Scents</h1>
+            <p>Illuminating the story behind every fragrance</p>
+        </div>
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="products.html">Fragrances</a>
+            <a href="basket.html">Basket</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-text">
+                <h2>Discover your signature scent</h2>
+                <p>
+                    Browse curated fragrances, learn about their notes, and build a basket ready for checkout.
+                    This MVP shows the core flow of the Luminous Scents shopping experience.
+                </p>
+                <a href="products.html" class="btn-primary">Browse fragrances</a>
+            </div>
+        </section>
+
+        <section class="auth-section">
+            <h3>Create an account or log in</h3>
+            <p class="small-text">
+                For the MVP this form only validates input on the front end. There is no real backend yet.
+            </p>
+
+            <form id="authForm" class="auth-form">
+                <div class="form-row">
+                    <label for="authEmail">Email address</label>
+                    <input type="email" id="authEmail" name="authEmail" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="authPassword">Password</label>
+                    <input type="password" id="authPassword" name="authPassword" minlength="6" required>
+                </div>
+
+                <div class="form-row">
+                    <label>
+                        <input type="checkbox" id="isNewUser">
+                        I am a new customer
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-primary">Continue</button>
+
+                <p id="authMessage" class="form-message"></p>
+            </form>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Luminous Scents. CS2TP Team 64.</p>
+    </footer>
+</body>
+</html>
