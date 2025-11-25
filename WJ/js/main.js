@@ -6,7 +6,8 @@ const products = [
         brand: "Luminous Scents",
         price: 89.99,
         notes: "Oud, amber, vanilla",
-        description: "Warm and deep evening scent with a rich oud base."
+        description: "Warm and deep evening scent with a rich oud base.",
+        image: "aurora-oud.png"
     },
     {
         id: 2,
@@ -14,7 +15,8 @@ const products = [
         brand: "Luminous Scents",
         price: 59.99,
         notes: "Bergamot, lemon, neroli",
-        description: "Fresh daytime fragrance that is bright and uplifting."
+        description: "Fresh daytime fragrance that is bright and uplifting.",
+        image: "citrus-dawn.png"
     },
     {
         id: 3,
@@ -22,7 +24,26 @@ const products = [
         brand: "Luminous Scents",
         price: 74.50,
         notes: "Iris, violet, sandalwood",
-        description: "Soft floral scent with a creamy sandalwood base."
+        description: "Soft floral scent with a creamy sandalwood base.",
+        image: "velvet-iris.png"
+    },
+    {
+        id: 4,
+        name: "Solaris Femme",
+        brand: "Luminous Scents",
+        price: 79.99,
+        notes: "Jasmine, rose, musk",
+        description: "Elegant floral scent for her.",
+        image: "solaris-femme.png"
+    },
+    {
+        id: 5,
+        name: "Solaris Homme",
+        brand: "Luminous Scents",
+        price: 69.99,
+        notes: "Cedar, vetiver, citrus",
+        description: "Sophisticated woody scent for him.",
+        image: "solaris-homme.png"
     }
 ];
 function customAlert(message) {
@@ -137,19 +158,28 @@ function updateQuantity(productId, change) {
 
 function renderProductsPage() {
     const container = document.getElementById("productsContainer");
+    const solarisContainer = document.getElementById("solarisContainer");
     if (!container) {
         return;
     }
 
     container.innerHTML = "";
+    if (solarisContainer) {
+        solarisContainer.innerHTML = "";
+    }
 
-    products.forEach(product => {
+    // Separate regular products and Solaris fragrances
+    const regularProducts = products.filter(p => p.name.toLowerCase().includes('aurora') || p.name.toLowerCase().includes('citrus') || p.name.toLowerCase().includes('velvet'));
+    const solarisProducts = products.filter(p => p.name.toLowerCase().includes('solaris'));
+
+    // Render regular products
+    regularProducts.forEach(product => {
         const card = document.createElement("article");
         card.className = "card";
 
         card.innerHTML = `
             <div class="product-image-container ${product.id === 1 ? 'aurora-oud-image' : ''}">
-                <img src="images/${product.id === 1 ? 'aurora-oud.png' : product.id === 2 ? 'citrus-dawn.png' : 'velvet-iris.png'}" alt="${product.name}" class="product-image">
+                <img src="images/${product.image}" alt="${product.name}" class="product-image">
             </div>
             <h3>${product.name}</h3>
             <p>${product.brand}</p>
@@ -167,11 +197,69 @@ function renderProductsPage() {
         card.querySelectorAll('h3, p, .btn-primary').forEach(el => applyScrollReveal(el));
     });
 
+    // Render Solaris fragrances
+    if (solarisContainer && solarisProducts.length > 0) {
+        solarisProducts.forEach(product => {
+            const card = document.createElement("article");
+            card.className = "card";
+
+            card.innerHTML = `
+                <div class="product-image-container">
+                    <img src="images/${product.image}" alt="${product.name}" class="product-image">
+                </div>
+                <h3>${product.name}</h3>
+                <p>${product.brand}</p>
+                <p><strong>Notes:</strong> ${product.notes}</p>
+                <p class="price">£${product.price.toFixed(2)}</p>
+                <p>${product.description}</p>
+                <button class="btn-primary" data-product-id="${product.id}">
+                    Add to basket
+                </button>
+                    `;
+
+            solarisContainer.appendChild(card);
+
+            applyScrollReveal(card);
+            card.querySelectorAll('h3, p, .btn-primary').forEach(el => applyScrollReveal(el));
+        });
+    }
+
     container.addEventListener("click", event => {
         const button = event.target.closest("button[data-product-id]");
         if (button) {
             const id = Number(button.getAttribute("data-product-id"));
             addToBasket(id);
+        }
+    });
+
+    if (solarisContainer) {
+        solarisContainer.addEventListener("click", event => {
+            const button = event.target.closest("button[data-product-id]");
+            if (button) {
+                const id = Number(button.getAttribute("data-product-id"));
+                addToBasket(id);
+            }
+        });
+    }
+}
+
+function filterProducts() {
+    const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll("#productsContainer .card");
+
+    cards.forEach(card => {
+        const name = card.querySelector("h3").textContent.toLowerCase();
+        const notes = card.querySelector("p:nth-of-type(2)").textContent.toLowerCase();
+        const description = card.querySelector("p:nth-of-type(4)").textContent.toLowerCase();
+
+        const matches = name.includes(searchTerm) || notes.includes(searchTerm) || description.includes(searchTerm);
+
+        if (matches) {
+            card.style.opacity = "1";
+            card.style.display = "block";
+        } else {
+            card.style.opacity = "0";
+            card.style.display = "none";
         }
     });
 }
@@ -244,7 +332,7 @@ function renderBasketPage() {
     const checkoutBtn = document.getElementById("mockCheckoutBtn");
     if (checkoutBtn) {
         checkoutBtn.addEventListener("click", () => {
-            customAlert("Checkout flow will be implemented in the full version. For MVP this is a demo only.");
+            window.location.href = "checkout.html";
         });
     }
 
@@ -257,6 +345,7 @@ function renderBasketPage() {
             });
         });
     }
+
 }
 
 // Scroll reveal helper function
@@ -412,6 +501,15 @@ function initStarfield() {
 // Page initialiser
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Auto-resize textarea
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(textarea => {
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+    });
+
     const page = document.body.getAttribute("data-page");
 
     initStarfield();
@@ -422,8 +520,17 @@ document.addEventListener("DOMContentLoaded", () => {
         setupAuthForm();
     } else if (page === "products") {
         renderProductsPage();
+        document.getElementById("searchInput").addEventListener("input", filterProducts);
     } else if (page === "basket") {
         renderBasketPage();
+    } else if (page === "contact") {
+        const form = document.getElementById("contactForm");
+        if (form) {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                customAlert("Message sent! We will get back to you soon.");
+            });
+        }
     }
 });
 // Scroll reveal animations
