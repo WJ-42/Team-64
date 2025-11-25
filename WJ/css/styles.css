@@ -967,6 +967,21 @@ textarea:-webkit-autofill:focus {
     min-width: 300px;
     text-align: center;
     animation: fadeInScale 0.4s ease-out forwards;
+    transition: opacity 0.4s ease-out;
+}
+
+.custom-alert-overlay {
+    transition: opacity 0.4s ease-out;
+}
+
+.modal-fade-out {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.overlay-fade-out {
+    opacity: 0 !important;
+    transition: opacity 0.4s ease-out !important;
 }
 
 .custom-alert-overlay {
@@ -1024,4 +1039,33 @@ textarea:-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px rgba(0,0,0,0.8) inset !important;
     background-color: rgba(0,0,0,0.8) !important;
     -webkit-text-fill-color: #ffffff !important;
+}
+
+#messageModal {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+#messageModal.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#messageModal.hide {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+#overlay {
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+#overlay.show {
+    opacity: 1;
+}
+
+#overlay.hide {
+    opacity: 0;
 }

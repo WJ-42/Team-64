@@ -523,6 +523,14 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("searchInput").addEventListener("input", filterProducts);
     } else if (page === "basket") {
         renderBasketPage();
+    } else if (page === "contact") {
+        const form = document.getElementById("contactForm");
+        if (form) {
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                customAlert("Message sent! We will get back to you soon.");
+            });
+        }
     }
 });
 // Scroll reveal animations
