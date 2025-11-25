@@ -367,9 +367,9 @@ function initStarfield() {
                 s.x + parallaxX, s.y + parallaxY, s.size * 4
             );
 
-            gradient.addColorStop(0, `rgba(255, 100, 100, ${s.alpha})`);
-            gradient.addColorStop(0.4, `rgba(220, 50, 50, ${s.alpha * 0.6})`);
-            gradient.addColorStop(1, `rgba(180, 30, 30, 0)`);
+            gradient.addColorStop(0, `rgba(255, 220, 130, ${s.alpha})`);
+            gradient.addColorStop(0.4, `rgba(245, 210, 120, ${s.alpha * 0.6})`);
+            gradient.addColorStop(1, `rgba(240, 194, 75, 0)`);
 
             ctx.fillStyle = gradient;
             ctx.fill();
@@ -511,7 +511,7 @@ function initMouseTrail() {
                 ctx.beginPath();
                 ctx.moveTo(prevPoint.x, prevPoint.y);
                 ctx.lineTo(point.x, point.y);
-                ctx.strokeStyle = `rgba(220, 50, 50, ${alpha})`;
+                ctx.strokeStyle = `rgba(240, 194, 75, ${alpha})`;
                 ctx.lineWidth = size;
                 ctx.lineCap = 'round';
                 ctx.stroke();
