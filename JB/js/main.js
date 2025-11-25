@@ -1,3 +1,126 @@
+// Search functionality
+function initSearch() {
+    const searchContainer = document.getElementById('searchContainer');
+    if (!searchContainer) return;
+
+    const searchInput = searchContainer.querySelector('.search-input');
+    const searchSuggestions = searchContainer.querySelector('.search-suggestions');
+    
+    let searchTimeout;
+    
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        const query = this.value.trim();
+        
+        if (query.length < 2) {
+            hideSuggestions();
+            return;
+        }
+        
+        searchTimeout = setTimeout(() => {
+            showSuggestions(query);
+        }, 300);
+    });
+    
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            performSearch(this.value.trim());
+        } else if (e.key === 'Escape') {
+            hideSuggestions();
+        }
+    });
+    
+    document.addEventListener('click', function(e) {
+        if (!searchContainer.contains(e.target)) {
+            hideSuggestions();
+        }
+    });
+}
+
+function showSuggestions(query) {
+    const searchSuggestions = document.querySelector('.search-suggestions');
+    if (!searchSuggestions) return;
+    
+    const results = searchProducts(query);
+    
+    if (results.length === 0) {
+        searchSuggestions.innerHTML = '<div class="suggestion-item no-results">No fragrances found</div>';
+        searchSuggestions.style.display = 'block';
+        return;
+    }
+    
+    searchSuggestions.innerHTML = results.map(product => `
+        <div class="suggestion-item" data-product-id="${product.id}">
+            <img src="images/${product.id === 1 ? 'aurora-oud.png' : product.id === 2 ? 'citrus-dawn.png' : 'velvet-iris.png'}" alt="${product.name}">
+            <div class="suggestion-details">
+                <h4>${product.name}</h4>
+                <p>${product.notes}</p>
+                <span class="suggestion-price">£${product.price.toFixed(2)}</span>
+            </div>
+        </div>
+    `).join('');
+    
+    searchSuggestions.style.display = 'block';
+    
+    // Add click handlers
+    searchSuggestions.querySelectorAll('.suggestion-item[data-product-id]').forEach(item => {
+        item.addEventListener('click', function() {
+            const productId = parseInt(this.dataset.productId);
+            navigateToProduct(productId);
+        });
+    });
+}
+
+function hideSuggestions() {
+    const searchSuggestions = document.querySelector('.search-suggestions');
+    if (searchSuggestions) {
+        searchSuggestions.style.display = 'none';
+    }
+}
+
+function searchProducts(query) {
+    const lowercaseQuery = query.toLowerCase();
+    return products.filter(product => 
+        product.name.toLowerCase().includes(lowercaseQuery) ||
+        product.notes.toLowerCase().includes(lowercaseQuery) ||
+        product.brand.toLowerCase().includes(lowercaseQuery) ||
+        product.description.toLowerCase().includes(lowercaseQuery)
+    );
+}
+
+function performSearch(query) {
+    const results = searchProducts(query);
+    
+    if (results.length === 0) {
+        customAlert(`No fragrances found for "${query}"`);
+        hideSuggestions();
+        return;
+    }
+    
+    if (results.length === 1) {
+        // Single result - navigate directly to products page
+        navigateToProducts();
+        hideSuggestions();
+        return;
+    }
+    
+    // Multiple results - navigate to products page with query
+    navigateToProducts();
+    hideSuggestions();
+}
+
+function navigateToProduct(productId) {
+    window.location.href = `products.html#product-${productId}`;
+    hideSuggestions();
+}
+
+function navigateToProducts() {
+    window.location.href = 'products.html';
+    hideSuggestions();
+}
+
+// Simple product data for the MVP
 // Simple product data for the MVP
 const products = [
     {
