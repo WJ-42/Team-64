@@ -630,3 +630,20 @@ function initMouseTrail() {
     
     animate();
 }
+
+const bulletObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const bullets = entry.target.querySelectorAll("li");
+            bullets.forEach((li, i) => {
+                setTimeout(() => {
+                    li.classList.add("bullet-visible");
+                }, i * 150);
+            });
+        }
+    });
+}, { threshold: 0.2 });
+
+document.querySelectorAll(".values-section").forEach(section => {
+    bulletObserver.observe(section);
+});
