@@ -306,12 +306,28 @@ function createProductCard(product) {
 }
 
 /**
- * Simple Circular Navigation Functions for Product Categories
+ * Simple Counter-Based Circular Navigation Functions for Product Categories
  */
+
+// Track current card indices for each category
+const currentCardIndices = new Map();
 
 // Initialize circular navigation
 function initializeCircularNavigation() {
     console.log('Initializing circular navigation...');
+    
+    // Initialize card counts and current indices for each category
+    document.querySelectorAll('.products-grid').forEach(grid => {
+        const categoryId = grid.id;
+        if (categoryId) {
+            const cardCount = grid.querySelectorAll('.product-card').length;
+            currentCardIndices.set(categoryId, {
+                currentIndex: 0,
+                cardCount: cardCount
+            });
+            console.log(`Initialized ${categoryId} with ${cardCount} cards`);
+        }
+    });
     
     // Add event listeners to all navigation arrows
     document.querySelectorAll('.nav-arrow').forEach(button => {
@@ -334,69 +350,82 @@ function handleArrowClick(event) {
     scrollToNextCard(categoryId, direction);
 }
 
-// Scroll to next/previous card with circular looping (simplified approach)
+// Ultra-simple navigation with extensive debugging
 function scrollToNextCard(categoryId, direction) {
+    console.log(`=== NAVIGATION START ===`);
+    console.log(`Category: ${categoryId}, Direction: ${direction} (${direction > 0 ? 'RIGHT' : 'LEFT'})`);
+    
     const grid = document.getElementById(categoryId);
-    
     if (!grid) {
-        console.error(`Grid not found for categoryId: ${categoryId}`);
+        console.error(`Grid not found: ${categoryId}`);
         return;
     }
     
-    // Get all product cards
+    // Get or create state
+    let state = currentCardIndices.get(categoryId);
+    if (!state) {
+        console.log('Creating new state for category');
+        state = { currentIndex: 0, cardCount: 0 };
+        currentCardIndices.set(categoryId, state);
+    }
+    
+    // Get fresh card count
     const cards = grid.querySelectorAll('.product-card');
-    if (cards.length === 0) {
-        console.error(`No cards found for category: ${categoryId}`);
-        return;
+    state.cardCount = cards.length;
+    console.log(`Found ${cards.length} cards`);
+    console.log(`Current state: index=${state.currentIndex}, count=${state.cardCount}`);
+    
+    // Calculate new index
+    let newIndex = state.currentIndex + direction;
+    console.log(`Initial calculation: ${state.currentIndex} + ${direction} = ${newIndex}`);
+    
+    // Check if we're at boundaries
+    const atEnd = state.currentIndex >= state.cardCount - 1;
+    const atStart = state.currentIndex <= 0;
+    
+    console.log(`At end? ${atEnd}, At start? ${atStart}`);
+    
+    // Handle wrapping - make it more explicit
+    if (direction > 0) { // RIGHT ARROW
+        console.log('Processing RIGHT ARROW logic...');
+        if (newIndex >= state.cardCount) {
+            newIndex = 0;
+            console.log(`RIGHT ARROW: Wrapping from ${state.currentIndex} to ${newIndex} (end → beginning)`);
+        } else {
+            console.log(`RIGHT ARROW: Normal move to ${newIndex}`);
+        }
+    } else { // LEFT ARROW
+        console.log('Processing LEFT ARROW logic...');
+        if (newIndex < 0) {
+            newIndex = state.cardCount - 1;
+            console.log(`LEFT ARROW: Wrapping from ${state.currentIndex} to ${newIndex} (beginning → end)`);
+        } else {
+            console.log(`LEFT ARROW: Normal move to ${newIndex}`);
+        }
     }
     
-    // Calculate card width including gap
-    const computedStyle = window.getComputedStyle(grid);
-    const gap = parseInt(computedStyle.gap) || 24;
-    const cardWidth = cards[0].offsetWidth + gap;
+    console.log(`Final newIndex: ${newIndex}`);
     
-    // Get current scroll position and calculate current card
-    const currentScrollLeft = grid.scrollLeft;
-    let currentCardIndex = Math.round(currentScrollLeft / cardWidth);
+    // Use fixed card width
+    const cardWidth = 304;
+    const targetPosition = newIndex * cardWidth;
     
-    // Ensure current index is within bounds
-    if (currentCardIndex >= cards.length) {
-        currentCardIndex = cards.length - 1;
-    } else if (currentCardIndex < 0) {
-        currentCardIndex = 0;
-    }
+    console.log(`Target position: ${newIndex} × ${cardWidth} = ${targetPosition}`);
+    console.log('Executing scroll...');
     
-    console.log(`Current card: ${currentCardIndex}, Direction: ${direction}, Total cards: ${cards.length}`);
-    
-    // Calculate new index with circular logic (IDENTICAL for both arrows)
-    let newIndex = currentCardIndex + direction;
-    
-    // Handle circular wrapping - same logic for both directions
-    if (newIndex >= cards.length) {
-        newIndex = 0; // Loop to beginning
-    } else if (newIndex < 0) {
-        newIndex = cards.length - 1; // Loop to end
-    }
-    
-    const newPosition = newIndex * cardWidth;
-    
-    console.log(`Moving from card ${currentCardIndex} to card ${newIndex}`);
-    
-    // Smooth scroll to new position
+    // Scroll to position
     grid.scrollTo({
-        left: newPosition,
+        left: targetPosition,
         behavior: 'smooth'
     });
     
-    // Update the position tracking
-    const info = categoryScrollPositions.get(categoryId) || {};
-    info.currentIndex = newIndex;
-    info.position = newPosition;
-    info.cardCount = cards.length;
-    info.cardWidth = cardWidth;
-    categoryScrollPositions.set(categoryId, info);
+    // Update state
+    state.currentIndex = newIndex;
+    currentCardIndices.set(categoryId, state);
     
-    console.log(`Scrolled to card ${newIndex + 1} of ${cards.length}`);
+    console.log(`=== NAVIGATION COMPLETE ===`);
+    console.log(`Updated state: index=${state.currentIndex}, count=${state.cardCount}`);
+    console.log('');
 }
 
 // Auto-initialize navigation when products are loaded
