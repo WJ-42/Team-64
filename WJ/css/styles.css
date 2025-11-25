@@ -476,6 +476,43 @@ main {
     gap: 1.25rem;
 }
 
+/* Solaris duo section */
+
+.solaris-duo-section {
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.solaris-duo-section h3 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #f0c24b 0%, #f0c24b 50%, #f6f6f6 50%, #f6f6f6 100%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: background-position 0.5s ease;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(240, 194, 75, 0.3), 0 0 40px rgba(240, 194, 75, 0.15);
+}
+
+.solaris-duo-section h3:hover {
+    background-position: 0% 0;
+}
+
+.solaris-duo-section p {
+    margin-bottom: 2rem;
+    color: #d4d4d4;
+}
+
+#solarisContainer {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 .product-image-container {
     width: 100%;
     height: 250px;
@@ -483,6 +520,9 @@ main {
     border-radius: 6px;
     margin-bottom: 1rem;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .product-image {
@@ -509,6 +549,10 @@ main {
 .aurora-oud-image .product-image {
     padding: 0.25rem;
     transform: scale(1.15) translateY(-100%);
+}
+
+.card:hover .product-image-container .product-image {
+    transform: translateY(0);
 }
 
 .card {
