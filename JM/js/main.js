@@ -1,30 +1,3 @@
-// Simple product data for the MVP
-const products = [
-    {
-        id: 1,
-        name: "Aurora Oud",
-        brand: "Luminous Scents",
-        price: 89.99,
-        notes: "Oud, amber, vanilla",
-        description: "Warm and deep evening scent with a rich oud base."
-    },
-    {
-        id: 2,
-        name: "Citrus Dawn",
-        brand: "Luminous Scents",
-        price: 59.99,
-        notes: "Bergamot, lemon, neroli",
-        description: "Fresh daytime fragrance that is bright and uplifting."
-    },
-    {
-        id: 3,
-        name: "Velvet Iris",
-        brand: "Luminous Scents",
-        price: 74.50,
-        notes: "Iris, violet, sandalwood",
-        description: "Soft floral scent with a creamy sandalwood base."
-    }
-];
 function customAlert(message) {
     const overlay = document.createElement('div');
     overlay.className = 'custom-alert-overlay';
@@ -83,6 +56,22 @@ function customConfirm(message, onConfirm) {
 
     document.getElementById('confirmNo').addEventListener('click', closeDialog);
     overlay.addEventListener('click', closeDialog);
+}
+
+// Legacy products array for backward compatibility with old functions
+let products = [];
+function updateProductsArray() {
+    // Convert SQL products to legacy format for compatibility
+    if (window.sqlProducts) {
+        products = window.sqlProducts.map(product => ({
+            id: product.id,
+            name: product.product_name,
+            brand: product.brand,
+            price: product.price,
+            notes: product.notes,
+            description: product.description
+        }));
+    }
 }
 
 const BASKET_STORAGE_KEY = "luminousScentsBasket";
@@ -259,6 +248,191 @@ function renderBasketPage() {
     }
 }
 
+// New Products Page rendering with categories
+function renderNewProductsPage() {
+    const categories = [
+        'Signature Eau de Parfum',
+        'Luxury Eau de Toilette', 
+        'Home Fragrance Collection',
+        'Travel & Mini Sets',
+        'Wellness Aromatics'
+    ];
+
+    categories.forEach(category => {
+        const containerId = category.toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/&/g, 'and')
+            .replace(/[^a-z0-9\-]/g, '') + '-content';
+        const container = document.getElementById(containerId);
+        
+        if (container) {
+            const categoryProducts = sqlProducts.filter(product => product.category === category);
+            
+            categoryProducts.forEach(product => {
+                const card = createProductCard(product);
+                container.appendChild(card);
+                applyScrollReveal(card);
+            });
+        }
+    });
+}
+
+function createProductCard(product) {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.setAttribute('data-product-id', product.id);
+    
+    card.innerHTML = `
+        <div class="product-image-container">
+            <img src="${product.image_url}" alt="${product.product_name}" class="product-image">
+        </div>
+        <h4>${product.product_name}</h4>
+        <p class="brand">${product.brand}</p>
+        <p class="notes">${product.notes}</p>
+        <p class="price">£${product.price.toFixed(2)}</p>
+        <p class="description">${product.description}</p>
+        <button class="btn-primary" data-product-id="${product.id}">
+            Add to basket
+        </button>
+    `;
+    
+    // Add click handler for add to basket button
+    card.querySelector('.btn-primary').addEventListener('click', (e) => {
+        e.stopPropagation();
+        addToBasket(product.id);
+    });
+    
+    return card;
+}
+
+/**
+ * Simple Counter-Based Circular Navigation Functions for Product Categories
+ */
+
+// Track current card indices for each category
+const currentCardIndices = new Map();
+
+// Initialize circular navigation
+function initializeCircularNavigation() {
+    console.log('Initializing circular navigation...');
+    
+    // Initialize card counts and current indices for each category
+    document.querySelectorAll('.products-grid').forEach(grid => {
+        const categoryId = grid.id;
+        if (categoryId) {
+            const cardCount = grid.querySelectorAll('.product-card').length;
+            currentCardIndices.set(categoryId, {
+                currentIndex: 0,
+                cardCount: cardCount
+            });
+            console.log(`Initialized ${categoryId} with ${cardCount} cards`);
+        }
+    });
+    
+    // Add event listeners to all navigation arrows
+    document.querySelectorAll('.nav-arrow').forEach(button => {
+        button.addEventListener('click', handleArrowClick);
+    });
+    
+    console.log('Navigation initialization complete');
+}
+
+// Handle arrow button clicks
+function handleArrowClick(event) {
+    const button = event.currentTarget;
+    const categoryId = button.getAttribute('data-target');
+    const direction = parseInt(button.getAttribute('data-direction'));
+    
+    if (!categoryId || !direction) return;
+    
+    console.log(`Navigating ${direction > 0 ? 'right' : 'left'} in ${categoryId}`);
+    
+    scrollToNextCard(categoryId, direction);
+}
+
+// Ultra-simple navigation with extensive debugging
+function scrollToNextCard(categoryId, direction) {
+    console.log(`=== NAVIGATION START ===`);
+    console.log(`Category: ${categoryId}, Direction: ${direction} (${direction > 0 ? 'RIGHT' : 'LEFT'})`);
+    
+    const grid = document.getElementById(categoryId);
+    if (!grid) {
+        console.error(`Grid not found: ${categoryId}`);
+        return;
+    }
+    
+    // Get or create state
+    let state = currentCardIndices.get(categoryId);
+    if (!state) {
+        console.log('Creating new state for category');
+        state = { currentIndex: 0, cardCount: 0 };
+        currentCardIndices.set(categoryId, state);
+    }
+    
+    // Get fresh card count
+    const cards = grid.querySelectorAll('.product-card');
+    state.cardCount = cards.length;
+    console.log(`Found ${cards.length} cards`);
+    console.log(`Current state: index=${state.currentIndex}, count=${state.cardCount}`);
+    
+    // Calculate new index
+    let newIndex = state.currentIndex + direction;
+    console.log(`Initial calculation: ${state.currentIndex} + ${direction} = ${newIndex}`);
+    
+    // Check if we're at boundaries
+    const atEnd = state.currentIndex >= state.cardCount - 1;
+    const atStart = state.currentIndex <= 0;
+    
+    console.log(`At end? ${atEnd}, At start? ${atStart}`);
+    
+    // Handle wrapping - make it more explicit
+    if (direction > 0) { // RIGHT ARROW
+        console.log('Processing RIGHT ARROW logic...');
+        if (newIndex >= state.cardCount) {
+            newIndex = 0;
+            console.log(`RIGHT ARROW: Wrapping from ${state.currentIndex} to ${newIndex} (end → beginning)`);
+        } else {
+            console.log(`RIGHT ARROW: Normal move to ${newIndex}`);
+        }
+    } else { // LEFT ARROW
+        console.log('Processing LEFT ARROW logic...');
+        if (newIndex < 0) {
+            newIndex = state.cardCount - 1;
+            console.log(`LEFT ARROW: Wrapping from ${state.currentIndex} to ${newIndex} (beginning → end)`);
+        } else {
+            console.log(`LEFT ARROW: Normal move to ${newIndex}`);
+        }
+    }
+    
+    console.log(`Final newIndex: ${newIndex}`);
+    
+    // Use fixed card width
+    const cardWidth = 304;
+    const targetPosition = newIndex * cardWidth;
+    
+    console.log(`Target position: ${newIndex} × ${cardWidth} = ${targetPosition}`);
+    console.log('Executing scroll...');
+    
+    // Scroll to position
+    grid.scrollTo({
+        left: targetPosition,
+        behavior: 'smooth'
+    });
+    
+    // Update state
+    state.currentIndex = newIndex;
+    currentCardIndices.set(categoryId, state);
+    
+    console.log(`=== NAVIGATION COMPLETE ===`);
+    console.log(`Updated state: index=${state.currentIndex}, count=${state.cardCount}`);
+    console.log('');
+}
+
+// Auto-initialize navigation when products are loaded
+function setupNavigationAfterProductsLoad() {
+    console.log('Setting up navigation after products load...');
+    initializeCircularNavigation();
+}
 // Scroll reveal helper function
 function applyScrollReveal(element) {
     element.classList.add('scroll-reveal');
@@ -409,6 +583,46 @@ function initStarfield() {
     loop();
 }
 
+// SQL Products initialization function
+async function initSQLProducts() {
+    console.log('Initializing SQL products...');
+    try {
+        const parser = new SQLParser();
+        const products = await parser.loadProducts();
+        
+        if (products.length > 0) {
+            // Add fallback for products with missing/invalid image URLs
+            const cleanedProducts = products.map(product => {
+                if (!product.image_url || product.image_url.toUpperCase() === 'NULL' ||
+                    product.image_url.includes("'") || product.image_url.includes('NULL')) {
+                    // Use a default image or empty string for products without valid images
+                    product.image_url = 'images/luminous-logo.png'; // fallback image
+                }
+                return product;
+            });
+            
+            window.sqlProducts = cleanedProducts;
+            updateProductsArray(); // Update legacy products array
+            console.log(`Successfully loaded ${products.length} products from SQL file`);
+            
+            // Render the products page
+            renderNewProductsPage();
+            
+            // Initialize navigation after a short delay to ensure DOM is updated
+            setTimeout(() => {
+                console.log('Setting up navigation after SQL products loaded...');
+                setupNavigationAfterProductsLoad();
+            }, 300);
+        } else {
+            console.error('No products loaded from SQL file');
+            // Could add fallback here if needed
+        }
+    } catch (error) {
+        console.error('Failed to initialize SQL products:', error);
+        // Could add fallback here if needed
+    }
+}
+
 // Page initialiser
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -422,6 +636,14 @@ document.addEventListener("DOMContentLoaded", () => {
         setupAuthForm();
     } else if (page === "products") {
         renderProductsPage();
+    } else if (page === "newproducts") {
+        // SQL products will be loaded and rendered in initSQLProducts
+        initSQLProducts();
+        // Initialize navigation after a longer delay to ensure products are fully loaded and rendered
+        setTimeout(() => {
+            console.log('Setting up navigation after products load...');
+            setupNavigationAfterProductsLoad();
+        }, 1000);
     } else if (page === "basket") {
         renderBasketPage();
     }
@@ -441,6 +663,93 @@ const observer = new IntersectionObserver((entries) => {
         }
     });
 }, observerOptions);
+// Async version that waits for SQL data to be loaded
+async function renderNewProductsPageAsync() {
+    console.log('renderNewProductsPageAsync called');
+    console.log('window.sqlProducts exists:', !!window.sqlProducts);
+    console.log('window.sqlProducts length:', window.sqlProducts ? window.sqlProducts.length : 'undefined');
+    
+    // Wait for SQL data to be loaded
+    let attempts = 0;
+    const maxAttempts = 50; // 5 seconds max wait
+    
+    while (!window.sqlProducts && attempts < maxAttempts) {
+        console.log(`Waiting for SQL data... attempt ${attempts + 1}`);
+        await new Promise(resolve => setTimeout(resolve, 100));
+        attempts++;
+    }
+    
+    if (!window.sqlProducts) {
+        console.error('Failed to load SQL products after waiting');
+        return;
+    }
+    
+    console.log('SQL data loaded, proceeding to render products');
+    renderNewProductsPage();
+}
+
+// Original synchronous version (now uses global sqlProducts)
+function renderNewProductsPage() {
+    console.log('renderNewProductsPage called');
+    
+    if (!window.sqlProducts) {
+        console.error('SQL products not loaded');
+        return;
+    }
+    
+    console.log('Number of products available:', window.sqlProducts.length);
+    console.log('Sample product:', window.sqlProducts[0]);
+    
+    const categories = [
+        'Signature Eau de Parfum',
+        'Luxury Eau de Toilette',
+        'Home Fragrance Collection',
+        'Travel & Mini Sets',
+        'Wellness Aromatics'
+    ];
+
+    categories.forEach(category => {
+        console.log(`Processing category: ${category}`);
+        
+        // Match the exact HTML container IDs
+        let containerId;
+        switch(category) {
+            case 'Signature Eau de Parfum':
+                containerId = 'signature-parfum-grid';
+                break;
+            case 'Luxury Eau de Toilette':
+                containerId = 'luxury-toilette-grid';
+                break;
+            case 'Home Fragrance Collection':
+                containerId = 'home-fragrance-grid';
+                break;
+            case 'Travel & Mini Sets':
+                containerId = 'travel-sets-grid';
+                break;
+            case 'Wellness Aromatics':
+                containerId = 'wellness-aromatics-grid';
+                break;
+            default:
+                containerId = category.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and').replace(/[^a-z0-9\-]/g, '') + '-grid';
+        }
+        
+        const container = document.getElementById(containerId);
+        console.log(`Container ID: ${containerId}, Found:`, !!container);
+        
+        if (container) {
+            const categoryProducts = window.sqlProducts.filter(product => product.category === category);
+            console.log(`Products in category ${category}:`, categoryProducts.length);
+            
+            categoryProducts.forEach(product => {
+                const card = createProductCard(product);
+                container.appendChild(card);
+                applyScrollReveal(card);
+            });
+        }
+    });
+    
+    console.log('renderNewProductsPage completed');
+}
 
 // Prevent observer from catching dynamically added elements
 const originalObserve = observer.observe;
@@ -452,7 +761,7 @@ observer.observe = function(element) {
     }
     originalObserve.call(this, element);
 };
-document.querySelectorAll('.main-header, .site-footer, .hero-text, .hero-text h2, .hero-text p, .page-header, .page-header h2, .page-header p, .card, .card h3, .card p, .card .btn-primary, .feature-card, .feature-card h4, .feature-card p, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .info-column h3, .info-column p, .steps-list li, .step-number, .feature-section h3, .auth-section, .auth-form').forEach(el => {
+document.querySelectorAll('.main-header, .site-footer, .hero-text, .hero-text h2, .hero-text p, .page-header, .page-header h2, .page-header p, .card, .card h3, .card p, .card .btn-primary, .feature-card, .feature-card h4, .feature-card p, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .info-column h3, .info-column p, .steps-list li, .step-number, .feature-section h3, .auth-section, .auth-form, .category-section, .category-header').forEach(el => {
     el.classList.add('scroll-reveal');
     observer.observe(el);
 });
