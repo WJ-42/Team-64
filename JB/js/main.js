@@ -781,6 +781,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const page = document.body.getAttribute("data-page");
 
     initStarfield();
+    initStarfield();
+    initMouseTrail();
+    initSearch(); // Initialize search functionality
     initMouseTrail();
 
     // rest of the code...
