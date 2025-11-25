@@ -305,40 +305,8 @@ function createProductCard(product) {
     return card;
 }
 
-// Scroll category function
-function scrollCategory(categoryId, direction) {
-    const container = document.getElementById(categoryId);
-    const content = container.querySelector('.scroll-content');
-    
-    if (!content) return;
-    
-    const scrollAmount = 280; // pixels to scroll per click
-    const currentTransform = getComputedStyle(content).transform;
-    let currentX = 0;
-    
-    // Extract current translateX value
-    if (currentTransform !== 'none') {
-        const matrix = new DOMMatrixReadOnly(currentTransform);
-        currentX = matrix.m41;
-    }
-    
-    const newX = currentX + (direction * scrollAmount);
-    
-    // Clamp the scroll position
-    const maxScroll = 0;
-    const minScroll = -Math.max(0, content.scrollWidth - container.clientWidth);
-    const clampedX = Math.max(minScroll, Math.min(maxScroll, newX));
-    
-    content.style.transform = `translateX(${clampedX}px)`;
-    
-    // Update scroll button states
-    const scrollContainer = container.closest('.products-scroll-container');
-    const leftBtn = scrollContainer.querySelector('.scroll-left');
-    const rightBtn = scrollContainer.querySelector('.scroll-right');
-    
-    if (leftBtn) leftBtn.disabled = clampedX >= maxScroll;
-    if (rightBtn) rightBtn.disabled = clampedX <= minScroll;
-}
+// Horizontal scrolling is now handled by CSS
+// No JavaScript scrolling functions needed for the new layout
 // Scroll reveal helper function
 function applyScrollReveal(element) {
     element.classList.add('scroll-reveal');
