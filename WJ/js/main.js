@@ -176,6 +176,27 @@ function renderProductsPage() {
     });
 }
 
+function filterProducts() {
+    const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll("#productsContainer .card");
+
+    cards.forEach(card => {
+        const name = card.querySelector("h3").textContent.toLowerCase();
+        const notes = card.querySelector("p:nth-of-type(2)").textContent.toLowerCase();
+        const description = card.querySelector("p:nth-of-type(4)").textContent.toLowerCase();
+
+        const matches = name.includes(searchTerm) || notes.includes(searchTerm) || description.includes(searchTerm);
+
+        if (matches) {
+            card.style.opacity = "1";
+            card.style.display = "block";
+        } else {
+            card.style.opacity = "0";
+            card.style.display = "none";
+        }
+    });
+}
+
 function renderBasketPage() {
     const container = document.getElementById("basketContainer");
     const summary = document.getElementById("basketSummary");
@@ -244,7 +265,7 @@ function renderBasketPage() {
     const checkoutBtn = document.getElementById("mockCheckoutBtn");
     if (checkoutBtn) {
         checkoutBtn.addEventListener("click", () => {
-            customAlert("Checkout flow will be implemented in the full version. For MVP this is a demo only.");
+            window.location.href = "checkout.html";
         });
     }
 
@@ -257,6 +278,7 @@ function renderBasketPage() {
             });
         });
     }
+
 }
 
 // Scroll reveal helper function
@@ -422,6 +444,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setupAuthForm();
     } else if (page === "products") {
         renderProductsPage();
+        document.getElementById("searchInput").addEventListener("input", filterProducts);
     } else if (page === "basket") {
         renderBasketPage();
     }
