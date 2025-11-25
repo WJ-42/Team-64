@@ -501,6 +501,15 @@ function initStarfield() {
 // Page initialiser
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Auto-resize textarea
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(textarea => {
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+    });
+
     const page = document.body.getAttribute("data-page");
 
     initStarfield();

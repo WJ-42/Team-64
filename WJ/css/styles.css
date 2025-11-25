@@ -414,17 +414,45 @@ main {
 }
 
 .form-row input[type="email"],
-.form-row input[type="password"] {
+.form-row input[type="password"],
+.form-row input[type="text"],
+.form-row textarea {
     padding: 0.7rem;
     border-radius: 4px;
     border: 1px solid rgba(240, 194, 75, 0.3);
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(15, 12, 5, 0.75) 50%, rgba(0, 0, 0, 0.8) 100%);
-    color: #f6f6f6;
-    transition: all 0.3s ease;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(15, 12, 5, 0.75) 50%, rgba(0, 0, 0, 0.8) 100%) !important;
+    color: #f6f6f6 !important;
+    transition: background-color 9999s ease-out, all 0.3s ease;
+    resize: none;
+    overflow-y: auto;
+    min-height: 100px;
+}
+
+.form-row input[type="email"]::placeholder,
+.form-row input[type="password"]::placeholder,
+.form-row input[type="text"]::placeholder,
+.form-row textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px rgba(0, 0, 0, 0.8) inset !important;
+    background-color: rgba(0, 0, 0, 0.8) !important;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(15, 12, 5, 0.75) 50%, rgba(0, 0, 0, 0.8) 100%) inset 0 0 0 1000px !important;
+    -webkit-text-fill-color: #ffffff !important;
+    caret-color: #ffffff !important;
+    transition: background-color 9999s ease-out;
 }
 
 .form-row input[type="email"]:focus,
-.form-row input[type="password"]:focus {
+.form-row input[type="password"]:focus,
+.form-row input[type="text"]:focus,
+.form-row textarea:focus {
     outline: none;
     border-color: rgba(240, 194, 75, 0.6);
     box-shadow: 0 0 15px rgba(240, 194, 75, 0.2);
@@ -675,9 +703,9 @@ main {
 /* info-grid is a layout wrapper */
 .info-grid {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: stretch;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     gap: 2rem;
     max-width: 1100px;
     margin: 5rem auto;
@@ -708,6 +736,7 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .info-column h3 {
@@ -825,6 +854,7 @@ main {
     display: flex;
     flex-wrap: wrap;
     gap: 1.25rem;
+    align-items: center;
 }
 
 .feature-card {
@@ -870,6 +900,17 @@ main {
     line-height: 1.7;
 }
 
+.contact-info-card {
+    padding: 0.75rem;
+}
+
+.feature-grid .feature-card {
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 /* Simple responsiveness */
 
 @media (max-width: 768px) {
@@ -889,6 +930,25 @@ main {
 
     .auth-section {
         margin-top: 2.5rem;
+    }
+
+    .feature-grid {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .feature-card {
+        min-height: auto;
+    }
+
+    .info-grid {
+        gap: 1rem;
+    }
+
+    .info-column {
+        min-width: auto;
+        width: 100%;
+        max-width: 100%;
     }
 }
 
@@ -936,4 +996,32 @@ main {
 .custom-alert button:hover {
     background: #ffd463;
     transform: scale(1.05);
+}
+
+/* Contact Page Styles */
+.contact-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 3rem auto;
+    align-items: stretch;
+}
+
+.info-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+input:-webkit-autofill,
+textarea:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px rgba(0,0,0,0.8) inset !important;
+    background-color: rgba(0,0,0,0.8) !important;
+    -webkit-text-fill-color: #ffffff !important;
 }
