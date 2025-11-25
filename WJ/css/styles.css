@@ -151,6 +151,21 @@ body[data-page="about"] .feature-card.scroll-reveal.revealed:hover {
     transform: translateY(-10px);
 }
 
+/* About page section headings - smooth unified animation */
+body[data-page="about"] .feature-section h3.scroll-reveal {
+    opacity: 0 !important;
+    transform: translateY(20px) !important;
+    transition: opacity 0.8s ease-out, 
+                transform 0.8s ease-out,
+                color 0.4s ease, 
+                text-shadow 0.4s ease !important;
+}
+
+body[data-page="about"] .feature-section h3.scroll-reveal.revealed {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
 /* Parallax stars */
 .parallax-stars {
     position: fixed;
