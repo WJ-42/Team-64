@@ -367,9 +367,9 @@ function initStarfield() {
                 s.x + parallaxX, s.y + parallaxY, s.size * 4
             );
 
-            gradient.addColorStop(0, `rgba(255, 220, 130, ${s.alpha})`);
-            gradient.addColorStop(0.4, `rgba(245, 210, 120, ${s.alpha * 0.6})`);
-            gradient.addColorStop(1, `rgba(240, 194, 75, 0)`);
+            gradient.addColorStop(0, `rgba(255, 182, 193, ${s.alpha})`);
+            gradient.addColorStop(0.4, `rgba(255, 105, 180, ${s.alpha * 0.6})`);
+            gradient.addColorStop(1, `rgba(255, 20, 147, 0)`);
 
             ctx.fillStyle = gradient;
             ctx.fill();
@@ -490,27 +490,34 @@ function initMouseTrail() {
     
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
+    
         const now = Date.now();
-        
+    
         for (let i = points.length - 1; i >= 0; i--) {
             if (now - points[i].time > maxAge) {
                 points.splice(i, 1);
             }
         }
-        
-        points.forEach((point) => {
-            const age = now - point.time;
-            const life = 1 - (age / maxAge);
-            const alpha = life * 0.6;
-            const size = life * 3;
-            
-            ctx.beginPath();
-            ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(240, 194, 75, ${alpha})`;
-            ctx.fill();
-        });
-        
+    
+        if (points.length > 1) {
+            for (let i = 1; i < points.length; i++) {
+                const point = points[i];
+                const prevPoint = points[i - 1];
+                const age = now - point.time;
+                const life = 1 - (age / maxAge);
+                const alpha = life * 0.6;
+                const size = life * 2;
+    
+                ctx.beginPath();
+                ctx.moveTo(prevPoint.x, prevPoint.y);
+                ctx.lineTo(point.x, point.y);
+                ctx.strokeStyle = `rgba(255, 20, 147, ${alpha})`;
+                ctx.lineWidth = size;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+            }
+        }
+    
         requestAnimationFrame(animate);
     }
     
