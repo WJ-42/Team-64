@@ -82,6 +82,26 @@ h3, h4, h5, h6 {
     }
 }
 
+@keyframes starBorderRotate {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 200% 50%;
+    }
+}
+
+@keyframes starTwinkle {
+    0%, 100% {
+        opacity: 0.4;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
 @keyframes fadeInUpScale {
     from {
         opacity: 0;
@@ -611,6 +631,89 @@ textarea:-webkit-autofill:focus {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/* Starlight border - animated gradient traveling around the edge */
+.product-image-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    padding: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(240, 194, 75, 0.15) 10%,
+        rgba(255, 215, 0, 0.7) 20%,
+        rgba(255, 255, 255, 1) 25%,
+        rgba(255, 215, 0, 0.7) 30%,
+        rgba(240, 194, 75, 0.15) 40%,
+        transparent 50%,
+        rgba(240, 194, 75, 0.15) 60%,
+        rgba(255, 215, 0, 0.6) 70%,
+        rgba(255, 255, 255, 0.9) 75%,
+        rgba(255, 215, 0, 0.6) 80%,
+        rgba(240, 194, 75, 0.15) 90%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: starBorderRotate 3s linear infinite;
+    -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+/* Corner star sparkle */
+.card::before {
+    content: '✦';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 14px;
+    color: #ffd700;
+    text-shadow: 
+        0 0 8px rgba(255, 215, 0, 0.9),
+        0 0 16px rgba(255, 215, 0, 0.6),
+        0 0 24px rgba(255, 215, 0, 0.3);
+    animation: starTwinkle 1.8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 20;
+    opacity: 1;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Second sparkle for extra luxury */
+.card::after {
+    content: '✦';
+    position: absolute;
+    top: 22px;
+    left: 18px;
+    font-size: 10px;
+    color: #fff8dc;
+    text-shadow: 
+        0 0 6px rgba(255, 215, 0, 0.8),
+        0 0 12px rgba(255, 215, 0, 0.5);
+    animation: starTwinkle 2.4s ease-in-out infinite 0.6s;
+    pointer-events: none;
+    z-index: 20;
+    opacity: 0.8;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.card:hover .product-image-container::before {
+    opacity: 0;
+}
+
+.card:hover::before,
+.card:hover::after {
+    opacity: 0;
+    transform: scale(0) rotate(180deg);
 }
 
 .product-image {
