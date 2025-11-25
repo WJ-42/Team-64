@@ -16,7 +16,7 @@ input, textarea {
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: transparent;
+    background: pink;
     color: #f6f6f6;
     line-height: 1.8;
     position: relative;
