@@ -305,8 +305,105 @@ function createProductCard(product) {
     return card;
 }
 
-// Horizontal scrolling is now handled by CSS
-// No JavaScript scrolling functions needed for the new layout
+/**
+ * Simple Circular Navigation Functions for Product Categories
+ */
+
+// Initialize circular navigation
+function initializeCircularNavigation() {
+    console.log('Initializing circular navigation...');
+    
+    // Add event listeners to all navigation arrows
+    document.querySelectorAll('.nav-arrow').forEach(button => {
+        button.addEventListener('click', handleArrowClick);
+    });
+    
+    console.log('Navigation initialization complete');
+}
+
+// Handle arrow button clicks
+function handleArrowClick(event) {
+    const button = event.currentTarget;
+    const categoryId = button.getAttribute('data-target');
+    const direction = parseInt(button.getAttribute('data-direction'));
+    
+    if (!categoryId || !direction) return;
+    
+    console.log(`Navigating ${direction > 0 ? 'right' : 'left'} in ${categoryId}`);
+    
+    scrollToNextCard(categoryId, direction);
+}
+
+// Scroll to next/previous card with circular looping (simplified approach)
+function scrollToNextCard(categoryId, direction) {
+    const grid = document.getElementById(categoryId);
+    
+    if (!grid) {
+        console.error(`Grid not found for categoryId: ${categoryId}`);
+        return;
+    }
+    
+    // Get all product cards
+    const cards = grid.querySelectorAll('.product-card');
+    if (cards.length === 0) {
+        console.error(`No cards found for category: ${categoryId}`);
+        return;
+    }
+    
+    // Calculate card width including gap
+    const computedStyle = window.getComputedStyle(grid);
+    const gap = parseInt(computedStyle.gap) || 24;
+    const cardWidth = cards[0].offsetWidth + gap;
+    
+    // Get current scroll position and calculate current card
+    const currentScrollLeft = grid.scrollLeft;
+    let currentCardIndex = Math.round(currentScrollLeft / cardWidth);
+    
+    // Ensure current index is within bounds
+    if (currentCardIndex >= cards.length) {
+        currentCardIndex = cards.length - 1;
+    } else if (currentCardIndex < 0) {
+        currentCardIndex = 0;
+    }
+    
+    console.log(`Current card: ${currentCardIndex}, Direction: ${direction}, Total cards: ${cards.length}`);
+    
+    // Calculate new index with circular logic (IDENTICAL for both arrows)
+    let newIndex = currentCardIndex + direction;
+    
+    // Handle circular wrapping - same logic for both directions
+    if (newIndex >= cards.length) {
+        newIndex = 0; // Loop to beginning
+    } else if (newIndex < 0) {
+        newIndex = cards.length - 1; // Loop to end
+    }
+    
+    const newPosition = newIndex * cardWidth;
+    
+    console.log(`Moving from card ${currentCardIndex} to card ${newIndex}`);
+    
+    // Smooth scroll to new position
+    grid.scrollTo({
+        left: newPosition,
+        behavior: 'smooth'
+    });
+    
+    // Update the position tracking
+    const info = categoryScrollPositions.get(categoryId) || {};
+    info.currentIndex = newIndex;
+    info.position = newPosition;
+    info.cardCount = cards.length;
+    info.cardWidth = cardWidth;
+    categoryScrollPositions.set(categoryId, info);
+    
+    console.log(`Scrolled to card ${newIndex + 1} of ${cards.length}`);
+}
+
+// Auto-initialize navigation when products are loaded
+function setupNavigationAfterProductsLoad() {
+    console.log('Setting up navigation after products load...');
+    initializeCircularNavigation();
+}
 // Scroll reveal helper function
 function applyScrollReveal(element) {
     element.classList.add('scroll-reveal');
@@ -481,6 +578,12 @@ async function initSQLProducts() {
             
             // Render the products page
             renderNewProductsPage();
+            
+            // Initialize navigation after a short delay to ensure DOM is updated
+            setTimeout(() => {
+                console.log('Setting up navigation after SQL products loaded...');
+                setupNavigationAfterProductsLoad();
+            }, 300);
         } else {
             console.error('No products loaded from SQL file');
             // Could add fallback here if needed
@@ -507,6 +610,11 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (page === "newproducts") {
         // SQL products will be loaded and rendered in initSQLProducts
         initSQLProducts();
+        // Initialize navigation after a longer delay to ensure products are fully loaded and rendered
+        setTimeout(() => {
+            console.log('Setting up navigation after products load...');
+            setupNavigationAfterProductsLoad();
+        }, 1000);
     } else if (page === "basket") {
         renderBasketPage();
     }
