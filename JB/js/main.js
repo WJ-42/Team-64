@@ -424,6 +424,8 @@ document.addEventListener("DOMContentLoaded", () => {
         renderProductsPage();
     } else if (page === "basket") {
         renderBasketPage();
+    } else if (page === "checkout") {
+        renderCheckoutPage();
     }
 });
 // Scroll reveal animations
