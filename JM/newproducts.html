@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Products - Luminous Scents</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/newproducts.css">
+</head>
+<body data-page="newproducts">
+    <!-- Parallax stars background -->
+    <div class="parallax-stars">
+        <canvas id="starfield"></canvas>
+    </div>
+    
+    <!-- Mouse trail canvas -->
+    <canvas id="trailCanvas"></canvas>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="logo">
+            <img src="images/luminous-logo.png" alt="Luminous Scents" class="logo-image">
+            <div class="logo-text">
+                <h1>Luminous Scents</h1>
+                <p>Luxury Fragrances</p>
+            </div>
+        </div>
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="newproducts.html">Categories</a>
+            <a href="basket.html">Basket</a>
+            <a href="account.html">Account</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="page-header">
+            <h2>Our Product Collections</h2>
+            <p>Explore our carefully curated fragrances organized by category</p>
+        </section>
+
+        <!-- Category Sections -->
+        
+        <!-- Signature Eau de Parfum -->
+        <section class="category-section">
+            <div class="category-header">
+                <h3>Signature Eau de Parfum</h3>
+                <p>Our premium collection of signature scents for any occasion</p>
+            </div>
+            <div class="products-grid-container">
+                <div class="products-grid" id="signature-parfum-grid">
+                    <!-- Products will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Luxury Eau de Toilette -->
+        <section class="category-section">
+            <div class="category-header">
+                <h3>Luxury Eau de Toilette</h3>
+                <p>Elegant daytime fragrances with sophisticated character</p>
+            </div>
+            <div class="products-grid-container">
+                <div class="products-grid" id="luxury-toilette-grid">
+                    <!-- Products will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Home Fragrance Collection -->
+        <section class="category-section">
+            <div class="category-header">
+                <h3>Home Fragrance Collection</h3>
+                <p>Transform your living space with our aromatic home collection</p>
+            </div>
+            <div class="products-grid-container">
+                <div class="products-grid" id="home-fragrance-grid">
+                    <!-- Products will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Travel & Mini Sets -->
+        <section class="category-section">
+            <div class="category-header">
+                <h3>Travel & Mini Sets</h3>
+                <p>Perfect collections for exploring new scents on the go</p>
+            </div>
+            <div class="products-grid-container">
+                <div class="products-grid" id="travel-sets-grid">
+                    <!-- Products will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Wellness Aromatics -->
+        <section class="category-section">
+            <div class="category-header">
+                <h3>Wellness Aromatics</h3>
+                <p>Therapeutic blends designed for wellbeing and relaxation</p>
+            </div>
+            <div class="products-grid-container">
+                <div class="products-grid" id="wellness-aromatics-grid">
+                    <!-- Products will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>&copy; 2025 Luminous Scents. All rights reserved. | Crafted with passion for extraordinary fragrances.</p>
+    </footer>
+
+    <!-- Load SQL parser and fetch product data -->
+    <script src="js/sql-parser.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

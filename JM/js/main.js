@@ -1,30 +1,3 @@
-// Simple product data for the MVP
-const products = [
-    {
-        id: 1,
-        name: "Aurora Oud",
-        brand: "Luminous Scents",
-        price: 89.99,
-        notes: "Oud, amber, vanilla",
-        description: "Warm and deep evening scent with a rich oud base."
-    },
-    {
-        id: 2,
-        name: "Citrus Dawn",
-        brand: "Luminous Scents",
-        price: 59.99,
-        notes: "Bergamot, lemon, neroli",
-        description: "Fresh daytime fragrance that is bright and uplifting."
-    },
-    {
-        id: 3,
-        name: "Velvet Iris",
-        brand: "Luminous Scents",
-        price: 74.50,
-        notes: "Iris, violet, sandalwood",
-        description: "Soft floral scent with a creamy sandalwood base."
-    }
-];
 function customAlert(message) {
     const overlay = document.createElement('div');
     overlay.className = 'custom-alert-overlay';
@@ -83,6 +56,22 @@ function customConfirm(message, onConfirm) {
 
     document.getElementById('confirmNo').addEventListener('click', closeDialog);
     overlay.addEventListener('click', closeDialog);
+}
+
+// Legacy products array for backward compatibility with old functions
+let products = [];
+function updateProductsArray() {
+    // Convert SQL products to legacy format for compatibility
+    if (window.sqlProducts) {
+        products = window.sqlProducts.map(product => ({
+            id: product.id,
+            name: product.product_name,
+            brand: product.brand,
+            price: product.price,
+            notes: product.notes,
+            description: product.description
+        }));
+    }
 }
 
 const BASKET_STORAGE_KEY = "luminousScentsBasket";
@@ -259,6 +248,97 @@ function renderBasketPage() {
     }
 }
 
+// New Products Page rendering with categories
+function renderNewProductsPage() {
+    const categories = [
+        'Signature Eau de Parfum',
+        'Luxury Eau de Toilette', 
+        'Home Fragrance Collection',
+        'Travel & Mini Sets',
+        'Wellness Aromatics'
+    ];
+
+    categories.forEach(category => {
+        const containerId = category.toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/&/g, 'and')
+            .replace(/[^a-z0-9\-]/g, '') + '-content';
+        const container = document.getElementById(containerId);
+        
+        if (container) {
+            const categoryProducts = sqlProducts.filter(product => product.category === category);
+            
+            categoryProducts.forEach(product => {
+                const card = createProductCard(product);
+                container.appendChild(card);
+                applyScrollReveal(card);
+            });
+        }
+    });
+}
+
+function createProductCard(product) {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.setAttribute('data-product-id', product.id);
+    
+    card.innerHTML = `
+        <div class="product-image-container">
+            <img src="${product.image_url}" alt="${product.product_name}" class="product-image">
+        </div>
+        <h4>${product.product_name}</h4>
+        <p class="brand">${product.brand}</p>
+        <p class="notes">${product.notes}</p>
+        <p class="price">£${product.price.toFixed(2)}</p>
+        <p class="description">${product.description}</p>
+        <button class="btn-primary" data-product-id="${product.id}">
+            Add to basket
+        </button>
+    `;
+    
+    // Add click handler for add to basket button
+    card.querySelector('.btn-primary').addEventListener('click', (e) => {
+        e.stopPropagation();
+        addToBasket(product.id);
+    });
+    
+    return card;
+}
+
+// Scroll category function
+function scrollCategory(categoryId, direction) {
+    const container = document.getElementById(categoryId);
+    const content = container.querySelector('.scroll-content');
+    
+    if (!content) return;
+    
+    const scrollAmount = 280; // pixels to scroll per click
+    const currentTransform = getComputedStyle(content).transform;
+    let currentX = 0;
+    
+    // Extract current translateX value
+    if (currentTransform !== 'none') {
+        const matrix = new DOMMatrixReadOnly(currentTransform);
+        currentX = matrix.m41;
+    }
+    
+    const newX = currentX + (direction * scrollAmount);
+    
+    // Clamp the scroll position
+    const maxScroll = 0;
+    const minScroll = -Math.max(0, content.scrollWidth - container.clientWidth);
+    const clampedX = Math.max(minScroll, Math.min(maxScroll, newX));
+    
+    content.style.transform = `translateX(${clampedX}px)`;
+    
+    // Update scroll button states
+    const scrollContainer = container.closest('.products-scroll-container');
+    const leftBtn = scrollContainer.querySelector('.scroll-left');
+    const rightBtn = scrollContainer.querySelector('.scroll-right');
+    
+    if (leftBtn) leftBtn.disabled = clampedX >= maxScroll;
+    if (rightBtn) rightBtn.disabled = clampedX <= minScroll;
+}
 // Scroll reveal helper function
 function applyScrollReveal(element) {
     element.classList.add('scroll-reveal');
@@ -409,6 +489,40 @@ function initStarfield() {
     loop();
 }
 
+// SQL Products initialization function
+async function initSQLProducts() {
+    console.log('Initializing SQL products...');
+    try {
+        const parser = new SQLParser();
+        const products = await parser.loadProducts();
+        
+        if (products.length > 0) {
+            // Add fallback for products with missing/invalid image URLs
+            const cleanedProducts = products.map(product => {
+                if (!product.image_url || product.image_url.toUpperCase() === 'NULL' ||
+                    product.image_url.includes("'") || product.image_url.includes('NULL')) {
+                    // Use a default image or empty string for products without valid images
+                    product.image_url = 'images/luminous-logo.png'; // fallback image
+                }
+                return product;
+            });
+            
+            window.sqlProducts = cleanedProducts;
+            updateProductsArray(); // Update legacy products array
+            console.log(`Successfully loaded ${products.length} products from SQL file`);
+            
+            // Render the products page
+            renderNewProductsPage();
+        } else {
+            console.error('No products loaded from SQL file');
+            // Could add fallback here if needed
+        }
+    } catch (error) {
+        console.error('Failed to initialize SQL products:', error);
+        // Could add fallback here if needed
+    }
+}
+
 // Page initialiser
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -422,6 +536,9 @@ document.addEventListener("DOMContentLoaded", () => {
         setupAuthForm();
     } else if (page === "products") {
         renderProductsPage();
+    } else if (page === "newproducts") {
+        // SQL products will be loaded and rendered in initSQLProducts
+        initSQLProducts();
     } else if (page === "basket") {
         renderBasketPage();
     }
@@ -441,6 +558,93 @@ const observer = new IntersectionObserver((entries) => {
         }
     });
 }, observerOptions);
+// Async version that waits for SQL data to be loaded
+async function renderNewProductsPageAsync() {
+    console.log('renderNewProductsPageAsync called');
+    console.log('window.sqlProducts exists:', !!window.sqlProducts);
+    console.log('window.sqlProducts length:', window.sqlProducts ? window.sqlProducts.length : 'undefined');
+    
+    // Wait for SQL data to be loaded
+    let attempts = 0;
+    const maxAttempts = 50; // 5 seconds max wait
+    
+    while (!window.sqlProducts && attempts < maxAttempts) {
+        console.log(`Waiting for SQL data... attempt ${attempts + 1}`);
+        await new Promise(resolve => setTimeout(resolve, 100));
+        attempts++;
+    }
+    
+    if (!window.sqlProducts) {
+        console.error('Failed to load SQL products after waiting');
+        return;
+    }
+    
+    console.log('SQL data loaded, proceeding to render products');
+    renderNewProductsPage();
+}
+
+// Original synchronous version (now uses global sqlProducts)
+function renderNewProductsPage() {
+    console.log('renderNewProductsPage called');
+    
+    if (!window.sqlProducts) {
+        console.error('SQL products not loaded');
+        return;
+    }
+    
+    console.log('Number of products available:', window.sqlProducts.length);
+    console.log('Sample product:', window.sqlProducts[0]);
+    
+    const categories = [
+        'Signature Eau de Parfum',
+        'Luxury Eau de Toilette',
+        'Home Fragrance Collection',
+        'Travel & Mini Sets',
+        'Wellness Aromatics'
+    ];
+
+    categories.forEach(category => {
+        console.log(`Processing category: ${category}`);
+        
+        // Match the exact HTML container IDs
+        let containerId;
+        switch(category) {
+            case 'Signature Eau de Parfum':
+                containerId = 'signature-parfum-grid';
+                break;
+            case 'Luxury Eau de Toilette':
+                containerId = 'luxury-toilette-grid';
+                break;
+            case 'Home Fragrance Collection':
+                containerId = 'home-fragrance-grid';
+                break;
+            case 'Travel & Mini Sets':
+                containerId = 'travel-sets-grid';
+                break;
+            case 'Wellness Aromatics':
+                containerId = 'wellness-aromatics-grid';
+                break;
+            default:
+                containerId = category.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and').replace(/[^a-z0-9\-]/g, '') + '-grid';
+        }
+        
+        const container = document.getElementById(containerId);
+        console.log(`Container ID: ${containerId}, Found:`, !!container);
+        
+        if (container) {
+            const categoryProducts = window.sqlProducts.filter(product => product.category === category);
+            console.log(`Products in category ${category}:`, categoryProducts.length);
+            
+            categoryProducts.forEach(product => {
+                const card = createProductCard(product);
+                container.appendChild(card);
+                applyScrollReveal(card);
+            });
+        }
+    });
+    
+    console.log('renderNewProductsPage completed');
+}
 
 // Prevent observer from catching dynamically added elements
 const originalObserve = observer.observe;
@@ -452,7 +656,7 @@ observer.observe = function(element) {
     }
     originalObserve.call(this, element);
 };
-document.querySelectorAll('.main-header, .site-footer, .hero-text, .hero-text h2, .hero-text p, .page-header, .page-header h2, .page-header p, .card, .card h3, .card p, .card .btn-primary, .feature-card, .feature-card h4, .feature-card p, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .info-column h3, .info-column p, .steps-list li, .step-number, .feature-section h3, .auth-section, .auth-form').forEach(el => {
+document.querySelectorAll('.main-header, .site-footer, .hero-text, .hero-text h2, .hero-text p, .page-header, .page-header h2, .page-header p, .card, .card h3, .card p, .card .btn-primary, .feature-card, .feature-card h4, .feature-card p, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .info-column h3, .info-column p, .steps-list li, .step-number, .feature-section h3, .auth-section, .auth-form, .category-section, .category-header').forEach(el => {
     el.classList.add('scroll-reveal');
     observer.observe(el);
 });
