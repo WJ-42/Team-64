@@ -559,8 +559,8 @@ observer.observe = function(element) {
     }
     originalObserve.call(this, element);
 };
-// Add scroll-reveal class to elements first
-document.querySelectorAll('.main-header, .site-footer, .hero-text, .page-header, .card, .card h3, .card p, .card .btn-primary, .feature-section h3, .feature-card, .feature-card h4, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .steps-list li, .step-number, .auth-section, .auth-form').forEach(el => {
+// Add scroll-reveal class to content elements (excluding header to keep it stable)
+document.querySelectorAll('.site-footer, .hero-text, .page-header, .card, .card h3, .card p, .card .btn-primary, .feature-section h3, .feature-card, .feature-card h4, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .steps-list li, .step-number, .auth-section, .auth-form').forEach(el => {
     el.classList.add('scroll-reveal');
 });
 
