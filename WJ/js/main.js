@@ -444,52 +444,199 @@ function setupAuthForm() {
     const passwordInput = document.getElementById("authPassword");
     const message = document.getElementById("authMessage");
     const isNewUser = document.getElementById("isNewUser");
+    const emailError = document.getElementById("emailError");
+    const passwordError = document.getElementById("passwordError");
+    const passwordRequirements = document.getElementById("passwordRequirements");
+    const successToast = document.getElementById("successToast");
+    const toastMessage = document.getElementById("toastMessage");
 
-    if (!form || !emailInput || !passwordInput || !message) {
+    // Password requirement elements
+    const reqLength = document.getElementById("reqLength");
+    const reqUpper = document.getElementById("reqUpper");
+    const reqLower = document.getElementById("reqLower");
+    const reqNumber = document.getElementById("reqNumber");
+
+    if (!form || !emailInput || !passwordInput) {
         return;
     }
 
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Helper functions
+    function showError(input, errorElement, message) {
+        input.classList.add('input-error');
+        input.classList.remove('input-success');
+        errorElement.textContent = message;
+        errorElement.classList.add('show');
+    }
+
+    function clearError(input, errorElement) {
+        input.classList.remove('input-error');
+        errorElement.textContent = '';
+        errorElement.classList.remove('show');
+    }
+
+    function showSuccess(input) {
+        input.classList.remove('input-error');
+        input.classList.add('input-success');
+    }
+
+    function showToast(msg) {
+        toastMessage.textContent = msg;
+        successToast.classList.add('show');
+        setTimeout(() => {
+            successToast.classList.remove('show');
+        }, 4000);
+    }
+
+    // Validate password requirements
+    function validatePasswordRequirements(password) {
+        const hasLength = password.length >= 8;
+        const hasUpper = /[A-Z]/.test(password);
+        const hasLower = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+
+        // Update requirement indicators
+        reqLength.textContent = (hasLength ? '✓' : '✗') + ' At least 8 characters';
+        reqLength.classList.toggle('valid', hasLength);
+        
+        reqUpper.textContent = (hasUpper ? '✓' : '✗') + ' One uppercase letter';
+        reqUpper.classList.toggle('valid', hasUpper);
+        
+        reqLower.textContent = (hasLower ? '✓' : '✗') + ' One lowercase letter';
+        reqLower.classList.toggle('valid', hasLower);
+        
+        reqNumber.textContent = (hasNumber ? '✓' : '✗') + ' One number';
+        reqNumber.classList.toggle('valid', hasNumber);
+
+        return hasLength && hasUpper && hasLower && hasNumber;
+    }
+
+    // Real-time email validation
+    emailInput.addEventListener('input', () => {
+        const email = emailInput.value.trim();
+        if (email === '') {
+            clearError(emailInput, emailError);
+        } else if (!emailRegex.test(email)) {
+            showError(emailInput, emailError, 'Please enter a valid email address');
+        } else {
+            clearError(emailInput, emailError);
+            showSuccess(emailInput);
+        }
+    });
+
+    emailInput.addEventListener('blur', () => {
+        const email = emailInput.value.trim();
+        if (email === '') {
+            showError(emailInput, emailError, 'Email address is required');
+        }
+    });
+
+    // Show password requirements when focused (only for new users)
+    passwordInput.addEventListener('focus', () => {
+        if (isNewUser.checked) {
+            passwordRequirements.classList.add('show');
+        }
+    });
+
+    // Real-time password validation
+    passwordInput.addEventListener('input', () => {
+        const password = passwordInput.value;
+        
+        if (isNewUser.checked) {
+            passwordRequirements.classList.add('show');
+            const isValid = validatePasswordRequirements(password);
+            
+            if (password === '') {
+                clearError(passwordInput, passwordError);
+            } else if (!isValid) {
+                passwordInput.classList.add('input-error');
+                passwordInput.classList.remove('input-success');
+            } else {
+                clearError(passwordInput, passwordError);
+                showSuccess(passwordInput);
+            }
+        } else {
+            passwordRequirements.classList.remove('show');
+            if (password === '') {
+                clearError(passwordInput, passwordError);
+            } else if (password.length < 6) {
+                showError(passwordInput, passwordError, 'Password must be at least 6 characters');
+            } else {
+                clearError(passwordInput, passwordError);
+                showSuccess(passwordInput);
+            }
+        }
+    });
+
+    // Toggle password requirements visibility based on checkbox
+    isNewUser.addEventListener('change', () => {
+        if (isNewUser.checked) {
+            passwordRequirements.classList.add('show');
+            if (passwordInput.value) {
+                validatePasswordRequirements(passwordInput.value);
+            }
+        } else {
+            passwordRequirements.classList.remove('show');
+        }
+        // Re-validate password on checkbox change
+        const password = passwordInput.value;
+        if (password !== '') {
+            passwordInput.dispatchEvent(new Event('input'));
+        }
+    });
+
+    // Form submission
     form.addEventListener("submit", event => {
         event.preventDefault();
 
         const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
+        const password = passwordInput.value;
+        let hasErrors = false;
 
-        // Custom validation with styled messages
+        // Validate email
         if (!email) {
-            customAlert("Please enter your email address.");
-            return;
+            showError(emailInput, emailError, 'Email address is required');
+            hasErrors = true;
+        } else if (!emailRegex.test(email)) {
+            showError(emailInput, emailError, 'Please enter a valid email address');
+            hasErrors = true;
         }
 
-        if (!email.includes('@')) {
-            customAlert("Please enter a valid email address with an '@' symbol.");
-            return;
-        }
-
+        // Validate password
         if (!password) {
-            customAlert("Please enter a password.");
+            showError(passwordInput, passwordError, 'Password is required');
+            hasErrors = true;
+        } else if (isNewUser.checked) {
+            const isValidPassword = validatePasswordRequirements(password);
+            if (!isValidPassword) {
+                showError(passwordInput, passwordError, 'Password does not meet all requirements');
+                hasErrors = true;
+            }
+        } else if (password.length < 6) {
+            showError(passwordInput, passwordError, 'Password must be at least 6 characters');
+            hasErrors = true;
+        }
+
+        if (hasErrors) {
             return;
         }
 
-        if (password.length < 6) {
-            customAlert("Password must be at least 6 characters long.");
-            return;
-        }
-
-        // Rest of the existing success logic...
+        // Success - show toast and clear form
         if (isNewUser.checked) {
-            message.textContent = "Account created locally for MVP. In the full system this will be stored securely.";
+            showToast('Account created successfully! Welcome to Luminous Scents.');
         } else {
-            message.textContent = "Login successful in this demo. Real authentication will be added later.";
+            showToast('Welcome back! You have been logged in.');
         }
-        message.style.color = "#ffffff";
-        message.style.textShadow = "0 0 10px rgba(240, 194, 75, 0.6), 0 0 20px rgba(240, 194, 75, 0.3)";
-        message.style.opacity = "0";
-        message.classList.remove('scroll-reveal', 'revealed', 'show');
-        setTimeout(() => {
-            message.style.opacity = "1";
-            message.classList.add('show');
-        }, 10);
+
+        // Clear form
+        form.reset();
+        clearError(emailInput, emailError);
+        clearError(passwordInput, passwordError);
+        emailInput.classList.remove('input-success');
+        passwordInput.classList.remove('input-success');
+        passwordRequirements.classList.remove('show');
 
         localStorage.setItem("luminousScentsUserEmail", email);
     });
@@ -598,7 +745,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initMouseTrail();
 
     // rest of the code...
-    if (page === "home") {
+    if (page === "home" || page === "account") {
         setupAuthForm();
     } else if (page === "products") {
         renderProductsPage();

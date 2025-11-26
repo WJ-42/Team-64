@@ -587,6 +587,165 @@ textarea:-webkit-autofill:focus {
     animation: fadeIn 0.5s ease-out forwards;
 }
 
+/* Field validation styles */
+.field-error {
+    display: block;
+    font-size: 0.8rem;
+    color: #ff6b6b;
+    margin-top: 0.4rem;
+    min-height: 1.2rem;
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.field-error.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.form-row input.input-error {
+    border-color: #ff6b6b !important;
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.2) !important;
+}
+
+.form-row input[type="email"].input-success,
+.form-row input[type="password"].input-success,
+.form-row input[type="text"].input-success,
+.form-row input.input-success {
+    border-color: rgba(240, 194, 75, 0.5) !important;
+    animation: inputGlow 2.5s ease-in-out infinite !important;
+}
+
+@keyframes inputGlow {
+    0%, 100% {
+        border-color: rgba(240, 194, 75, 0.5);
+        box-shadow: 0 0 8px rgba(240, 194, 75, 0.15), 0 0 3px rgba(240, 194, 75, 0.1);
+    }
+    50% {
+        border-color: rgba(255, 220, 100, 1);
+        box-shadow: 0 0 20px rgba(240, 194, 75, 0.5), 0 0 40px rgba(240, 194, 75, 0.25), 0 0 60px rgba(240, 194, 75, 0.1);
+    }
+}
+
+/* Password requirements */
+.password-requirements {
+    display: none;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    border: 1px solid rgba(240, 194, 75, 0.1);
+}
+
+.password-requirements.show {
+    display: flex;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.password-requirements .req {
+    font-size: 0.75rem;
+    color: #888;
+    transition: color 0.3s ease;
+}
+
+.password-requirements .req.valid {
+    color: #f0c24b;
+    text-shadow: 0 0 8px rgba(240, 194, 75, 0.6);
+    animation: reqPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes reqPulse {
+    0%, 100% {
+        text-shadow: 0 0 4px rgba(240, 194, 75, 0.3);
+    }
+    50% {
+        text-shadow: 0 0 12px rgba(240, 194, 75, 0.7), 0 0 20px rgba(240, 194, 75, 0.3);
+    }
+}
+
+.password-requirements .req.valid::first-letter {
+    content: '✓';
+}
+
+/* Success Toast */
+.success-toast {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(12, 10, 5, 0.92) 50%, rgba(0, 0, 0, 0.95) 100%);
+    border: 1px solid rgba(240, 194, 75, 0.5);
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(240, 194, 75, 0.15);
+    z-index: 1000;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.success-toast.show {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    animation: toastShimmer 3s ease-in-out infinite;
+}
+
+.toast-icon {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    min-height: 20px;
+    background: rgba(240, 194, 75, 0.15);
+    border: 1.5px solid rgba(240, 194, 75, 0.6);
+    border-radius: 50%;
+    animation: toastIconGlow 2s ease-in-out infinite;
+}
+
+.toast-icon::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 3px;
+    width: 5px;
+    height: 9px;
+    border: solid #f0c24b;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+@keyframes toastIconGlow {
+    0%, 100% {
+        box-shadow: 0 0 6px rgba(240, 194, 75, 0.3);
+        border-color: rgba(240, 194, 75, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 14px rgba(240, 194, 75, 0.5), 0 0 24px rgba(240, 194, 75, 0.2);
+        border-color: rgba(240, 194, 75, 0.8);
+    }
+}
+
+@keyframes toastShimmer {
+    0%, 100% {
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 15px rgba(240, 194, 75, 0.1);
+    }
+    50% {
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(240, 194, 75, 0.25), 0 0 50px rgba(240, 194, 75, 0.1);
+    }
+}
+
+.toast-message {
+    color: #f6f6f6;
+    font-size: 0.9rem;
+}
+
 /* Page header */
 
 .page-header {
