@@ -27,24 +27,24 @@
 }
 
 [data-theme="light"] {
-    /* Light Mode Colors */
+    /* Light Mode Colors - 100% Opaque Text */
     --bg-primary: #ffffff;
-    --bg-secondary: rgba(255, 255, 255, 0.95);
-    --bg-tertiary: rgba(248, 249, 250, 0.92);
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f8f9fa;
     --text-primary: #000000;
-    --text-secondary: #2d3748;
+    --text-secondary: #1a202c;
     --text-accent: #d69e2e;
-    --text-muted: #4a5568;
-    --card-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.92) 50%, rgba(255, 255, 255, 0.95) 100%);
-    --card-border: rgba(214, 158, 46, 0.3);
-    --header-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 249, 250, 0.95) 50%, rgba(255, 255, 255, 0.98) 100%);
-    --footer-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 249, 250, 0.95) 50%, rgba(255, 255, 255, 0.98) 100%);
-    --shadow-gold: rgba(214, 158, 46, 0.3);
-    --shadow-gold-strong: rgba(214, 158, 46, 0.6);
-    --input-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 249, 250, 0.85) 50%, rgba(255, 255, 255, 0.9) 100%);
-    --btn-secondary-bg: rgba(0, 0, 0, 0.05);
-    --btn-secondary-hover: rgba(0, 0, 0, 0.1);
-    --btn-secondary-border: rgba(0, 0, 0, 0.1);
+    --text-muted: #2d3748;
+    --card-bg: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #ffffff 100%);
+    --card-border: rgba(214, 158, 46, 0.4);
+    --header-bg: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #ffffff 100%);
+    --footer-bg: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #ffffff 100%);
+    --shadow-gold: rgba(214, 158, 46, 0.4);
+    --shadow-gold-strong: rgba(214, 158, 46, 0.8);
+    --input-bg: linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #ffffff 100%);
+    --btn-secondary-bg: rgba(0, 0, 0, 0.08);
+    --btn-secondary-hover: rgba(0, 0, 0, 0.15);
+    --btn-secondary-border: rgba(0, 0, 0, 0.15);
     --border-color: #e2e8f0;
     --stars-bg: #f7fafc;
     --parallax-bg: #f7fafc;
@@ -225,6 +225,109 @@ h3, h4, h5, h6 {
     position: relative;
     z-index: 100;
     animation: headerShimmer 8s ease-in-out infinite;
+}
+
+/* Enhanced Light Mode Header - Completely Solid and Clear */
+[data-theme="light"] .main-header {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 0 0 30px var(--shadow-gold-strong);
+    border-bottom: 3px solid var(--card-border) !important;
+}
+
+[data-theme="light"] .main-header::before {
+    display: none;
+}
+
+/* Fix Text Clarity in Light Mode - Remove All Blur Effects */
+[data-theme="light"] * {
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+    font-smooth: always !important;
+    filter: none !important;
+    opacity: 1 !important;
+}
+
+/* Clear All Text Shadows in Light Mode */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] p,
+[data-theme="light"] span,
+[data-theme="light"] div {
+    text-shadow: none !important;
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    background-clip: initial !important;
+}
+
+/* Fix Hero Text Specifically */
+[data-theme="light"] .hero-text h2 {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: #000000 !important;
+    color: #000000 !important;
+    text-shadow: none !important;
+}
+
+/* Fix Page Headers */
+[data-theme="light"] .page-header h2 {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: #000000 !important;
+    color: #000000 !important;
+    text-shadow: none !important;
+}
+
+/* Fix Feature Section Headers */
+[data-theme="light"] .feature-section h3 {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: #000000 !important;
+    color: #000000 !important;
+    text-shadow: none !important;
+}
+
+/* Make All Boxes/Cards White with Black Text in Light Mode */
+[data-theme="light"] .card,
+[data-theme="light"] .feature-card,
+[data-theme="light"] .info-column,
+[data-theme="light"] .basket-section,
+[data-theme="light"] .auth-form,
+[data-theme="light"] .product-card {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+[data-theme="light"] .card *,
+[data-theme="light"] .feature-card *,
+[data-theme="light"] .info-column *,
+[data-theme="light"] .basket-section *,
+[data-theme="light"] .auth-form *,
+[data-theme="light"] .product-card * {
+    color: #000000 !important;
+    text-shadow: none !important;
+}
+
+[data-theme="light"] .small-text {
+    color: #4a5568 !important;
+}
+
+/* Remove Any Blur from Scroll Reveal Animations in Light Mode */
+[data-theme="light"] .scroll-reveal {
+    filter: none !important;
+    opacity: 1 !important;
+}
+
+[data-theme="light"] .scroll-reveal.revealed {
+    opacity: 1 !important;
 }
 
 .main-header::before {
