@@ -583,7 +583,7 @@ function initStarfield() {
     loop();
 }
 
-// SQL Products initialization function
+// SQL Products initialization function - now uses embedded SQL data via sql-parser
 async function initSQLProducts() {
     console.log('Initializing SQL products...');
     try {
@@ -603,7 +603,7 @@ async function initSQLProducts() {
             
             window.sqlProducts = cleanedProducts;
             updateProductsArray(); // Update legacy products array
-            console.log(`Successfully loaded ${products.length} products from SQL file`);
+            console.log(`Successfully loaded ${products.length} products from embedded SQL file`);
             
             // Render the products page
             renderNewProductsPage();
