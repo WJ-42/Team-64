@@ -673,26 +673,28 @@ textarea:-webkit-autofill:focus {
 /* Success Toast */
 .success-toast {
     position: fixed;
-    top: 2rem;
-    right: 2rem;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 1.5rem;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(12, 10, 5, 0.92) 50%, rgba(0, 0, 0, 0.95) 100%);
+    gap: 1rem;
+    padding: 1.25rem 2rem;
+    min-width: 320px;
+    max-width: 90vw;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.98) 0%, rgba(12, 10, 5, 0.95) 50%, rgba(0, 0, 0, 0.98) 100%);
     border: 1px solid rgba(240, 194, 75, 0.5);
-    border-radius: 8px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(240, 194, 75, 0.15);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(240, 194, 75, 0.2);
     z-index: 1000;
     opacity: 0;
-    transform: translateX(100%);
     transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
 }
 
 .success-toast.show {
     opacity: 1;
-    transform: translateX(0);
+    transform: translate(-50%, -50%) scale(1);
     pointer-events: auto;
     animation: toastShimmer 3s ease-in-out infinite;
 }
@@ -743,7 +745,8 @@ textarea:-webkit-autofill:focus {
 
 .toast-message {
     color: #f6f6f6;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
 }
 
 /* Page header */
