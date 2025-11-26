@@ -707,6 +707,155 @@ async function initSQLProducts() {
     }
 }
 
+// Search functionality
+function setupProductSearch() {
+    const searchInput = document.getElementById('productSearch');
+    const searchBtn = document.getElementById('searchBtn');
+    const searchResultsInfo = document.getElementById('searchResultsInfo');
+    
+    if (!searchInput || !searchBtn) return;
+    
+    let currentSearchTerm = '';
+    
+    function performSearch(searchTerm) {
+        currentSearchTerm = searchTerm.toLowerCase().trim();
+        
+        if (!window.sqlProducts || currentSearchTerm === '') {
+            showAllProducts();
+            updateSearchResultsInfo(0, '');
+            return;
+        }
+        
+        const matchingProducts = window.sqlProducts.filter(product => {
+            const searchableText = [
+                product.product_name,
+                product.brand,
+                product.notes,
+                product.description
+            ].join(' ').toLowerCase();
+            
+            return searchableText.includes(currentSearchTerm);
+        });
+        
+        displaySearchResults(matchingProducts, currentSearchTerm);
+        updateSearchResultsInfo(matchingProducts.length, currentSearchTerm);
+    }
+    
+    function showAllProducts() {
+        // Show all category sections and product cards
+        document.querySelectorAll('.category-section').forEach(section => {
+            section.style.display = 'block';
+        });
+        
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.style.display = 'block';
+            // Remove any search highlighting
+            card.querySelectorAll('.search-highlight').forEach(span => {
+                span.outerHTML = span.textContent;
+            });
+        });
+    }
+    
+    function displaySearchResults(products, searchTerm) {
+        // Hide all category sections first
+        document.querySelectorAll('.category-section').forEach(section => {
+            section.style.display = 'none';
+        });
+        
+        // Group products by category
+        const productsByCategory = {};
+        products.forEach(product => {
+            if (!productsByCategory[product.category]) {
+                productsByCategory[product.category] = [];
+            }
+            productsByCategory[product.category].push(product);
+        });
+        
+        // Show only categories that have matching products
+        Object.keys(productsByCategory).forEach(category => {
+            const categorySection = Array.from(document.querySelectorAll('.category-section')).find(section => {
+                const header = section.querySelector('h3');
+                return header && header.textContent === category;
+            });
+            
+            if (categorySection) {
+                categorySection.style.display = 'block';
+                
+                // Hide all products in this category first
+                const allCards = categorySection.querySelectorAll('.product-card');
+                allCards.forEach(card => {
+                    card.style.display = 'none';
+                });
+                
+                // Show only matching products and highlight search terms
+                productsByCategory[category].forEach(product => {
+                    const card = categorySection.querySelector(`[data-product-id="${product.id}"]`);
+                    if (card) {
+                        card.style.display = 'block';
+                        highlightSearchTerms(card, searchTerm);
+                    }
+                });
+            }
+        });
+    }
+    
+    function highlightSearchTerms(card, searchTerm) {
+        if (!searchTerm) return;
+        
+        const elementsToHighlight = card.querySelectorAll('h4, .brand, .notes, .description');
+        elementsToHighlight.forEach(element => {
+            const text = element.textContent;
+            const regex = new RegExp(`(${escapeRegex(searchTerm)})`, 'gi');
+            const highlightedText = text.replace(regex, '<span class="search-highlight">$1</span>');
+            element.innerHTML = highlightedText;
+        });
+    }
+    
+    function escapeRegex(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+    
+    function updateSearchResultsInfo(count, searchTerm) {
+        if (!searchResultsInfo) return;
+        
+        if (!searchTerm) {
+            searchResultsInfo.classList.remove('visible');
+            return;
+        }
+        
+        if (count === 0) {
+            searchResultsInfo.innerHTML = `No products found for "${searchTerm}". Try a different search term.`;
+        } else {
+            searchResultsInfo.innerHTML = `Found ${count} product${count !== 1 ? 's' : ''} matching "${searchTerm}"`;
+        }
+        
+        searchResultsInfo.classList.add('visible');
+    }
+    
+    // Event listeners
+    searchInput.addEventListener('input', (e) => {
+        performSearch(e.target.value);
+    });
+    
+    searchBtn.addEventListener('click', () => {
+        performSearch(searchInput.value);
+    });
+    
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            performSearch(searchInput.value);
+        }
+    });
+    
+    // Clear search when input is cleared
+    searchInput.addEventListener('input', (e) => {
+        if (e.target.value === '') {
+            showAllProducts();
+            updateSearchResultsInfo(0, '');
+        }
+    });
+}
+
 // Page initialiser
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -726,6 +875,8 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (page === "newproducts") {
         // SQL products will be loaded and rendered in initSQLProducts
         initSQLProducts();
+        // Initialize search functionality
+        setupProductSearch();
         // Initialize navigation after a longer delay to ensure products are fully loaded and rendered
         setTimeout(() => {
             console.log('Setting up navigation after products load...');
