@@ -638,9 +638,9 @@ function initStarfield() {
                 s.x + parallaxX, s.y + parallaxY, s.size * 4
             );
 
-            gradient.addColorStop(0, `rgba(255, 100, 100, ${s.alpha})`);
-            gradient.addColorStop(0.4, `rgba(220, 50, 50, ${s.alpha * 0.6})`);
-            gradient.addColorStop(1, `rgba(180, 30, 30, 0)`);
+            gradient.addColorStop(0, `rgba(240, 194, 75, ${s.alpha})`);
+            gradient.addColorStop(0.4, `rgba(214, 158, 46, ${s.alpha * 0.6})`);
+            gradient.addColorStop(1, `rgba(184, 134, 11, 0)`);
 
             ctx.fillStyle = gradient;
             ctx.fill();
@@ -724,6 +724,9 @@ async function initSQLProducts() {
 
 document.addEventListener("DOMContentLoaded", () => {
     const page = document.body.getAttribute("data-page");
+
+    // Initialize theme system
+    initTheme();
 
     initStarfield();
     initMouseTrail();
@@ -934,7 +937,7 @@ function initMouseTrail() {
                 ctx.beginPath();
                 ctx.moveTo(prevPoint.x, prevPoint.y);
                 ctx.lineTo(point.x, point.y);
-                ctx.strokeStyle = `rgba(220, 50, 50, ${alpha})`;
+                ctx.strokeStyle = `rgba(240, 194, 75, ${alpha})`;
                 ctx.lineWidth = size;
                 ctx.lineCap = 'round';
                 ctx.stroke();
@@ -1000,6 +1003,30 @@ function updateProductCardsForBasket() {
     });
 }
 
+// Theme Management
+function initTheme() {
+    const savedTheme = localStorage.getItem('luminousScentsTheme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('luminousScentsTheme', newTheme);
+    updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(theme) {
+    const toggleButton = document.getElementById('themeToggle');
+    if (toggleButton) {
+        toggleButton.innerHTML = theme === 'dark' ? '🌙' : '☀️';
+        toggleButton.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+}
+
 // Add event delegation for quantity controls
 document.addEventListener('click', (e) => {
     if (e.target.classList.contains('qty-btn')) {
@@ -1010,6 +1037,11 @@ document.addEventListener('click', (e) => {
         } else if (action === 'decrease') {
             updateQuantity(id, -1);
         }
+    }
+    
+    // Theme toggle button
+    if (e.target.id === 'themeToggle' || e.target.closest('#themeToggle')) {
+        toggleTheme();
     }
 });
 
