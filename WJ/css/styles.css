@@ -479,7 +479,7 @@ main {
 @media (hover: hover) and (pointer: fine) {
     .auth-section h3:hover {
         color: #f0c24b;
-        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 20px rgba(240, 194, 75, 0.5);
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 30px rgba(240, 194, 75, 0.6), 0 0 50px rgba(240, 194, 75, 0.3);
     }
 }
 
@@ -522,7 +522,7 @@ main {
     padding: 0.65rem 0.9rem;
     border-radius: 4px;
     border: 1px solid rgba(240, 194, 75, 0.3);
-    background: #0a0a0f !important;
+    background: linear-gradient(135deg, rgba(8, 8, 12, 0.95) 0%, rgba(15, 12, 8, 0.9) 50%, rgba(8, 8, 12, 0.95) 100%) !important;
     color: #f6f6f6 !important;
     transition: background-color 9999s ease-out, border-color 0.3s ease, box-shadow 0.3s ease;
     font-size: 0.95rem;
@@ -609,6 +609,262 @@ textarea:-webkit-autofill:focus {
         color: #f0c24b;
         text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 30px rgba(240, 194, 75, 0.6), 0 0 50px rgba(240, 194, 75, 0.3);
     }
+}
+
+/* Enhanced Search Box */
+
+.search-container {
+    margin-bottom: 2.5rem;
+    text-align: center;
+    position: relative;
+    z-index: 50;
+}
+
+.search-box {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    max-width: 480px;
+    background: linear-gradient(135deg, rgba(8, 8, 12, 0.95) 0%, rgba(15, 12, 8, 0.9) 50%, rgba(8, 8, 12, 0.95) 100%);
+    border: 1px solid rgba(240, 194, 75, 0.2);
+    border-radius: 60px;
+    padding: 0.25rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 4px 24px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    overflow: hidden;
+}
+
+.search-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 60px;
+    padding: 1px;
+    background: linear-gradient(
+        135deg,
+        transparent 0%,
+        rgba(240, 194, 75, 0.1) 25%,
+        rgba(240, 194, 75, 0.3) 50%,
+        rgba(240, 194, 75, 0.1) 75%,
+        transparent 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.search-box:hover::before,
+.search-box:focus-within::before {
+    opacity: 1;
+}
+
+.search-glow {
+    position: absolute;
+    inset: -2px;
+    border-radius: 62px;
+    background: radial-gradient(
+        ellipse 60% 40% at 50% 0%,
+        rgba(240, 194, 75, 0.15) 0%,
+        transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.search-box:focus-within .search-glow {
+    opacity: 1;
+}
+
+.search-box:hover {
+    border-color: rgba(240, 194, 75, 0.35);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.6),
+        0 0 20px rgba(240, 194, 75, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.search-box:focus-within {
+    border-color: rgba(240, 194, 75, 0.5);
+    box-shadow: 
+        0 12px 48px rgba(0, 0, 0, 0.7),
+        0 0 40px rgba(240, 194, 75, 0.15),
+        0 0 80px rgba(240, 194, 75, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transform: scale(1.02);
+}
+
+.search-icon {
+    position: absolute;
+    left: 1.25rem;
+    width: 20px;
+    height: 20px;
+    color: rgba(240, 194, 75, 0.5);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.search-box:focus-within .search-icon {
+    color: rgba(240, 194, 75, 0.9);
+    filter: drop-shadow(0 0 6px rgba(240, 194, 75, 0.4));
+    transform: scale(1.1);
+}
+
+.search-box input {
+    width: 100%;
+    padding: 1rem 3rem 1rem 3.25rem;
+    background: transparent;
+    border: none;
+    color: #f6f6f6;
+    font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: 0.02em;
+    outline: none;
+    z-index: 2;
+    position: relative;
+}
+
+.search-box input::placeholder {
+    color: rgba(255, 255, 255, 0.35);
+    font-style: italic;
+    font-weight: 300;
+    transition: all 0.3s ease;
+}
+
+.search-box:focus-within input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.08em;
+}
+
+.search-clear {
+    position: absolute;
+    right: 1rem;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(240, 194, 75, 0.1);
+    border: 1px solid rgba(240, 194, 75, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    transform: scale(0.8) rotate(-90deg);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 3;
+}
+
+.search-clear svg {
+    width: 12px;
+    height: 12px;
+    color: rgba(240, 194, 75, 0.7);
+    transition: color 0.2s ease;
+}
+
+.search-clear:hover {
+    background: rgba(240, 194, 75, 0.2);
+    border-color: rgba(240, 194, 75, 0.4);
+}
+
+.search-clear:hover svg {
+    color: #f0c24b;
+}
+
+.search-box.has-value .search-clear {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+}
+
+.search-shimmer {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(240, 194, 75, 0.03) 40%,
+        rgba(240, 194, 75, 0.08) 50%,
+        rgba(240, 194, 75, 0.03) 60%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+.search-box:focus-within .search-shimmer {
+    animation: searchShimmer 2s ease-in-out;
+}
+
+@keyframes searchShimmer {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
+
+/* Suggestion Tags */
+.search-suggestions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(-8px);
+    animation: suggestionsReveal 0.6s ease-out 0.3s forwards;
+}
+
+@keyframes suggestionsReveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.suggestion-tag {
+    padding: 0.4rem 1rem;
+    background: rgba(240, 194, 75, 0.05);
+    border: 1px solid rgba(240, 194, 75, 0.15);
+    border-radius: 20px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.suggestion-tag::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(240, 194, 75, 0.1), rgba(240, 194, 75, 0.05));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.suggestion-tag:hover {
+    border-color: rgba(240, 194, 75, 0.4);
+    color: #f0c24b;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px rgba(240, 194, 75, 0.1);
+}
+
+.suggestion-tag:hover::before {
+    opacity: 1;
+}
+
+.suggestion-tag:active {
+    transform: translateY(0) scale(0.98);
 }
 
 /* Product cards */
@@ -809,6 +1065,15 @@ textarea:-webkit-autofill:focus {
     font-size: 1.2rem;
     font-weight: 600;
     letter-spacing: 0.3px;
+    transition: color 0.4s ease, text-shadow 0.4s ease;
+    display: inline-block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .card h3:hover {
+        color: #f0c24b;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 30px rgba(240, 194, 75, 0.6), 0 0 50px rgba(240, 194, 75, 0.3);
+    }
 }
 
 .card p {
@@ -928,6 +1193,7 @@ textarea:-webkit-autofill:focus {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 .info-column h3 {
@@ -935,6 +1201,15 @@ textarea:-webkit-autofill:focus {
     font-weight: 600;
     letter-spacing: 0.3px;
     font-size: 1.3rem;
+    transition: color 0.4s ease, text-shadow 0.4s ease;
+    display: inline-block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .info-column h3:hover {
+        color: #f0c24b;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 30px rgba(240, 194, 75, 0.6), 0 0 50px rgba(240, 194, 75, 0.3);
+    }
 }
 
 .info-column p {
@@ -1020,6 +1295,15 @@ textarea:-webkit-autofill:focus {
     margin-bottom: 0.25rem;
     font-weight: 600;
     letter-spacing: 0.2px;
+    transition: color 0.4s ease, text-shadow 0.4s ease;
+    display: inline-block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .steps-list h4:hover {
+        color: #f0c24b;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 30px rgba(240, 194, 75, 0.6), 0 0 50px rgba(240, 194, 75, 0.3);
+    }
 }
 
 /* Feature cards */
@@ -1030,7 +1314,7 @@ textarea:-webkit-autofill:focus {
 }
 
 .feature-section::before {
-    content: '— ✦ —';
+    content: '\2014  \2726  \2014';
     display: block;
     text-align: center;
     font-size: 1.25rem;
@@ -1058,7 +1342,7 @@ textarea:-webkit-autofill:focus {
 @media (hover: hover) and (pointer: fine) {
     .feature-section h3:hover {
         color: #f0c24b;
-        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 25px rgba(240, 194, 75, 0.6), 0 0 40px rgba(240, 194, 75, 0.3);
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 30px rgba(240, 194, 75, 0.6), 0 0 50px rgba(240, 194, 75, 0.3);
     }
 }
 
@@ -1106,6 +1390,15 @@ textarea:-webkit-autofill:focus {
     margin-bottom: 0.5rem;
     font-weight: 600;
     letter-spacing: 0.2px;
+    transition: color 0.4s ease, text-shadow 0.4s ease;
+    display: inline-block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .feature-card h4:hover {
+        color: #f0c24b;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 30px rgba(240, 194, 75, 0.6), 0 0 50px rgba(240, 194, 75, 0.3);
+    }
 }
 
 .feature-card p {

@@ -1,4 +1,4 @@
-// Simple product data for the MVP
+﻿// Simple product data for the MVP
 const products = [
     {
         id: 1,
@@ -28,15 +28,6 @@ const products = [
         image: "velvet-iris.png"
     },
     {
-        id: 4,
-        name: "Solaris Femme",
-        brand: "Luminous Scents",
-        price: 79.99,
-        notes: "Jasmine, rose, musk",
-        description: "Elegant floral scent for her.",
-        image: "solaris-femme.png"
-    },
-    {
         id: 5,
         name: "Solaris Homme",
         brand: "Luminous Scents",
@@ -44,6 +35,15 @@ const products = [
         notes: "Cedar, vetiver, citrus",
         description: "Sophisticated woody scent for him.",
         image: "solaris-homme.png"
+    },
+    {
+        id: 4,
+        name: "Solaris Femme",
+        brand: "Luminous Scents",
+        price: 79.99,
+        notes: "Jasmine, rose, musk",
+        description: "Elegant floral scent for her.",
+        image: "solaris-femme.png"
     }
 ];
 function customAlert(message) {
@@ -246,12 +246,16 @@ function renderProductsPage() {
 function filterProducts() {
     const searchTerm = document.getElementById("searchInput").value.toLowerCase();
     const cards = document.querySelectorAll("#productsContainer .card");
+    const solarisCards = document.querySelectorAll("#solarisContainer .card");
+    const solarisSection = document.querySelector(".solaris-duo-section");
+    
+    let solarisVisible = 0;
 
+    // Filter main products
     cards.forEach(card => {
         const name = card.querySelector("h3").textContent.toLowerCase();
         const notes = card.querySelector("p:nth-of-type(2)").textContent.toLowerCase();
         const description = card.querySelector("p:nth-of-type(4)").textContent.toLowerCase();
-
         const matches = name.includes(searchTerm) || notes.includes(searchTerm) || description.includes(searchTerm);
 
         if (matches) {
@@ -262,6 +266,84 @@ function filterProducts() {
             card.style.display = "none";
         }
     });
+
+    // Filter Solaris products and count visible ones
+    solarisCards.forEach(card => {
+        const name = card.querySelector("h3").textContent.toLowerCase();
+        const notes = card.querySelector("p:nth-of-type(2)").textContent.toLowerCase();
+        const description = card.querySelector("p:nth-of-type(4)").textContent.toLowerCase();
+        const matches = name.includes(searchTerm) || notes.includes(searchTerm) || description.includes(searchTerm);
+
+        if (matches) {
+            card.style.opacity = "1";
+            card.style.display = "block";
+            solarisVisible++;
+        } else {
+            card.style.opacity = "0";
+            card.style.display = "none";
+        }
+    });
+
+    // Hide/show Solaris section based on visible products
+    if (solarisSection) {
+        if (searchTerm === "" || solarisVisible > 0) {
+            solarisSection.style.display = "block";
+        } else {
+            solarisSection.style.display = "none";
+        }
+    }
+}
+
+function initEnhancedSearch() {
+    const searchInput = document.getElementById("searchInput");
+    const searchBox = document.querySelector(".search-box");
+    const clearBtn = document.querySelector(".search-clear");
+    const suggestionTags = document.querySelectorAll(".suggestion-tag");
+
+    if (!searchInput || !searchBox) return;
+
+    // Update has-value class on input
+    function updateHasValue() {
+        if (searchInput.value.length > 0) {
+            searchBox.classList.add("has-value");
+        } else {
+            searchBox.classList.remove("has-value");
+        }
+    }
+
+    // Filter products on input
+    searchInput.addEventListener("input", () => {
+        updateHasValue();
+        filterProducts();
+    });
+
+    // Clear button functionality
+    if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+            searchInput.value = "";
+            updateHasValue();
+            filterProducts();
+            searchInput.focus();
+        });
+    }
+
+    // Suggestion tag click - fills search and filters
+    suggestionTags.forEach(tag => {
+        tag.addEventListener("click", () => {
+            searchInput.value = tag.textContent;
+            updateHasValue();
+            filterProducts();
+            
+            // Add a nice pulse effect to the search box
+            searchBox.style.transform = "scale(1.03)";
+            setTimeout(() => {
+                searchBox.style.transform = "";
+            }, 150);
+        });
+    });
+
+    // Initial state
+    updateHasValue();
 }
 
 function renderBasketPage() {
@@ -463,7 +545,7 @@ function initStarfield() {
             ctx.fillStyle = gradient;
             ctx.fill();
 
-            s.x += s.speed * 0.2;
+            s.x += s.speed * 0.8;
             if (s.x > w) s.x = 0;
         }
     }
@@ -520,7 +602,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setupAuthForm();
     } else if (page === "products") {
         renderProductsPage();
-        document.getElementById("searchInput").addEventListener("input", filterProducts);
+        initEnhancedSearch();
     } else if (page === "basket") {
         renderBasketPage();
     } else if (page === "contact") {
@@ -656,3 +738,4 @@ const bulletObserver = new IntersectionObserver(entries => {
 document.querySelectorAll(".values-section").forEach(section => {
     bulletObserver.observe(section);
 });
+
