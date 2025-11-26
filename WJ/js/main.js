@@ -194,7 +194,6 @@ function renderProductsPage() {
         container.appendChild(card);
 
         applyScrollReveal(card);
-        card.querySelectorAll('h3, p, .btn-primary').forEach(el => applyScrollReveal(el));
     });
 
     // Render Solaris fragrances
@@ -220,7 +219,6 @@ function renderProductsPage() {
             solarisContainer.appendChild(card);
 
             applyScrollReveal(card);
-            card.querySelectorAll('h3, p, .btn-primary').forEach(el => applyScrollReveal(el));
         });
     }
 
@@ -243,13 +241,19 @@ function renderProductsPage() {
     }
 }
 
+// Track if a filter was previously active
+let wasFiltered = false;
+
 function filterProducts() {
     const searchTerm = document.getElementById("searchInput").value.toLowerCase();
     const cards = document.querySelectorAll("#productsContainer .card");
     const solarisCards = document.querySelectorAll("#solarisContainer .card");
     const solarisSection = document.querySelector(".solaris-duo-section");
+    const allCards = [...cards, ...solarisCards];
     
     let solarisVisible = 0;
+    const isFilterActive = searchTerm !== "";
+    const filterJustRemoved = wasFiltered && !isFilterActive;
 
     // Filter main products
     cards.forEach(card => {
@@ -259,10 +263,8 @@ function filterProducts() {
         const matches = name.includes(searchTerm) || notes.includes(searchTerm) || description.includes(searchTerm);
 
         if (matches) {
-            card.style.opacity = "1";
             card.style.display = "block";
         } else {
-            card.style.opacity = "0";
             card.style.display = "none";
         }
     });
@@ -275,11 +277,9 @@ function filterProducts() {
         const matches = name.includes(searchTerm) || notes.includes(searchTerm) || description.includes(searchTerm);
 
         if (matches) {
-            card.style.opacity = "1";
             card.style.display = "block";
             solarisVisible++;
         } else {
-            card.style.opacity = "0";
             card.style.display = "none";
         }
     });
@@ -292,6 +292,33 @@ function filterProducts() {
             solarisSection.style.display = "none";
         }
     }
+
+    // Only animate when filter is REMOVED (going back to show all)
+    if (filterJustRemoved) {
+        // Remove animation class from all cards first
+        allCards.forEach(card => {
+            card.classList.remove('filter-animate');
+        });
+        
+        // Force reflow to reset animation
+        void document.body.offsetHeight;
+        
+        // Add animation class to trigger fade-in on ALL cards
+        allCards.forEach(card => {
+            card.classList.add('filter-animate');
+        });
+        
+        // Remove filter-animate class after animation completes so scroll animations work again
+        setTimeout(() => {
+            allCards.forEach(card => {
+                card.classList.remove('filter-animate');
+                card.classList.add('revealed');
+            });
+        }, 550);
+    }
+
+    // Update filter state for next time
+    wasFiltered = isFilterActive;
 }
 
 function initEnhancedSearch() {
@@ -1554,34 +1581,45 @@ document.addEventListener("DOMContentLoaded", () => {
         setupCheckoutForm();
     }
 });
-// Scroll reveal animations
-const observerOptions = {
-    threshold: 0,
-    rootMargin: '0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
+// Scroll reveal animations with hysteresis to prevent jitter at boundaries
+// Reveal observer: triggers when element enters viewport
+const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !entry.target.classList.contains('revealed')) {
             entry.target.classList.add('revealed');
-        } else {
+        }
+    });
+}, { threshold: 0.05, rootMargin: '0px' });
+
+// Hide observer: triggers when element is fully outside viewport (with small buffer)
+const hideObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting && entry.target.classList.contains('revealed')) {
             entry.target.classList.remove('revealed');
         }
     });
-}, observerOptions);
+}, { threshold: 0, rootMargin: '20px 0px 20px 0px' });
 
-// Prevent observer from catching dynamically added elements
-const originalObserve = observer.observe;
+// Combined observer wrapper
+const observer = {
+    observe: function(element) {
+        revealObserver.observe(element);
+        hideObserver.observe(element);
+    }
+};
+
+// Prevent observer from catching alert elements
+const originalObserve = observer.observe.bind(observer);
 observer.observe = function(element) {
     if (element.classList.contains('custom-alert') || 
         element.classList.contains('custom-alert-overlay') ||
         element.closest('.custom-alert')) {
         return;
     }
-    originalObserve.call(this, element);
+    originalObserve(element);
 };
 // Add scroll-reveal class to content elements (excluding header to keep it stable)
-document.querySelectorAll('.site-footer, .hero-text, .page-header, .card, .card h3, .card p, .card .btn-primary, .feature-section h3, .feature-card, .feature-card h4, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .steps-list li, .step-number, .auth-section, .auth-form').forEach(el => {
+document.querySelectorAll('.site-footer, .hero-text, .page-header, .card, .feature-section h3, .feature-card, .feature-card h4, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .steps-list li, .step-number, .auth-section, .auth-form').forEach(el => {
     el.classList.add('scroll-reveal');
 });
 
