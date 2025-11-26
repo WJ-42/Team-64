@@ -260,14 +260,15 @@ h3, h4, h5, h6 {
 [data-theme="light"] div {
     text-shadow: none !important;
     background: none !important;
+    background-clip: initial !important;
     -webkit-background-clip: initial !important;
     -webkit-text-fill-color: initial !important;
-    background-clip: initial !important;
 }
 
 /* Fix Hero Text Specifically */
 [data-theme="light"] .hero-text h2 {
     background: none !important;
+    background-clip: unset !important;
     -webkit-background-clip: unset !important;
     -webkit-text-fill-color: #000000 !important;
     color: #000000 !important;
@@ -277,6 +278,7 @@ h3, h4, h5, h6 {
 /* Fix Page Headers */
 [data-theme="light"] .page-header h2 {
     background: none !important;
+    background-clip: unset !important;
     -webkit-background-clip: unset !important;
     -webkit-text-fill-color: #000000 !important;
     color: #000000 !important;
@@ -286,6 +288,7 @@ h3, h4, h5, h6 {
 /* Fix Feature Section Headers */
 [data-theme="light"] .feature-section h3 {
     background: none !important;
+    background-clip: unset !important;
     -webkit-background-clip: unset !important;
     -webkit-text-fill-color: #000000 !important;
     color: #000000 !important;
@@ -385,9 +388,9 @@ h3, h4, h5, h6 {
     background: linear-gradient(90deg, var(--text-accent) 0%, var(--text-accent) 50%, var(--text-primary) 50%, var(--text-primary) 100%);
     background-size: 200% 100%;
     background-position: 100% 0;
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
     transition: background-position 0.5s ease;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 20px var(--shadow-gold), 0 0 40px var(--shadow-gold);
 }
@@ -529,9 +532,9 @@ main {
     background: linear-gradient(90deg, #f0c24b 0%, #f0c24b 50%, #f6f6f6 50%, #f6f6f6 100%);
     background-size: 200% 100%;
     background-position: 100% 0;
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
     transition: background-position 0.5s ease;
 }
 
@@ -675,9 +678,9 @@ main {
     background: linear-gradient(90deg, #f0c24b 0%, #f0c24b 50%, #f6f6f6 50%, #f6f6f6 100%);
     background-size: 200% 100%;
     background-position: 100% 0;
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
     transition: background-position 0.5s ease;
 }
 
@@ -975,9 +978,9 @@ main {
     background: linear-gradient(90deg, #f0c24b 0%, #f0c24b 50%, #f6f6f6 50%, #f6f6f6 100%);
     background-size: 200% 100%;
     background-position: 100% 0;
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
     transition: background-position 0.5s ease;
 }
 
@@ -1125,9 +1128,9 @@ main {
     background: linear-gradient(90deg, #f0c24b 0%, #f0c24b 50%, #f6f6f6 50%, #f6f6f6 100%);
     background-size: 200% 100%;
     background-position: 100% 0;
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
     transition: background-position 0.5s ease;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(240, 194, 75, 0.3), 0 0 40px rgba(240, 194, 75, 0.15);
 }
