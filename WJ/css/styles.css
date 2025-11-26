@@ -321,6 +321,13 @@ body[data-page="about"] .feature-section h3.scroll-reveal.revealed {
     width: 100%;
 }
 
+.navbar a.active {
+    color: #f0c24b;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+    text-decoration-thickness: 2px;
+}
+
 main {
     padding: 2.5rem 1.5rem;
     max-width: 1100px;
@@ -712,8 +719,9 @@ textarea:-webkit-autofill:focus {
 
 .card:hover::before,
 .card:hover::after {
-    opacity: 0;
+    opacity: 0 !important;
     transform: scale(0) rotate(180deg);
+    animation: none;
 }
 
 .product-image {
