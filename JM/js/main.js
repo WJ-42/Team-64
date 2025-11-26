@@ -302,19 +302,6 @@ function renderBasketPage() {
         `;
 
         container.appendChild(row);
-
-        // Add listeners directly to buttons
-        row.querySelectorAll('.qty-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = Number(btn.getAttribute('data-id'));
-                const action = btn.getAttribute('data-action');
-                if (action === 'increase') {
-                    updateQuantity(id, 1);
-                } else if (action === 'decrease') {
-                    updateQuantity(id, -1);
-                }
-            });
-        });
     });
 
     summary.innerHTML = `
@@ -979,20 +966,6 @@ function updateProductCardsForBasket() {
                     <span class="total-price">£${(product.price * quantity).toFixed(2)}</span>
                 `;
                 
-                // Add event listeners to quantity controls
-                qtyControls.querySelectorAll('.qty-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const action = btn.getAttribute('data-action');
-                        const id = Number(btn.getAttribute('data-id'));
-                        if (action === 'increase') {
-                            updateQuantity(id, 1);
-                        } else if (action === 'decrease') {
-                            updateQuantity(id, -1);
-                        }
-                    });
-                });
-                
                 // Insert after the description
                 const description = card.querySelector('.description');
                 if (description) {
@@ -1030,6 +1003,8 @@ function updateThemeIcon(theme) {
 // Add event delegation for quantity controls
 document.addEventListener('click', (e) => {
     if (e.target.classList.contains('qty-btn')) {
+        e.preventDefault();
+        e.stopPropagation();
         const action = e.target.getAttribute('data-action');
         const id = Number(e.target.getAttribute('data-id'));
         if (action === 'increase') {
