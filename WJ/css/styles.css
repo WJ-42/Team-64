@@ -1757,6 +1757,15 @@ textarea:-webkit-autofill:focus {
     margin-bottom: 4rem;
 }
 
+.product-section-scrollable {
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+}
+
+.product-section-scrollable.loaded {
+    opacity: 1;
+}
+
 .product-section .section-header {
     text-align: center;
     margin-bottom: 2rem;
@@ -1802,10 +1811,14 @@ textarea:-webkit-autofill:focus {
     overflow-x: auto;
     overflow-y: hidden; /* Required for horizontal scroll to work as expected */
     scroll-behavior: smooth;
-    padding: 2rem 0; /* Vertical padding for hover effects/shadows */
+    /* Generous vertical padding to ensure hover transforms and large shadows are never clipped */
+    padding: 1.5rem 0 5rem 0;
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE/Edge */
     scroll-snap-type: x mandatory;
+    /* Use negative margins to pull the container back into its correct layout space */
+    margin-top: -1.5rem;
+    margin-bottom: -5rem;
 }
 
 .product-scroll-container::-webkit-scrollbar {
@@ -1815,6 +1828,24 @@ textarea:-webkit-autofill:focus {
 .product-scroll-container .card {
     flex: 0 0 300px;
     scroll-snap-align: start;
+}
+
+/* Override scroll-reveal animations for cards in scroll containers to prevent edge clipping */
+/* Uses opacity-only fade instead of scale/translate transforms */
+.product-scroll-container .card.scroll-reveal,
+.product-scroll-container .card.scroll-reveal:not(.revealed) {
+    transform: none;
+    opacity: 0;
+    transition: opacity 0.5s ease-out, box-shadow 0.3s ease, border 0.3s ease;
+}
+
+.product-scroll-container .card.scroll-reveal.revealed {
+    transform: none;
+    opacity: 1;
+}
+
+.product-scroll-container .card.scroll-reveal.revealed:hover {
+    transform: translateY(-8px);
 }
 
 /* Scroll navigation buttons */

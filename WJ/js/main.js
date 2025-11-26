@@ -557,8 +557,7 @@ function initScrollableSections() {
         // Update UI on scroll
         container.addEventListener("scroll", () => updateSectionUI(section));
         
-        // Initial UI state after a short delay to let images load
-        setTimeout(() => updateSectionUI(section), 100);
+        // The initial UI update is now handled by the window.onload event
     });
 }
 
@@ -1899,6 +1898,34 @@ document.addEventListener("DOMContentLoaded", () => {
         setupCheckoutForm();
     }
 });
+
+// Wait for all content (including images) to load before running initial UI updates.
+// This prevents layout flashes and incorrect calculations.
+window.addEventListener("load", () => {
+    if (document.body.getAttribute("data-page") === "products") {
+        document.querySelectorAll(".product-section-scrollable").forEach(section => {
+            const container = section.querySelector(".product-scroll-container");
+            
+            if (container) {
+                container.scrollLeft = 0;
+            }
+            
+            // Run calculations to determine layout
+            updateSectionUI(section);
+
+            // Force the browser to paint the layout before we make it visible
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    if (container) {
+                        container.scrollLeft = 0;
+                    }
+                    section.classList.add('loaded');
+                });
+            });
+        });
+    }
+});
+
 // Scroll reveal animations with hysteresis to prevent jitter at boundaries
 // Reveal observer: triggers when element enters viewport
 const revealObserver = new IntersectionObserver((entries) => {
