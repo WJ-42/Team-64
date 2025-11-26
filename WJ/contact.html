@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luminous Scents - Contact</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,7 +28,7 @@
             <a href="products.html">Fragrances</a>
             <a href="basket.html">Basket</a>
             <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
+            <a href="contact.html" class="active">Contact</a>
             <a href="account.html">Account</a>
         </nav>
     </header>
@@ -63,18 +64,21 @@
                     <div class="info-column">
                         <article class="feature-card">
                             <h4>Send us a Message</h4>
-                            <form action="#" method="post" id="contactForm">
+                            <form action="#" method="post" id="contactForm" novalidate>
                                 <div class="form-row">
-                                    <label for="name">Name</label>
-                                    <input type="text" id="name" name="name" required class="auth-input">
+                                    <label for="contactName">Name</label>
+                                    <input type="text" id="contactName" name="name" required class="auth-input" placeholder="Your full name" minlength="2" maxlength="50">
+                                    <span class="error-message" id="nameError"></span>
                                 </div>
                                 <div class="form-row">
-                                    <label for="email">Email</label>
-                                    <input type="email" id="email" name="email" required class="auth-input">
+                                    <label for="contactEmail">Email</label>
+                                    <input type="email" id="contactEmail" name="email" required class="auth-input" placeholder="your@email.com">
+                                    <span class="error-message" id="contactEmailError"></span>
                                 </div>
                                 <div class="form-row">
-                                    <label for="message">Message</label>
-                                    <textarea id="message" name="message" rows="5" required class="auth-input"></textarea>
+                                    <label for="contactMessage">Message <span class="char-counter" id="charCounter">0 / 500</span></label>
+                                    <textarea id="contactMessage" name="message" rows="5" required class="auth-input" placeholder="How can we help you?" minlength="10" maxlength="500"></textarea>
+                                    <span class="error-message" id="messageError"></span>
                                 </div>
                                 <button type="submit" class="btn-primary">Send Message</button>
                             </form>

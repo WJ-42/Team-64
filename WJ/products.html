@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luminous Scents - Fragrances</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +25,7 @@
         </div>
         <nav class="navbar">
             <a href="index.html">Home</a>
-            <a href="products.html">Fragrances</a>
+            <a href="products.html" class="active">Fragrances</a>
             <a href="basket.html">Basket</a>
             <a href="about.html">About</a>
             <a href="contact.html">Contact</a>
@@ -34,27 +35,135 @@
 
     <main>
         <section class="page-header">
-            <h2>Our fragrances</h2>
-            <p>Sample products for the MVP. Each item has a name, price, and key scent notes.</p>
+            <h2>Our Fragrances</h2>
+            <p>Discover our complete collection of luxury scents, crafted to illuminate every moment.</p>
         </section>
 
-        <div class="search-container" style="background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(12, 10, 5, 0.82) 50%, rgba(0, 0, 0, 0.85) 100%); backdrop-filter: blur(16px); border-radius: 6px; padding: 1.25rem; border: 1px solid rgba(240, 194, 75, 0.25); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8); margin-bottom: 2rem; text-align: center;">
-            <div class="search-box" style="display: inline-block; position: relative;">
-                <span class="search-icon" style="position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); font-size: 1.2rem;">🔍</span>
-                <input type="text" id="searchInput" placeholder="Search fragrances..." style="padding: 0.7rem 0.7rem 0.7rem 2.5rem; border-radius: 4px; border: 1px solid rgba(240, 194, 75, 0.3); background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(15, 12, 5, 0.75) 50%, rgba(0, 0, 0, 0.8) 100%); color: #f6f6f6; width: 300px; max-width: 90vw; box-sizing: border-box;">
+        <div class="search-container">
+            <div class="search-box">
+                <div class="search-glow"></div>
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M20 20L16.5 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <input type="text" id="searchInput" placeholder="Discover your signature scent...">
+                <button class="search-clear" type="button" aria-label="Clear search">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </button>
+                <div class="search-shimmer"></div>
+            </div>
+            <div class="search-suggestions">
+                <span class="suggestion-tag">Oud</span>
+                <span class="suggestion-tag">Citrus</span>
+                <span class="suggestion-tag">Floral</span>
+                <span class="suggestion-tag">Woody</span>
+                <span class="suggestion-tag">Fresh</span>
             </div>
         </div>
 
-        <section id="productsContainer" class="cards-grid">
-            <!-- Products will be injected here by main.js -->
+        <!-- Signature Perfumes Section -->
+        <section class="product-section product-section-scrollable" data-section-category="perfume">
+            <div class="section-header">
+                <h3>Signature Perfumes</h3>
+                <p>Our collection of exquisite eau de parfums, each telling a unique story.</p>
+            </div>
+            <div class="scroll-wrapper">
+                <button class="scroll-btn scroll-btn-left hidden" aria-label="Scroll left">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div id="perfumeContainer" class="product-scroll-container">
+                    <!-- Products will be injected here by main.js -->
+                </div>
+                <button class="scroll-btn scroll-btn-right" aria-label="Scroll right">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
         </section>
 
-        <section class="solaris-duo-section">
-            <h3>The Solaris Duo</h3>
-            <p>Masculine and feminine fragrances designed to complement each other.</p>
-            <section id="solarisContainer" class="cards-grid">
+        <!-- The Solaris Duo Section -->
+        <section class="product-section solaris-duo-section" data-section-category="solaris">
+            <div class="section-header">
+                <h3>The Solaris Duo</h3>
+                <p>Masculine and feminine fragrances designed to complement each other.</p>
+            </div>
+            <div id="solarisContainer" class="cards-grid solaris-grid">
                 <!-- Solaris fragrances will be injected here by main.js -->
-            </section>
+            </div>
+        </section>
+
+        <!-- Home Fragrances Section -->
+        <section class="product-section product-section-scrollable" data-section-category="home">
+            <div class="section-header">
+                <h3>Home Fragrances</h3>
+                <p>Transform your space with our luxurious candles, diffusers, and room scents.</p>
+            </div>
+            <div class="scroll-wrapper">
+                <button class="scroll-btn scroll-btn-left hidden" aria-label="Scroll left">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div id="homeContainer" class="product-scroll-container">
+                    <!-- Products will be injected here by main.js -->
+                </div>
+                <button class="scroll-btn scroll-btn-right" aria-label="Scroll right">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Wellness Section -->
+        <section class="product-section product-section-scrollable" data-section-category="wellness">
+            <div class="section-header">
+                <h3>Wellness Collection</h3>
+                <p>Aromatherapy essentials for relaxation, focus, and well-being.</p>
+            </div>
+            <div class="scroll-wrapper">
+                <button class="scroll-btn scroll-btn-left hidden" aria-label="Scroll left">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div id="wellnessContainer" class="product-scroll-container">
+                    <!-- Products will be injected here by main.js -->
+                </div>
+                <button class="scroll-btn scroll-btn-right" aria-label="Scroll right">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Travel & Gift Sets Section -->
+        <section class="product-section product-section-scrollable" data-section-category="gift">
+            <div class="section-header">
+                <h3>Travel & Gift Sets</h3>
+                <p>Perfect for gifting or taking your favourite scents on the go.</p>
+            </div>
+            <div class="scroll-wrapper">
+                <button class="scroll-btn scroll-btn-left hidden" aria-label="Scroll left">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div id="giftContainer" class="product-scroll-container">
+                    <!-- Products will be injected here by main.js -->
+                </div>
+                <button class="scroll-btn scroll-btn-right" aria-label="Scroll right">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
         </section>
     </main>
 
