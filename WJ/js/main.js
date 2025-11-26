@@ -406,9 +406,11 @@ function renderBasketPage() {
     });
 
     summary.innerHTML = `
-        <p><strong>Total:</strong> £${total.toFixed(2)}</p>
-        <button id="clearBasketBtn" class="btn-secondary" style="margin-right: 1rem;">Clear basket</button>
-        <button id="mockCheckoutBtn" class="btn-primary">Proceed to checkout</button>
+        <p class="basket-total"><strong>Total:</strong> £${total.toFixed(2)}</p>
+        <div class="basket-actions">
+            <button id="clearBasketBtn" class="btn-secondary">Clear basket</button>
+            <button id="mockCheckoutBtn" class="btn-primary">Proceed to checkout</button>
+        </div>
     `;
 
     const checkoutBtn = document.getElementById("mockCheckoutBtn");
@@ -642,6 +644,195 @@ function setupAuthForm() {
     });
 }
 
+// Contact form validation
+
+function setupContactForm() {
+    const form = document.getElementById("contactForm");
+    const nameInput = document.getElementById("contactName");
+    const emailInput = document.getElementById("contactEmail");
+    const messageInput = document.getElementById("contactMessage");
+    const nameError = document.getElementById("nameError");
+    const emailError = document.getElementById("contactEmailError");
+    const messageError = document.getElementById("messageError");
+    const charCounter = document.getElementById("charCounter");
+
+    if (!form || !nameInput || !emailInput || !messageInput) {
+        return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const nameRegex = /^[a-zA-Z\s'-]+$/;
+    const MAX_MESSAGE_LENGTH = 500;
+    const MIN_MESSAGE_LENGTH = 10;
+    const MIN_NAME_LENGTH = 2;
+
+    // Helper functions
+    function showError(input, errorElement, message) {
+        input.classList.add('input-error');
+        input.classList.remove('input-success');
+        errorElement.textContent = message;
+        errorElement.classList.add('show');
+    }
+
+    function clearError(input, errorElement) {
+        input.classList.remove('input-error');
+        errorElement.textContent = '';
+        errorElement.classList.remove('show');
+    }
+
+    function showSuccess(input) {
+        input.classList.remove('input-error');
+        input.classList.add('input-success');
+    }
+
+    // Update character counter
+    function updateCharCounter() {
+        const length = messageInput.value.length;
+        charCounter.textContent = `${length} / ${MAX_MESSAGE_LENGTH}`;
+        
+        if (length > MAX_MESSAGE_LENGTH * 0.9) {
+            charCounter.classList.add('warning');
+        } else {
+            charCounter.classList.remove('warning');
+        }
+        
+        if (length >= MAX_MESSAGE_LENGTH) {
+            charCounter.classList.add('limit');
+        } else {
+            charCounter.classList.remove('limit');
+        }
+    }
+
+    // Real-time name validation
+    nameInput.addEventListener('input', () => {
+        const name = nameInput.value.trim();
+        if (name === '') {
+            clearError(nameInput, nameError);
+        } else if (name.length < MIN_NAME_LENGTH) {
+            showError(nameInput, nameError, `Name must be at least ${MIN_NAME_LENGTH} characters`);
+        } else if (!nameRegex.test(name)) {
+            showError(nameInput, nameError, 'Name can only contain letters, spaces, hyphens and apostrophes');
+        } else {
+            clearError(nameInput, nameError);
+            showSuccess(nameInput);
+        }
+    });
+
+    nameInput.addEventListener('blur', () => {
+        const name = nameInput.value.trim();
+        if (name === '') {
+            showError(nameInput, nameError, 'Name is required');
+        }
+    });
+
+    // Real-time email validation
+    emailInput.addEventListener('input', () => {
+        const email = emailInput.value.trim();
+        if (email === '') {
+            clearError(emailInput, emailError);
+        } else if (!emailRegex.test(email)) {
+            showError(emailInput, emailError, 'Please enter a valid email address');
+        } else {
+            clearError(emailInput, emailError);
+            showSuccess(emailInput);
+        }
+    });
+
+    emailInput.addEventListener('blur', () => {
+        const email = emailInput.value.trim();
+        if (email === '') {
+            showError(emailInput, emailError, 'Email address is required');
+        }
+    });
+
+    // Real-time message validation with character counter
+    messageInput.addEventListener('input', () => {
+        updateCharCounter();
+        const message = messageInput.value.trim();
+        
+        if (message === '') {
+            clearError(messageInput, messageError);
+        } else if (message.length < MIN_MESSAGE_LENGTH) {
+            showError(messageInput, messageError, `Message must be at least ${MIN_MESSAGE_LENGTH} characters`);
+        } else if (messageInput.value.length > MAX_MESSAGE_LENGTH) {
+            showError(messageInput, messageError, `Message cannot exceed ${MAX_MESSAGE_LENGTH} characters`);
+        } else {
+            clearError(messageInput, messageError);
+            showSuccess(messageInput);
+        }
+    });
+
+    messageInput.addEventListener('blur', () => {
+        const message = messageInput.value.trim();
+        if (message === '') {
+            showError(messageInput, messageError, 'Message is required');
+        }
+    });
+
+    // Initialize character counter
+    updateCharCounter();
+
+    // Form submission
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const message = messageInput.value.trim();
+        let hasErrors = false;
+
+        // Validate name
+        if (!name) {
+            showError(nameInput, nameError, 'Name is required');
+            hasErrors = true;
+        } else if (name.length < MIN_NAME_LENGTH) {
+            showError(nameInput, nameError, `Name must be at least ${MIN_NAME_LENGTH} characters`);
+            hasErrors = true;
+        } else if (!nameRegex.test(name)) {
+            showError(nameInput, nameError, 'Name can only contain letters, spaces, hyphens and apostrophes');
+            hasErrors = true;
+        }
+
+        // Validate email
+        if (!email) {
+            showError(emailInput, emailError, 'Email address is required');
+            hasErrors = true;
+        } else if (!emailRegex.test(email)) {
+            showError(emailInput, emailError, 'Please enter a valid email address');
+            hasErrors = true;
+        }
+
+        // Validate message
+        if (!message) {
+            showError(messageInput, messageError, 'Message is required');
+            hasErrors = true;
+        } else if (message.length < MIN_MESSAGE_LENGTH) {
+            showError(messageInput, messageError, `Message must be at least ${MIN_MESSAGE_LENGTH} characters`);
+            hasErrors = true;
+        } else if (messageInput.value.length > MAX_MESSAGE_LENGTH) {
+            showError(messageInput, messageError, `Message cannot exceed ${MAX_MESSAGE_LENGTH} characters`);
+            hasErrors = true;
+        }
+
+        if (hasErrors) {
+            return;
+        }
+
+        // Success - show confirmation and clear form
+        customAlert("Message sent! We will get back to you soon.");
+        
+        // Clear form
+        form.reset();
+        clearError(nameInput, nameError);
+        clearError(emailInput, emailError);
+        clearError(messageInput, messageError);
+        nameInput.classList.remove('input-success');
+        emailInput.classList.remove('input-success');
+        messageInput.classList.remove('input-success');
+        updateCharCounter();
+    });
+}
+
 // Starfield canvas effect
 
 function initStarfield() {
@@ -753,13 +944,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (page === "basket") {
         renderBasketPage();
     } else if (page === "contact") {
-        const form = document.getElementById("contactForm");
-        if (form) {
-            form.addEventListener("submit", function (e) {
-                e.preventDefault();
-                customAlert("Message sent! We will get back to you soon.");
-            });
-        }
+        setupContactForm();
     }
 });
 // Scroll reveal animations

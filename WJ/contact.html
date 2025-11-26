@@ -66,16 +66,19 @@
                             <h4>Send us a Message</h4>
                             <form action="#" method="post" id="contactForm">
                                 <div class="form-row">
-                                    <label for="name">Name</label>
-                                    <input type="text" id="name" name="name" required class="auth-input">
+                                    <label for="contactName">Name</label>
+                                    <input type="text" id="contactName" name="name" required class="auth-input" placeholder="Your full name" minlength="2" maxlength="50">
+                                    <span class="error-message" id="nameError"></span>
                                 </div>
                                 <div class="form-row">
-                                    <label for="email">Email</label>
-                                    <input type="email" id="email" name="email" required class="auth-input">
+                                    <label for="contactEmail">Email</label>
+                                    <input type="email" id="contactEmail" name="email" required class="auth-input" placeholder="your@email.com">
+                                    <span class="error-message" id="contactEmailError"></span>
                                 </div>
                                 <div class="form-row">
-                                    <label for="message">Message</label>
-                                    <textarea id="message" name="message" rows="5" required class="auth-input"></textarea>
+                                    <label for="contactMessage">Message <span class="char-counter" id="charCounter">0 / 500</span></label>
+                                    <textarea id="contactMessage" name="message" rows="5" required class="auth-input" placeholder="How can we help you?" minlength="10" maxlength="500"></textarea>
+                                    <span class="error-message" id="messageError"></span>
                                 </div>
                                 <button type="submit" class="btn-primary">Send Message</button>
                             </form>
