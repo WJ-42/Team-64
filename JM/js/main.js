@@ -182,14 +182,25 @@ function renderBasketPage() {
         return;
     }
 
+    // Use SQL products if available, otherwise fall back to legacy products array
+    const productData = window.sqlProducts || products;
+    if (!productData || productData.length === 0) {
+        container.innerHTML = "<p>Loading products... Please try again in a moment.</p>";
+        return;
+    }
+
     let total = 0;
 
     basket.forEach(item => {
-        const product = products.find(p => p.id === item.productId);
+        const product = productData.find(p => p.id === item.productId);
         if (!product) {
+            console.warn(`Product with ID ${item.productId} not found in product data`);
             return;
         }
-        const lineTotal = product.price * item.quantity;
+        
+        const productName = product.product_name || product.name;
+        const productPrice = product.price;
+        const lineTotal = productPrice * item.quantity;
         total += lineTotal;
 
         const row = document.createElement("div");
@@ -197,8 +208,8 @@ function renderBasketPage() {
 
         row.innerHTML = `
             <div class="basket-item-name">
-                <p>${product.name}</p>
-                <p class="small-text">£${product.price.toFixed(2)} each</p>
+                <p>${productName}</p>
+                <p class="small-text">£${productPrice.toFixed(2)} each</p>
             </div>
             <div class="basket-item-controls">
                 <button class="qty-btn" data-action="decrease" data-id="${product.id}">-</button>
@@ -645,7 +656,19 @@ document.addEventListener("DOMContentLoaded", () => {
             setupNavigationAfterProductsLoad();
         }, 1000);
     } else if (page === "basket") {
-        renderBasketPage();
+        // For basket page, we need to load SQL products first before rendering
+        // This ensures we have product data to display in the basket
+        if (window.sqlProducts && window.sqlProducts.length > 0) {
+            renderBasketPage();
+        } else {
+            // Load SQL products first, then render basket
+            initSQLProducts().then(() => {
+                renderBasketPage();
+            }).catch(error => {
+                console.error('Failed to load products for basket:', error);
+                renderBasketPage(); // Render anyway, will show loading message if no products
+            });
+        }
     }
 });
 // Scroll reveal animations
