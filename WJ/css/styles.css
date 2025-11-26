@@ -82,6 +82,17 @@ h3, h4, h5, h6 {
     }
 }
 
+@keyframes dividerPulse {
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(240, 194, 75, 0.4), 0 0 20px rgba(240, 194, 75, 0.2);
+        opacity: 0.5;
+    }
+    50% {
+        text-shadow: 0 0 25px rgba(240, 194, 75, 0.9), 0 0 50px rgba(240, 194, 75, 0.5), 0 0 80px rgba(240, 194, 75, 0.3);
+        opacity: 1;
+    }
+}
+
 @keyframes starBorderRotate {
     0% {
         background-position: 0% 50%;
@@ -997,6 +1008,18 @@ textarea:-webkit-autofill:focus {
 .feature-section {
     margin-top: 4rem;
     margin-bottom: 4rem;
+}
+
+.feature-section::before {
+    content: '— ✦ —';
+    display: block;
+    text-align: center;
+    font-size: 1.25rem;
+    letter-spacing: 0.4em;
+    color: rgb(240, 194, 75);
+    margin-bottom: 2.5rem;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    animation: dividerPulse 3s ease-in-out infinite;
 }
 
 .feature-section h3 {
