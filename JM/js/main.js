@@ -105,6 +105,15 @@ function addToBasket(productId) {
     }
     saveBasket(basket);
     customAlert("Added to basket");
+    
+    // Update display in real-time instead of full page refresh
+    const currentPage = document.body.getAttribute("data-page");
+    if (currentPage === "newproducts") {
+        const item = basket.find(i => i.productId === productId);
+        if (item) {
+            updateProductCardQuantity(productId, item.quantity);
+        }
+    }
 }
 
 function updateQuantity(productId, change) {
@@ -119,7 +128,80 @@ function updateQuantity(productId, change) {
         basket.splice(index, 1);
     }
     saveBasket(basket);
-    renderBasketPage();
+    
+    // Update quantity displays in real-time instead of full page refresh
+    const currentPage = document.body.getAttribute("data-page");
+    if (currentPage === "newproducts") {
+        updateProductCardQuantity(productId, item.quantity);
+    } else if (currentPage === "basket") {
+        renderBasketPage();
+    }
+}
+
+function updateProductCardQuantity(productId, quantity) {
+    const product = window.sqlProducts.find(p => p.id === productId);
+    if (!product) return;
+    
+    const card = document.querySelector(`[data-product-id="${productId}"]`);
+    if (!card) return;
+    
+    if (quantity <= 0) {
+        // Remove quantity controls and show add to basket button
+        const qtyControls = card.querySelector('.product-quantity-controls');
+        if (qtyControls) {
+            qtyControls.remove();
+        }
+        
+        // Add back the add to basket button
+        const addButton = document.createElement('button');
+        addButton.className = 'btn-primary';
+        addButton.setAttribute('data-product-id', productId);
+        addButton.textContent = 'Add to basket';
+        addButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            addToBasket(productId);
+        });
+        
+        const description = card.querySelector('.description');
+        if (description) {
+            description.insertAdjacentElement('afterend', addButton);
+        }
+    } else {
+        // Update existing quantity controls
+        const qtyControls = card.querySelector('.product-quantity-controls');
+        if (qtyControls) {
+            const quantityDisplay = qtyControls.querySelector('.quantity-display');
+            const totalPrice = qtyControls.querySelector('.total-price');
+            
+            if (quantityDisplay) {
+                quantityDisplay.textContent = quantity;
+            }
+            if (totalPrice) {
+                totalPrice.textContent = `£${(product.price * quantity).toFixed(2)}`;
+            }
+        } else {
+            // Create quantity controls if they don't exist
+            const addButton = card.querySelector('.btn-primary');
+            if (addButton) {
+                addButton.remove();
+                
+                const newQtyControls = document.createElement('div');
+                newQtyControls.className = 'product-quantity-controls';
+                newQtyControls.setAttribute('data-product-id', productId);
+                newQtyControls.innerHTML = `
+                    <button class="qty-btn" data-action="decrease" data-id="${productId}">-</button>
+                    <span class="quantity-display">${quantity}</span>
+                    <button class="qty-btn" data-action="increase" data-id="${productId}">+</button>
+                    <span class="total-price">£${(product.price * quantity).toFixed(2)}</span>
+                `;
+                
+                const description = card.querySelector('.description');
+                if (description) {
+                    description.insertAdjacentElement('afterend', newQtyControls);
+                }
+            }
+        }
+    }
 }
 
 // Rendering functions
@@ -293,6 +375,7 @@ function createProductCard(product) {
     card.className = 'product-card';
     card.setAttribute('data-product-id', product.id);
     
+    // Always start with "Add to basket" button initially
     card.innerHTML = `
         <div class="product-image-container">
             <img src="${product.image_url}" alt="${product.product_name}" class="product-image">
@@ -307,11 +390,14 @@ function createProductCard(product) {
         </button>
     `;
     
-    // Add click handler for add to basket button
-    card.querySelector('.btn-primary').addEventListener('click', (e) => {
-        e.stopPropagation();
-        addToBasket(product.id);
-    });
+    // Add event listener for add to basket button
+    const addButton = card.querySelector('.btn-primary');
+    if (addButton) {
+        addButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            addToBasket(product.id);
+        });
+    }
     
     return card;
 }
@@ -772,6 +858,11 @@ function renderNewProductsPage() {
     });
     
     console.log('renderNewProductsPage completed');
+    
+    // After all cards are created, update them to show quantity controls if in basket
+    setTimeout(() => {
+        updateProductCardsForBasket();
+    }, 100);
 }
 
 // Prevent observer from catching dynamically added elements
@@ -854,4 +945,76 @@ function initMouseTrail() {
     }
     
     animate();
+}
+
+function updateProductCardsForBasket() {
+    const basket = loadBasket();
+    
+    // Update each product card to show quantity controls if item is in basket
+    document.querySelectorAll('.product-card').forEach(card => {
+        const productId = Number(card.getAttribute('data-product-id'));
+        const product = window.sqlProducts.find(p => p.id === productId);
+        
+        if (!product) return;
+        
+        const basketItem = basket.find(item => item.productId === productId);
+        const quantity = basketItem ? basketItem.quantity : 0;
+        
+        if (quantity > 0) {
+            // Replace add to basket button with quantity controls
+            const addButton = card.querySelector('.btn-primary');
+            if (addButton) {
+                addButton.remove();
+                
+                const qtyControls = document.createElement('div');
+                qtyControls.className = 'product-quantity-controls';
+                qtyControls.setAttribute('data-product-id', productId);
+                qtyControls.innerHTML = `
+                    <button class="qty-btn" data-action="decrease" data-id="${productId}">-</button>
+                    <span class="quantity-display">${quantity}</span>
+                    <button class="qty-btn" data-action="increase" data-id="${productId}">+</button>
+                    <span class="total-price">£${(product.price * quantity).toFixed(2)}</span>
+                `;
+                
+                // Add event listeners to quantity controls
+                qtyControls.querySelectorAll('.qty-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const action = btn.getAttribute('data-action');
+                        const id = Number(btn.getAttribute('data-id'));
+                        if (action === 'increase') {
+                            updateQuantity(id, 1);
+                        } else if (action === 'decrease') {
+                            updateQuantity(id, -1);
+                        }
+                    });
+                });
+                
+                // Insert after the description
+                const description = card.querySelector('.description');
+                if (description) {
+                    description.insertAdjacentElement('afterend', qtyControls);
+                }
+            }
+        }
+    });
+}
+
+// Add event delegation for quantity controls
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('qty-btn')) {
+        const action = e.target.getAttribute('data-action');
+        const id = Number(e.target.getAttribute('data-id'));
+        if (action === 'increase') {
+            updateQuantity(id, 1);
+        } else if (action === 'decrease') {
+            updateQuantity(id, -1);
+        }
+    }
+});
+
+// Clear basket function for testing
+function clearBasketForTesting() {
+    localStorage.removeItem('luminousScentsBasket');
+    location.reload();
 }
