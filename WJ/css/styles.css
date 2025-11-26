@@ -228,6 +228,11 @@ body[data-page="about"] .feature-section h3.scroll-reveal.revealed {
     position: relative;
     z-index: 100;
     animation: headerShimmer 8s ease-in-out infinite;
+    transition: box-shadow 0.4s ease;
+}
+
+.main-header:hover {
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5), 0 0 35px rgba(240, 194, 75, 0.2);
 }
 
 .main-header::before {
@@ -341,17 +346,24 @@ main {
 
 .site-footer {
     text-align: center;
-    padding: 1rem;
+    padding: 2rem;
     margin-top: 2rem;
     border-top: 1px solid rgba(240, 194, 75, 0.15);
     font-size: 0.85rem;
-    color: #aaaaaa;
+    color: #b8b8b8;
+    letter-spacing: 0.12em;
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(10, 8, 3, 0.92) 50%, rgba(0, 0, 0, 0.95) 100%);
     backdrop-filter: blur(32px);
     -webkit-backdrop-filter: blur(32px);
     box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.45);
     position: relative;
     z-index: 100;
+    transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.site-footer:hover {
+    box-shadow: 0 -12px 30px rgba(0, 0, 0, 0.45), 0 0 25px rgba(240, 194, 75, 0.15);
+    border-top-color: rgba(240, 194, 75, 0.35);
 }
 
 /* Hero section */
