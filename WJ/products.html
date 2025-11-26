@@ -35,8 +35,8 @@
 
     <main>
         <section class="page-header">
-            <h2>Our fragrances</h2>
-            <p>Sample products for the MVP. Each item has a name, price, and key scent notes.</p>
+            <h2>Our Fragrances</h2>
+            <p>Discover our complete collection of luxury scents, crafted to illuminate every moment.</p>
         </section>
 
         <div class="search-container">
@@ -58,20 +58,112 @@
                 <span class="suggestion-tag">Oud</span>
                 <span class="suggestion-tag">Citrus</span>
                 <span class="suggestion-tag">Floral</span>
-                <span class="suggestion-tag">Velvet</span>
+                <span class="suggestion-tag">Woody</span>
+                <span class="suggestion-tag">Fresh</span>
             </div>
         </div>
 
-        <section id="productsContainer" class="cards-grid">
-            <!-- Products will be injected here by main.js -->
+        <!-- Signature Perfumes Section -->
+        <section class="product-section product-section-scrollable" data-section-category="perfume">
+            <div class="section-header">
+                <h3>Signature Perfumes</h3>
+                <p>Our collection of exquisite eau de parfums, each telling a unique story.</p>
+            </div>
+            <div class="scroll-wrapper">
+                <button class="scroll-btn scroll-btn-left hidden" aria-label="Scroll left">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div id="perfumeContainer" class="product-scroll-container">
+                    <!-- Products will be injected here by main.js -->
+                </div>
+                <button class="scroll-btn scroll-btn-right" aria-label="Scroll right">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
         </section>
 
-        <section class="solaris-duo-section">
-            <h3>The Solaris Duo</h3>
-            <p>Masculine and feminine fragrances designed to complement each other.</p>
-            <section id="solarisContainer" class="cards-grid">
+        <!-- The Solaris Duo Section -->
+        <section class="product-section solaris-duo-section" data-section-category="solaris">
+            <div class="section-header">
+                <h3>The Solaris Duo</h3>
+                <p>Masculine and feminine fragrances designed to complement each other.</p>
+            </div>
+            <div id="solarisContainer" class="cards-grid solaris-grid">
                 <!-- Solaris fragrances will be injected here by main.js -->
-            </section>
+            </div>
+        </section>
+
+        <!-- Home Fragrances Section -->
+        <section class="product-section product-section-scrollable" data-section-category="home">
+            <div class="section-header">
+                <h3>Home Fragrances</h3>
+                <p>Transform your space with our luxurious candles, diffusers, and room scents.</p>
+            </div>
+            <div class="scroll-wrapper">
+                <button class="scroll-btn scroll-btn-left hidden" aria-label="Scroll left">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div id="homeContainer" class="product-scroll-container">
+                    <!-- Products will be injected here by main.js -->
+                </div>
+                <button class="scroll-btn scroll-btn-right" aria-label="Scroll right">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Wellness Section -->
+        <section class="product-section product-section-scrollable" data-section-category="wellness">
+            <div class="section-header">
+                <h3>Wellness Collection</h3>
+                <p>Aromatherapy essentials for relaxation, focus, and well-being.</p>
+            </div>
+            <div class="scroll-wrapper">
+                <button class="scroll-btn scroll-btn-left hidden" aria-label="Scroll left">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div id="wellnessContainer" class="product-scroll-container">
+                    <!-- Products will be injected here by main.js -->
+                </div>
+                <button class="scroll-btn scroll-btn-right" aria-label="Scroll right">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Travel & Gift Sets Section -->
+        <section class="product-section product-section-scrollable" data-section-category="gift">
+            <div class="section-header">
+                <h3>Travel & Gift Sets</h3>
+                <p>Perfect for gifting or taking your favourite scents on the go.</p>
+            </div>
+            <div class="scroll-wrapper">
+                <button class="scroll-btn scroll-btn-left hidden" aria-label="Scroll left">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+                <div id="giftContainer" class="product-scroll-container">
+                    <!-- Products will be injected here by main.js -->
+                </div>
+                <button class="scroll-btn scroll-btn-right" aria-label="Scroll right">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
         </section>
     </main>
 

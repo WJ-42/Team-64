@@ -1,5 +1,6 @@
-﻿// Simple product data for the MVP
+﻿// Complete product data organized by category
 const products = [
+    // === SIGNATURE PERFUMES ===
     {
         id: 1,
         name: "Aurora Oud",
@@ -7,7 +8,8 @@ const products = [
         price: 89.99,
         notes: "Oud, amber, vanilla",
         description: "Warm and deep evening scent with a rich oud base.",
-        image: "aurora-oud.png"
+        image: "aurora-oud.png",
+        category: "perfume"
     },
     {
         id: 2,
@@ -16,7 +18,8 @@ const products = [
         price: 59.99,
         notes: "Bergamot, lemon, neroli",
         description: "Fresh daytime fragrance that is bright and uplifting.",
-        image: "citrus-dawn.png"
+        image: "citrus-dawn.png",
+        category: "perfume"
     },
     {
         id: 3,
@@ -25,7 +28,120 @@ const products = [
         price: 74.50,
         notes: "Iris, violet, sandalwood",
         description: "Soft floral scent with a creamy sandalwood base.",
-        image: "velvet-iris.png"
+        image: "velvet-iris.png",
+        category: "perfume"
+    },
+    {
+        id: 6,
+        name: "Amber Eclipse",
+        brand: "Luminous Scents",
+        price: 84.99,
+        notes: "Amber, benzoin, tonka bean",
+        description: "A mysterious blend of warm amber and sweet tonka.",
+        image: "amber-eclipse.png",
+        category: "perfume"
+    },
+    {
+        id: 7,
+        name: "Citrus Bloom",
+        brand: "Luminous Scents",
+        price: 62.99,
+        notes: "Orange blossom, grapefruit, jasmine",
+        description: "Sparkling citrus meets delicate florals.",
+        image: "citrus-bloom.png",
+        category: "perfume"
+    },
+    {
+        id: 8,
+        name: "Fresh Horizon",
+        brand: "Luminous Scents",
+        price: 58.99,
+        notes: "Sea salt, cucumber, mint",
+        description: "Crisp and clean like an ocean breeze at dawn.",
+        image: "fresh-horizon.png",
+        category: "perfume"
+    },
+    {
+        id: 9,
+        name: "Golden Sandalwood",
+        brand: "Luminous Scents",
+        price: 92.99,
+        notes: "Sandalwood, saffron, cardamom",
+        description: "Luxurious sandalwood with warm spice notes.",
+        image: "golden-sandalwood.png",
+        category: "perfume"
+    },
+    {
+        id: 10,
+        name: "Jasmine Veil",
+        brand: "Luminous Scents",
+        price: 78.99,
+        notes: "Jasmine, ylang-ylang, musk",
+        description: "Intoxicating jasmine wrapped in soft musk.",
+        image: "jasmine-veil.png",
+        category: "perfume"
+    },
+    {
+        id: 11,
+        name: "Lavender Dream",
+        brand: "Luminous Scents",
+        price: 54.99,
+        notes: "Lavender, vanilla, honey",
+        description: "Soothing lavender with a sweet, dreamy finish.",
+        image: "lavender-dream.png",
+        category: "perfume"
+    },
+    {
+        id: 12,
+        name: "Midnight Rose",
+        brand: "Luminous Scents",
+        price: 82.99,
+        notes: "Rose, patchouli, blackcurrant",
+        description: "Dark and romantic rose for evening allure.",
+        image: "midnight-rose.png",
+        category: "perfume"
+    },
+    {
+        id: 13,
+        name: "Ocean Whisper",
+        brand: "Luminous Scents",
+        price: 64.99,
+        notes: "Marine accord, driftwood, white tea",
+        description: "Captures the serenity of waves on shore.",
+        image: "ocean-whisper.png",
+        category: "perfume"
+    },
+    {
+        id: 14,
+        name: "Spiced Cedar",
+        brand: "Luminous Scents",
+        price: 76.99,
+        notes: "Cedarwood, black pepper, nutmeg",
+        description: "Bold and woody with a spicy kick.",
+        image: "spiced-cedar.png",
+        category: "perfume"
+    },
+    {
+        id: 15,
+        name: "Velvet Oud",
+        brand: "Luminous Scents",
+        price: 98.99,
+        notes: "Oud, velvet rose, smoky incense",
+        description: "Our most luxurious oud, rich and velvety.",
+        image: "velvet-oud.png",
+        category: "perfume"
+    },
+    
+    // === SOLARIS DUO ===
+    {
+        id: 4,
+        name: "Solaris Femme",
+        brand: "Luminous Scents",
+        price: 79.99,
+        notes: "Jasmine, rose, musk",
+        description: "Elegant floral scent for her.",
+        image: "solaris-femme.png",
+        category: "solaris"
     },
     {
         id: 5,
@@ -34,16 +150,164 @@ const products = [
         price: 69.99,
         notes: "Cedar, vetiver, citrus",
         description: "Sophisticated woody scent for him.",
-        image: "solaris-homme.png"
+        image: "solaris-homme.png",
+        category: "solaris"
+    },
+    
+    // === HOME FRAGRANCES ===
+    {
+        id: 20,
+        name: "Rosewood Candle",
+        brand: "Luminous Scents",
+        price: 38.99,
+        notes: "Rosewood, geranium, warm amber",
+        description: "Elegant ambiance for any room. Burns for 50+ hours.",
+        image: "rosewood-candle.png",
+        category: "home"
     },
     {
-        id: 4,
-        name: "Solaris Femme",
+        id: 21,
+        name: "Citrus Verbena Diffuser",
         brand: "Luminous Scents",
-        price: 79.99,
-        notes: "Jasmine, rose, musk",
-        description: "Elegant floral scent for her.",
-        image: "solaris-femme.png"
+        price: 42.99,
+        notes: "Verbena, lemon zest, green tea",
+        description: "Continuous fragrance for up to 3 months.",
+        image: "citrus-verbena-diffuser.png",
+        category: "home"
+    },
+    {
+        id: 22,
+        name: "Midnight Garden Incense",
+        brand: "Luminous Scents",
+        price: 24.99,
+        notes: "Night-blooming jasmine, sandalwood, musk",
+        description: "Set of 30 hand-rolled incense sticks.",
+        image: "midnight-garden-incense.png",
+        category: "home"
+    },
+    {
+        id: 23,
+        name: "Vanilla Musk Wax Melts",
+        brand: "Luminous Scents",
+        price: 18.99,
+        notes: "Vanilla bean, white musk, caramel",
+        description: "Pack of 12 wax melts for electric warmers.",
+        image: "vanilla-musk-wax-melts.png",
+        category: "home"
+    },
+    {
+        id: 24,
+        name: "White Tea Linen Spray",
+        brand: "Luminous Scents",
+        price: 28.99,
+        notes: "White tea, cotton flower, soft woods",
+        description: "Refresh linens, curtains, and upholstery.",
+        image: "white-tea-linen-spray.png",
+        category: "home"
+    },
+    
+    // === WELLNESS ===
+    {
+        id: 30,
+        name: "Calming Lavender Mist",
+        brand: "Luminous Scents",
+        price: 26.99,
+        notes: "French lavender, chamomile, bergamot",
+        description: "Spritz on pillows or in the air for relaxation.",
+        image: "calming-lavender-mist.png",
+        category: "wellness"
+    },
+    {
+        id: 31,
+        name: "Energizing Citrus Oil Blend",
+        brand: "Luminous Scents",
+        price: 32.99,
+        notes: "Sweet orange, lemon, grapefruit, peppermint",
+        description: "Essential oil blend for diffusers. 30ml bottle.",
+        image: "energizing-citrus-oil-blend.png",
+        category: "wellness"
+    },
+    {
+        id: 32,
+        name: "Focus Eucalyptus Roller",
+        brand: "Luminous Scents",
+        price: 22.99,
+        notes: "Eucalyptus, rosemary, spearmint",
+        description: "Roll-on pulse point oil for mental clarity.",
+        image: "focus-eucalyptus-roller.png",
+        category: "wellness"
+    },
+    {
+        id: 33,
+        name: "Relaxing Chamomile Balm",
+        brand: "Luminous Scents",
+        price: 34.99,
+        notes: "Roman chamomile, neroli, sweet almond",
+        description: "Solid balm for temples and wrists. 15g tin.",
+        image: "relaxing-chamomile-balm.png",
+        category: "wellness"
+    },
+    {
+        id: 34,
+        name: "Sleep Serenity Pillow Spray",
+        brand: "Luminous Scents",
+        price: 29.99,
+        notes: "Lavender, vetiver, cedarwood",
+        description: "Promotes restful sleep. 100ml spray bottle.",
+        image: "sleep-serenity-pillow-spray.png",
+        category: "wellness"
+    },
+    
+    // === TRAVEL & GIFT SETS ===
+    {
+        id: 40,
+        name: "Discovery Sample Set",
+        brand: "Luminous Scents",
+        price: 48.99,
+        notes: "8 × 2ml samples of our bestsellers",
+        description: "Perfect introduction to our fragrance collection.",
+        image: "discovery-sample-set.png",
+        category: "gift"
+    },
+    {
+        id: 41,
+        name: "Duo Travel Set",
+        brand: "Luminous Scents",
+        price: 89.99,
+        notes: "2 × 30ml travel sprays in leather case",
+        description: "Choose any two fragrances. TSA-approved size.",
+        image: "duo-travel-set.png",
+        category: "gift"
+    },
+    {
+        id: 42,
+        name: "Mini Candle Trio",
+        brand: "Luminous Scents",
+        price: 44.99,
+        notes: "3 × 70g candles in gift box",
+        description: "Rosewood, Vanilla Musk, and White Tea scents.",
+        image: "mini-candle-trio.png",
+        category: "gift"
+    },
+    {
+        id: 43,
+        name: "Pocket Perfume Roll-Ons",
+        brand: "Luminous Scents",
+        price: 36.99,
+        notes: "4 × 5ml roll-on bottles",
+        description: "Portable favorites: Citrus Dawn, Velvet Iris, Ocean Whisper, Lavender Dream.",
+        image: "pocket-perfume-roll-ons.png",
+        category: "gift"
+    },
+    {
+        id: 44,
+        name: "Refillable Atomizer Kit",
+        brand: "Luminous Scents",
+        price: 28.99,
+        notes: "2 × 10ml refillable atomizers",
+        description: "Sleek metal design. Refill from any full-size bottle.",
+        image: "refillable-atomizer-kit.png",
+        category: "gift"
     }
 ];
 function customAlert(message) {
@@ -157,25 +421,27 @@ function updateQuantity(productId, change) {
 // Rendering functions
 
 function renderProductsPage() {
-    const container = document.getElementById("productsContainer");
+    // Get all section containers
+    const perfumeContainer = document.getElementById("perfumeContainer");
     const solarisContainer = document.getElementById("solarisContainer");
-    if (!container) {
-        return;
-    }
+    const homeContainer = document.getElementById("homeContainer");
+    const wellnessContainer = document.getElementById("wellnessContainer");
+    const giftContainer = document.getElementById("giftContainer");
+    
+    if (!perfumeContainer) return;
 
-    container.innerHTML = "";
-    if (solarisContainer) {
-        solarisContainer.innerHTML = "";
-    }
+    // Filter products by category
+    const perfumeProducts = products.filter(p => p.category === "perfume");
+    const solarisProducts = products.filter(p => p.category === "solaris");
+    const homeProducts = products.filter(p => p.category === "home");
+    const wellnessProducts = products.filter(p => p.category === "wellness");
+    const giftProducts = products.filter(p => p.category === "gift");
 
-    // Separate regular products and Solaris fragrances
-    const regularProducts = products.filter(p => p.name.toLowerCase().includes('aurora') || p.name.toLowerCase().includes('citrus') || p.name.toLowerCase().includes('velvet'));
-    const solarisProducts = products.filter(p => p.name.toLowerCase().includes('solaris'));
-
-    // Render regular products
-    regularProducts.forEach(product => {
+    // Helper function to create product card
+    function createProductCard(product) {
         const card = document.createElement("article");
         card.className = "card";
+        card.setAttribute("data-category", product.category);
 
         card.innerHTML = `
             <div class="product-image-container ${product.id === 1 ? 'aurora-oud-image' : ''}">
@@ -189,56 +455,111 @@ function renderProductsPage() {
             <button class="btn-primary" data-product-id="${product.id}">
                 Add to basket
             </button>
-                `;
+        `;
 
-        container.appendChild(card);
+        return card;
+    }
 
-        applyScrollReveal(card);
-    });
-
-    // Render Solaris fragrances
-    if (solarisContainer && solarisProducts.length > 0) {
-        solarisProducts.forEach(product => {
-            const card = document.createElement("article");
-            card.className = "card";
-
-            card.innerHTML = `
-                <div class="product-image-container">
-                    <img src="images/${product.image}" alt="${product.name}" class="product-image">
-                </div>
-                <h3>${product.name}</h3>
-                <p>${product.brand}</p>
-                <p><strong>Notes:</strong> ${product.notes}</p>
-                <p class="price">£${product.price.toFixed(2)}</p>
-                <p>${product.description}</p>
-                <button class="btn-primary" data-product-id="${product.id}">
-                    Add to basket
-                </button>
-                    `;
-
-            solarisContainer.appendChild(card);
-
+    // Render products into their containers
+    function renderToContainer(container, productList) {
+        if (!container) return;
+        container.innerHTML = "";
+        productList.forEach(product => {
+            const card = createProductCard(product);
+            container.appendChild(card);
             applyScrollReveal(card);
         });
     }
 
-    container.addEventListener("click", event => {
-        const button = event.target.closest("button[data-product-id]");
-        if (button) {
-            const id = Number(button.getAttribute("data-product-id"));
-            addToBasket(id);
-        }
-    });
+    // Render all sections
+    renderToContainer(perfumeContainer, perfumeProducts);
+    renderToContainer(solarisContainer, solarisProducts);
+    renderToContainer(homeContainer, homeProducts);
+    renderToContainer(wellnessContainer, wellnessProducts);
+    renderToContainer(giftContainer, giftProducts);
 
-    if (solarisContainer) {
-        solarisContainer.addEventListener("click", event => {
+    // Add click handlers to all product sections
+    document.querySelectorAll(".product-scroll-container, .cards-grid").forEach(container => {
+        container.addEventListener("click", event => {
             const button = event.target.closest("button[data-product-id]");
             if (button) {
                 const id = Number(button.getAttribute("data-product-id"));
                 addToBasket(id);
             }
         });
+    });
+
+    // Initialize scroll functionality for scrollable sections
+    initScrollableSections();
+}
+
+// Scroll navigation for product sections
+function updateSectionUI(section) {
+    const container = section.querySelector(".product-scroll-container");
+    const leftBtn = section.querySelector(".scroll-btn-left");
+    const rightBtn = section.querySelector(".scroll-btn-right");
+
+    if (!container || !leftBtn || !rightBtn) return;
+
+    // Count visible cards
+    const visibleCards = Array.from(container.children).filter(
+        card => card.style.display !== 'none'
+    ).length;
+
+    // Logic for centering content
+    if (visibleCards <= 3) {
+        container.style.justifyContent = 'center';
+    } else {
+        container.style.justifyContent = 'flex-start';
     }
+
+    // Logic for button visibility based on card count
+    const areButtonsNeeded = visibleCards > 3;
+    if (!areButtonsNeeded) {
+        // Hide both buttons if there aren't enough cards to scroll
+        leftBtn.classList.add("hidden");
+        rightBtn.classList.add("hidden");
+        return; // Exit early
+    }
+    
+    // If buttons ARE needed, determine their state based on scroll position
+    leftBtn.classList.toggle("hidden", container.scrollLeft <= 10);
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    rightBtn.classList.toggle("hidden", container.scrollLeft >= maxScroll - 10);
+}
+
+function initScrollableSections() {
+    const scrollSections = document.querySelectorAll(".product-section-scrollable");
+    
+    scrollSections.forEach(section => {
+        const container = section.querySelector(".product-scroll-container");
+        const leftBtn = section.querySelector(".scroll-btn-left");
+        const rightBtn = section.querySelector(".scroll-btn-right");
+        
+        if (!container) return;
+
+        const cardWidth = 320; // Card width (300px) + gap (20px)
+        const scrollAmount = cardWidth * 3; // Scroll 3 cards at a time
+
+        // Scroll button click handlers
+        if (leftBtn) {
+            leftBtn.addEventListener("click", () => {
+                container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+            });
+        }
+
+        if (rightBtn) {
+            rightBtn.addEventListener("click", () => {
+                container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+            });
+        }
+
+        // Update UI on scroll
+        container.addEventListener("scroll", () => updateSectionUI(section));
+        
+        // Initial UI state after a short delay to let images load
+        setTimeout(() => updateSectionUI(section), 100);
+    });
 }
 
 // Track if a filter was previously active
@@ -246,52 +567,49 @@ let wasFiltered = false;
 
 function filterProducts() {
     const searchTerm = document.getElementById("searchInput").value.toLowerCase();
-    const cards = document.querySelectorAll("#productsContainer .card");
-    const solarisCards = document.querySelectorAll("#solarisContainer .card");
-    const solarisSection = document.querySelector(".solaris-duo-section");
-    const allCards = [...cards, ...solarisCards];
+    const allSections = document.querySelectorAll(".product-section");
+    const allCards = document.querySelectorAll(".product-scroll-container .card, .cards-grid .card");
     
-    let solarisVisible = 0;
     const isFilterActive = searchTerm !== "";
     const filterJustRemoved = wasFiltered && !isFilterActive;
 
-    // Filter main products
-    cards.forEach(card => {
+    // Track visible cards per section
+    const sectionVisibility = {};
+
+    // Filter all cards
+    allCards.forEach(card => {
         const name = card.querySelector("h3").textContent.toLowerCase();
         const notes = card.querySelector("p:nth-of-type(2)").textContent.toLowerCase();
         const description = card.querySelector("p:nth-of-type(4)").textContent.toLowerCase();
+        const category = card.getAttribute("data-category") || "unknown";
+        
         const matches = name.includes(searchTerm) || notes.includes(searchTerm) || description.includes(searchTerm);
 
         if (matches) {
             card.style.display = "block";
+            sectionVisibility[category] = (sectionVisibility[category] || 0) + 1;
         } else {
             card.style.display = "none";
         }
     });
 
-    // Filter Solaris products and count visible ones
-    solarisCards.forEach(card => {
-        const name = card.querySelector("h3").textContent.toLowerCase();
-        const notes = card.querySelector("p:nth-of-type(2)").textContent.toLowerCase();
-        const description = card.querySelector("p:nth-of-type(4)").textContent.toLowerCase();
-        const matches = name.includes(searchTerm) || notes.includes(searchTerm) || description.includes(searchTerm);
-
-        if (matches) {
-            card.style.display = "block";
-            solarisVisible++;
-        } else {
-            card.style.display = "none";
-        }
+    // Update UI for each scrollable section (centering and buttons)
+    document.querySelectorAll(".product-section-scrollable").forEach(section => {
+        updateSectionUI(section);
     });
 
-    // Hide/show Solaris section based on visible products
-    if (solarisSection) {
-        if (searchTerm === "" || solarisVisible > 0) {
-            solarisSection.style.display = "block";
-        } else {
-            solarisSection.style.display = "none";
+    // Hide/show sections based on visible products
+    allSections.forEach(section => {
+        const sectionCategory = section.getAttribute("data-section-category");
+        if (sectionCategory) {
+            const visibleCount = sectionVisibility[sectionCategory] || 0;
+            if (searchTerm === "" || visibleCount > 0) {
+                section.style.display = "block";
+            } else {
+                section.style.display = "none";
+            }
         }
-    }
+    });
 
     // Only animate when filter is REMOVED (going back to show all)
     if (filterJustRemoved) {

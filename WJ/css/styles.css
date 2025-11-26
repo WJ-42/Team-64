@@ -385,6 +385,12 @@ main {
     flex: 1;
 }
 
+/* Products page needs wider main for scrollable sections */
+body[data-page="products"] main {
+    max-width: 1400px;
+    padding: 2.5rem 3rem;
+}
+
 /* Footer */
 
 .site-footer {
@@ -1743,6 +1749,162 @@ textarea:-webkit-autofill:focus {
     justify-content: flex-start;
 }
 
+/* ===========================
+   SCROLLABLE PRODUCT SECTIONS
+   =========================== */
+
+.product-section {
+    margin-bottom: 4rem;
+}
+
+.product-section .section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.product-section .section-header h3 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(240, 194, 75, 0.3), 0 0 40px rgba(240, 194, 75, 0.15);
+    color: #f6f6f6;
+    transition: color 0.4s ease, text-shadow 0.4s ease;
+    display: inline-block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .product-section .section-header h3:hover {
+        color: #f0c24b;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 30px rgba(240, 194, 75, 0.6), 0 0 50px rgba(240, 194, 75, 0.3);
+    }
+}
+
+.product-section .section-header p {
+    color: #d4d4d4;
+    font-size: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Scroll wrapper - positions the buttons */
+.scroll-wrapper {
+    position: relative;
+    /* Increased padding to move buttons further out */
+    padding: 0 80px; 
+    /* Set a max-width to cleanly fit exactly 3 cards and center it */
+    max-width: 1100px; /* (3 * 300px cards) + (2 * 20px gaps) + (2 * 80px padding) */
+    margin: 0 auto;
+}
+
+/* Horizontal scrolling container */
+.product-scroll-container {
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    overflow-y: hidden; /* Required for horizontal scroll to work as expected */
+    scroll-behavior: smooth;
+    padding: 2rem 0; /* Vertical padding for hover effects/shadows */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    scroll-snap-type: x mandatory;
+}
+
+.product-scroll-container::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+.product-scroll-container .card {
+    flex: 0 0 300px;
+    scroll-snap-align: start;
+}
+
+/* Scroll navigation buttons */
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(10, 8, 3, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(212, 175, 55, 0.6);
+    color: #f0c24b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 20;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    opacity: 0.8;
+}
+
+.scroll-btn svg {
+    width: 22px;
+    height: 22px;
+    transition: transform 0.2s ease;
+}
+
+.scroll-btn:hover {
+    opacity: 1;
+    border-color: rgba(240, 194, 75, 0.9);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.7), 0 0 20px rgba(240, 194, 75, 0.25);
+    transform: translateY(-50%) scale(1.05);
+}
+
+.scroll-btn:hover svg {
+    transform: scale(1.1);
+}
+
+.scroll-btn:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.scroll-btn-left {
+    left: 20px; /* Position within the wrapper's padding */
+}
+
+.scroll-btn-right {
+    right: 20px; /* Position within the wrapper's padding */
+}
+
+.scroll-btn.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%) scale(0.8);
+}
+
+/* Solaris grid - keeps the centered 2-card layout */
+.solaris-grid {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    max-width: 750px;
+    margin: 0 auto;
+}
+
+.solaris-grid .card {
+    flex: 0 0 330px;
+}
+
+/* Section dividers between product sections */
+.product-section::before {
+    content: '\2014  \2726  \2014';
+    display: block;
+    text-align: center;
+    font-size: 1.25rem;
+    letter-spacing: 0.4em;
+    color: rgb(240, 194, 75);
+    margin-bottom: 2rem;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    animation: dividerPulse 2.5s ease-in-out infinite;
+}
+
+.product-section:first-of-type::before {
+    display: none;
+}
+
 /* Simple responsiveness */
 
 @media (max-width: 768px) {
@@ -1779,6 +1941,50 @@ textarea:-webkit-autofill:focus {
 
     .card {
         flex: 1 1 100%;
+    }
+
+    /* Scrollable sections responsive */
+    .scroll-wrapper {
+        padding: 0 50px;
+        /* Remove max-width on mobile to allow it to be fluid */
+        max-width: none;
+    }
+
+    .scroll-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .scroll-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .scroll-btn-left {
+        left: 10px;
+    }
+
+    .scroll-btn-right {
+        right: 10px;
+    }
+
+    .product-scroll-container .card {
+        flex: 0 0 280px;
+    }
+
+    .solaris-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .solaris-grid .card {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 330px;
+    }
+
+    .product-section .section-header h3 {
+        font-size: 1.8rem;
     }
 }
 
