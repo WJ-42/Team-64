@@ -330,6 +330,19 @@ h3, h4, h5, h6 {
     opacity: 1 !important;
 }
 
+/* Fix Secondary Button Text in Light Mode */
+[data-theme="light"] .btn-secondary {
+    color: #000000 !important;
+    background: var(--btn-secondary-bg) !important;
+    border: 1px solid var(--btn-secondary-border) !important;
+}
+
+[data-theme="light"] .btn-secondary:hover {
+    color: #000000 !important;
+    background: var(--btn-secondary-hover) !important;
+    border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
 .main-header::before {
     content: '';
     position: absolute;
