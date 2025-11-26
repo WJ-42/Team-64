@@ -93,12 +93,10 @@ h3, h4, h5, h6 {
 
 @keyframes starTwinkle {
     0%, 100% {
-        opacity: 0.4;
-        transform: scale(0.8);
+        opacity: 0.3;
     }
     50% {
-        opacity: 1;
-        transform: scale(1.2);
+        opacity: 0.7;
     }
 }
 
@@ -482,7 +480,7 @@ main {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(12, 10, 5, 0.82) 50%, rgba(0, 0, 0, 0.85) 100%);
     backdrop-filter: blur(16px);
     padding: 1.25rem 1.5rem;
-    border-radius: 6px;
+    border-radius: 12px;
     border: 1px solid rgba(240, 194, 75, 0.25);
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
     position: relative;
@@ -652,31 +650,26 @@ textarea:-webkit-autofill:focus {
     justify-content: center;
 }
 
-/* Starlight border - animated gradient traveling around the edge */
+/* Subtle starlight border - soft shimmer traveling around the edge */
 .product-image-container::before {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: 6px;
-    padding: 2px;
+    padding: 1px;
     background: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(240, 194, 75, 0.15) 10%,
-        rgba(255, 215, 0, 0.7) 20%,
-        rgba(255, 255, 255, 1) 25%,
-        rgba(255, 215, 0, 0.7) 30%,
-        rgba(240, 194, 75, 0.15) 40%,
-        transparent 50%,
-        rgba(240, 194, 75, 0.15) 60%,
-        rgba(255, 215, 0, 0.6) 70%,
-        rgba(255, 255, 255, 0.9) 75%,
-        rgba(255, 215, 0, 0.6) 80%,
-        rgba(240, 194, 75, 0.15) 90%,
+        rgba(240, 194, 75, 0.08) 20%,
+        rgba(255, 215, 0, 0.25) 30%,
+        rgba(255, 245, 220, 0.4) 35%,
+        rgba(255, 215, 0, 0.25) 40%,
+        rgba(240, 194, 75, 0.08) 50%,
+        transparent 65%,
         transparent 100%
     );
     background-size: 200% 100%;
-    animation: starBorderRotate 3s linear infinite;
+    animation: starBorderRotate 6s linear infinite;
     -webkit-mask: 
         linear-gradient(#fff 0 0) content-box, 
         linear-gradient(#fff 0 0);
@@ -688,41 +681,35 @@ textarea:-webkit-autofill:focus {
     transition: opacity 0.5s ease;
 }
 
-/* Corner star sparkle */
+/* Small accent star */
 .card::before {
-    content: '✦';
+    content: '·';
     position: absolute;
-    top: 12px;
-    right: 12px;
-    font-size: 14px;
-    color: #ffd700;
-    text-shadow: 
-        0 0 8px rgba(255, 215, 0, 0.9),
-        0 0 16px rgba(255, 215, 0, 0.6),
-        0 0 24px rgba(255, 215, 0, 0.3);
-    animation: starTwinkle 1.8s ease-in-out infinite;
+    top: 16px;
+    right: 16px;
+    font-size: 18px;
+    color: rgba(255, 215, 0, 0.6);
+    text-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
+    animation: starTwinkle 3s ease-in-out infinite;
     pointer-events: none;
     z-index: 20;
-    opacity: 1;
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition: opacity 0.5s ease;
 }
 
-/* Second sparkle for extra luxury */
+/* Second subtle accent */
 .card::after {
-    content: '✦';
+    content: '·';
     position: absolute;
-    top: 22px;
-    left: 18px;
-    font-size: 10px;
-    color: #fff8dc;
-    text-shadow: 
-        0 0 6px rgba(255, 215, 0, 0.8),
-        0 0 12px rgba(255, 215, 0, 0.5);
-    animation: starTwinkle 2.4s ease-in-out infinite 0.6s;
+    top: 24px;
+    left: 20px;
+    font-size: 12px;
+    color: rgba(255, 225, 180, 0.5);
+    text-shadow: 0 0 4px rgba(255, 215, 0, 0.3);
+    animation: starTwinkle 4s ease-in-out infinite 1.5s;
     pointer-events: none;
     z-index: 20;
-    opacity: 0.8;
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    opacity: 0.6;
+    transition: opacity 0.5s ease;
 }
 
 .card:hover .product-image-container::before {
@@ -769,7 +756,7 @@ textarea:-webkit-autofill:focus {
 .card {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(12, 10, 5, 0.82) 50%, rgba(0, 0, 0, 0.85) 100%);
     backdrop-filter: blur(16px);
-    border-radius: 6px;
+    border-radius: 12px;
     padding: 1.25rem;
     flex: 1 1 220px;
     border: 1px solid rgba(240, 194, 75, 0.25);
@@ -826,7 +813,7 @@ textarea:-webkit-autofill:focus {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(12, 10, 5, 0.82) 50%, rgba(0, 0, 0, 0.85) 100%);
     backdrop-filter: blur(16px);
     border: 1px solid rgba(240, 194, 75, 0.25);
-    border-radius: 6px;
+    border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
     position: relative;
@@ -902,7 +889,7 @@ textarea:-webkit-autofill:focus {
     min-width: 300px;
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(12, 10, 5, 0.82) 50%, rgba(0, 0, 0, 0.85) 100%);
     border: 1px solid rgba(240, 194, 75, 0.25);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 2rem;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     transition: all 0.4s ease;
@@ -1044,7 +1031,7 @@ textarea:-webkit-autofill:focus {
     flex: 1 1 260px;
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(12, 10, 5, 0.82) 50%, rgba(0, 0, 0, 0.85) 100%);
     backdrop-filter: blur(16px);
-    border-radius: 6px;
+    border-radius: 12px;
     padding: 2rem 2.25rem;
     border: 1px solid rgba(240, 194, 75, 0.25);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
