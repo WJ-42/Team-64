@@ -739,6 +739,9 @@ function setupProductSearch() {
         
         displaySearchResults(matchingProducts, currentSearchTerm);
         updateSearchResultsInfo(matchingProducts.length, currentSearchTerm);
+        
+        // Clear active category filter when searching
+        clearActiveCategoryFilter();
     }
     
     function showAllProducts() {
@@ -843,7 +846,7 @@ function setupProductSearch() {
     
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            performSearch(searchInput.value);
+            performSearch(e.target.value);
         }
     });
     
@@ -854,6 +857,98 @@ function setupProductSearch() {
             updateSearchResultsInfo(0, '');
         }
     });
+}
+
+// Category filter functionality
+function setupCategoryFilters() {
+    const categoryButtons = document.querySelectorAll('.category-filter-btn');
+    
+    if (categoryButtons.length === 0) return;
+    
+    function filterByCategory(category) {
+        // Show all categories if "all" is selected
+        if (category === 'all') {
+            document.querySelectorAll('.category-section').forEach(section => {
+                section.style.display = 'block';
+            });
+        } else {
+            // Hide all category sections first
+            document.querySelectorAll('.category-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show only the selected category
+            const targetSection = Array.from(document.querySelectorAll('.category-section')).find(section => {
+                const header = section.querySelector('h3');
+                return header && header.textContent === category;
+            });
+            
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+        }
+        
+        // Scroll to the top of the products area
+        document.querySelector('.category-filters-section').scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+    
+    function updateActiveButton(activeButton) {
+        // Remove active class from all buttons
+        categoryButtons.forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Add active class to clicked button
+        if (activeButton) {
+            activeButton.classList.add('active');
+        }
+    }
+    
+    function clearActiveCategoryFilter() {
+        // Remove active class from category buttons
+        categoryButtons.forEach(btn => {
+            btn.classList.remove('active');
+        });
+    }
+    
+    // Add event listeners to category buttons
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const category = button.getAttribute('data-category');
+            
+            // Clear search input when filtering by category
+            const searchInput = document.getElementById('productSearch');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+            
+            // Hide search results info
+            const searchResultsInfo = document.getElementById('searchResultsInfo');
+            if (searchResultsInfo) {
+                searchResultsInfo.classList.remove('visible');
+            }
+            
+            filterByCategory(category);
+            updateActiveButton(button);
+            
+            // Show all products in the selected category (remove any search highlighting)
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.style.display = 'block';
+                card.querySelectorAll('.search-highlight').forEach(span => {
+                    span.outerHTML = span.textContent;
+                });
+            });
+        });
+    });
+    
+    // Initially set "All Products" as active
+    const allProductsButton = document.querySelector('[data-category="all"]');
+    if (allProductsButton) {
+        allProductsButton.classList.add('active');
+    }
 }
 
 // Page initialiser
@@ -877,6 +972,8 @@ document.addEventListener("DOMContentLoaded", () => {
         initSQLProducts();
         // Initialize search functionality
         setupProductSearch();
+        // Initialize category filters
+        setupCategoryFilters();
         // Initialize navigation after a longer delay to ensure products are fully loaded and rendered
         setTimeout(() => {
             console.log('Setting up navigation after products load...');
