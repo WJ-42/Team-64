@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luminous Scents - Contact</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/main.js" defer></script>
+</head>
+<body data-page="contact">
+    <div class="parallax-stars">
+        <canvas id="starfield"></canvas>
+        <canvas id="trailCanvas"></canvas>
+    </div>
+    <header class="main-header">
+        <div class="logo">
+            <img src="images/luminous-logo.png" alt="Luminous Scents logo" class="logo-image">
+            <div class="logo-text">
+                <h1>Luminous Scents</h1>
+                <p>Illuminating the story behind every fragrance</p>
+            </div>
+        </div>
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="products.html">Fragrances</a>
+            <a href="basket.html">Basket</a>
+            <a href="about.html">About</a>
+            <a href="contact.html" class="active">Contact</a>
+            <a href="account.html">Account</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-text">
+                <h2>Contact Us</h2>
+                <p>
+                    Have questions about our fragrances or need assistance? We're here to illuminate your experience. Reach out to our team of fragrance experts.
+                </p>
+            </div>
+        </section>
+
+        <section class="feature-section">
+            <h3>Get in Touch</h3>
+            <div class="contact-wrapper">
+                <div class="info-grid">
+                    <div class="info-column">
+                        <div class="info-content">
+                            <article class="feature-card contact-info">
+                                <h4>Contact Information</h4>
+                                <p>
+                                    Get in touch with us through any of the channels below. Our dedicated fragrance experts are ready to assist you with questions about our products, ordering, or any other inquiries you may have.
+                                </p>
+                                <p><strong>Email:</strong> info@luminousscents.com</p>
+                                <p><strong>Phone:</strong> +44 20 1234 5678</p>
+                                <p><strong>Address:</strong> 123 Fragrance Lane, London, UK</p>
+                                <p><strong>Hours:</strong> Monday - Friday, 9 AM - 6 PM GMT</p>
+                            </article>
+                        </div>
+                    </div>
+                    <div class="info-column">
+                        <article class="feature-card">
+                            <h4>Send us a Message</h4>
+                            <form action="#" method="post" id="contactForm" novalidate>
+                                <div class="form-row">
+                                    <label for="contactName">Name</label>
+                                    <input type="text" id="contactName" name="name" required class="auth-input" placeholder="Your full name" minlength="2" maxlength="50">
+                                    <span class="error-message" id="nameError"></span>
+                                </div>
+                                <div class="form-row">
+                                    <label for="contactEmail">Email</label>
+                                    <input type="email" id="contactEmail" name="email" required class="auth-input" placeholder="your@email.com">
+                                    <span class="error-message" id="contactEmailError"></span>
+                                </div>
+                                <div class="form-row">
+                                    <label for="contactMessage">Message <span class="char-counter" id="charCounter">0 / 500</span></label>
+                                    <textarea id="contactMessage" name="message" rows="5" required class="auth-input" placeholder="How can we help you?" minlength="10" maxlength="500"></textarea>
+                                    <span class="error-message" id="messageError"></span>
+                                </div>
+                                <button type="submit" class="btn-primary">Send Message</button>
+                            </form>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Luminous Scents. CS2TP Team 64.</p>
+    </footer>
+
+</body>
+</html>

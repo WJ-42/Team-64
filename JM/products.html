@@ -2,24 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Luminous Scents - Fragrances</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Products - Luminous Scents</title>
     <link rel="stylesheet" href="css/styles.css">
-    <script src="js/main.js" defer></script>
 </head>
-<body data-page="products">
+<body data-page="newproducts">
+    <!-- Parallax stars background -->
     <div class="parallax-stars">
         <canvas id="starfield"></canvas>
-        <canvas id="trailCanvas"></canvas>
     </div>
+    
+    <!-- Mouse trail canvas -->
+    <canvas id="trailCanvas"></canvas>
+
+    <!-- Header -->
     <header class="main-header">
         <div class="logo">
-            <img src="images/luminous-logo.png" alt="Luminous Scents logo" class="logo-image">
+            <img src="images/luminous-logo.png" alt="Luminous Scents" class="logo-image">
             <div class="logo-text">
                 <h1>Luminous Scents</h1>
-                <p>Illuminating the story behind every fragrance</p>
+                <p>Luxury Fragrances</p>
             </div>
         </div>
         <nav class="navbar">
@@ -27,22 +29,150 @@
             <a href="products.html">Fragrances</a>
             <a href="basket.html">Basket</a>
             <a href="account.html">Account</a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                🌙
+            </button>
         </nav>
     </header>
 
+    <!-- Main Content -->
     <main>
         <section class="page-header">
-            <h2>Our fragrances</h2>
-            <p>Sample products for the MVP. Each item has a name, price, and key scent notes.</p>
+            <h2>Our Product Collections</h2>
+            <p>Explore our carefully curated fragrances organized by category</p>
         </section>
 
-        <section id="productsContainer" class="cards-grid">
-            <!-- Products will be injected here by main.js -->
+        <!-- Search Bar -->
+        <section class="search-section">
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="productSearch" placeholder="Search fragrances by name, brand, or notes..." autocomplete="off">
+                    <button class="search-button" id="searchBtn" aria-label="Search">
+                        <span class="search-icon">🔍</span>
+                    </button>
+                </div>
+                <div class="search-results-info" id="searchResultsInfo"></div>
+            </div>
+        </section>
+
+        <!-- Category Filter Buttons -->
+        <section class="category-filters-section">
+            <div class="category-filters-container">
+                <h3 class="filters-title">Browse by Category</h3>
+                <div class="category-filters">
+                    <button class="category-filter-btn" data-category="all">
+                        <span class="filter-icon">🌟</span>
+                        All Products
+                    </button>
+                    <button class="category-filter-btn" data-category="Signature Eau de Parfum">
+                        <span class="filter-icon">✨</span>
+                        Signature Collection
+                    </button>
+                    <button class="category-filter-btn" data-category="Luxury Eau de Toilette">
+                        <span class="filter-icon">🌙</span>
+                        Luxury Daytime
+                    </button>
+                    <button class="category-filter-btn" data-category="Home Fragrance Collection">
+                        <span class="filter-icon">🏠</span>
+                        Home Fragrance
+                    </button>
+                    <button class="category-filter-btn" data-category="Travel & Mini Sets">
+                        <span class="filter-icon">🧳</span>
+                        Travel Sets
+                    </button>
+                    <button class="category-filter-btn" data-category="Wellness Aromatics">
+                        <span class="filter-icon">🧘</span>
+                        Wellness
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Sections -->
+        
+        <!-- Signature Eau de Parfum -->
+        <section class="category-section">
+            <div class="category-header">
+                <h3>Signature Eau de Parfum</h3>
+                <p>Our premium collection of signature scents for any occasion</p>
+            </div>
+            <div class="products-grid-container">
+                <button class="nav-arrow nav-arrow-left" data-target="signature-parfum-grid" data-direction="-1">‹</button>
+                <div class="products-grid" id="signature-parfum-grid">
+                    <!-- Products will be populated by JavaScript -->
+                </div>
+                <button class="nav-arrow nav-arrow-right" data-target="signature-parfum-grid" data-direction="1">›</button>
+            </div>
+        </section>
+
+        <!-- Luxury Eau de Toilette -->
+        <section class="category-section">
+            <div class="category-header">
+                <h3>Luxury Eau de Toilette</h3>
+                <p>Elegant daytime fragrances with sophisticated character</p>
+            </div>
+            <div class="products-grid-container">
+                <button class="nav-arrow nav-arrow-left" data-target="luxury-toilette-grid" data-direction="-1">‹</button>
+                <div class="products-grid" id="luxury-toilette-grid">
+                    <!-- Products will be populated by JavaScript -->
+                </div>
+                <button class="nav-arrow nav-arrow-right" data-target="luxury-toilette-grid" data-direction="1">›</button>
+            </div>
+        </section>
+
+        <!-- Home Fragrance Collection -->
+        <section class="category-section">
+            <div class="category-header">
+                <h3>Home Fragrance Collection</h3>
+                <p>Transform your living space with our aromatic home collection</p>
+            </div>
+            <div class="products-grid-container">
+                <button class="nav-arrow nav-arrow-left" data-target="home-fragrance-grid" data-direction="-1">‹</button>
+                <div class="products-grid" id="home-fragrance-grid">
+                    <!-- Products will be populated by JavaScript -->
+                </div>
+                <button class="nav-arrow nav-arrow-right" data-target="home-fragrance-grid" data-direction="1">›</button>
+            </div>
+        </section>
+
+        <!-- Travel & Mini Sets -->
+        <section class="category-section">
+            <div class="category-header">
+                <h3>Travel & Mini Sets</h3>
+                <p>Perfect collections for exploring new scents on the go</p>
+            </div>
+            <div class="products-grid-container">
+                <button class="nav-arrow nav-arrow-left" data-target="travel-sets-grid" data-direction="-1">‹</button>
+                <div class="products-grid" id="travel-sets-grid">
+                    <!-- Products will be populated by JavaScript -->
+                </div>
+                <button class="nav-arrow nav-arrow-right" data-target="travel-sets-grid" data-direction="1">›</button>
+            </div>
+        </section>
+
+        <!-- Wellness Aromatics -->
+        <section class="category-section">
+            <div class="category-header">
+                <h3>Wellness Aromatics</h3>
+                <p>Therapeutic blends designed for wellbeing and relaxation</p>
+            </div>
+            <div class="products-grid-container">
+                <button class="nav-arrow nav-arrow-left" data-target="wellness-aromatics-grid" data-direction="-1">‹</button>
+                <div class="products-grid" id="wellness-aromatics-grid">
+                    <!-- Products will be populated by JavaScript -->
+                </div>
+                <button class="nav-arrow nav-arrow-right" data-target="wellness-aromatics-grid" data-direction="1">›</button>
+            </div>
         </section>
     </main>
 
+    <!-- Footer -->
     <footer class="site-footer">
-        <p>&copy; 2025 Luminous Scents. CS2TP Team 64.</p>
+        <p>&copy; 2025 Luminous Scents. All rights reserved. | Crafted with passion for extraordinary fragrances.</p>
     </footer>
+
+    <!-- Load SQL parser and fetch product data -->
+    <script src="js/sql-parser.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

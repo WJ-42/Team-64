@@ -2,15 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Luminous Scents - Basket</title>
+    <title>Luminous Scents - Fragrances</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="js/sql-parser.js" defer></script>
     <script src="js/main.js" defer></script>
 </head>
-<body data-page="basket">
+<body data-page="products">
     <div class="parallax-stars">
         <canvas id="starfield"></canvas>
         <canvas id="trailCanvas"></canvas>
@@ -24,30 +23,21 @@
             </div>
         </div>
         <nav class="navbar">
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="products.html">Fragrances</a>
-                <a href="basket.html">Basket</a>
-                <a href="account.html">Account</a>
-            </div>
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                🌙
-            </button>
+            <a href="index.html">Home</a>
+            <a href="products.html">Fragrances</a>
+            <a href="basket.html">Basket</a>
+            <a href="account.html">Account</a>
         </nav>
     </header>
 
     <main>
         <section class="page-header">
-            <h2>Your basket</h2>
-            <p>Review your items, adjust quantities, and proceed to a mock checkout.</p>
+            <h2>Our fragrances</h2>
+            <p>Sample products for the MVP. Each item has a name, price, and key scent notes.</p>
         </section>
 
-        <section id="basketContainer" class="basket-section">
-            <!-- Basket items will be injected here by main.js -->
-        </section>
-
-        <section class="basket-summary" id="basketSummary">
-            <!-- Total and checkout button go here -->
+        <section id="productsContainer" class="cards-grid">
+            <!-- Products will be injected here by main.js -->
         </section>
     </main>
 

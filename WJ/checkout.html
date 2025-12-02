@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luminous Scents - Checkout</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/main.js" defer></script>
+</head>
+<body data-page="checkout">
+    <div class="parallax-stars">
+        <canvas id="starfield"></canvas>
+        <canvas id="trailCanvas"></canvas>
+    </div>
+    <header class="main-header">
+        <div class="logo">
+            <img src="images/luminous-logo.png" alt="Luminous Scents logo" class="logo-image">
+            <div class="logo-text">
+                <h1>Luminous Scents</h1>
+                <p>Illuminating the story behind every fragrance</p>
+            </div>
+        </div>
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="products.html">Fragrances</a>
+            <a href="basket.html">Basket</a>
+            <a href="checkout.html" class="active">Checkout</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="account.html">Account</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h2>Checkout</h2>
+            <p>Complete your order with our secure checkout process.</p>
+        </section>
+
+        <!-- Step Indicator -->
+        <div class="checkout-steps">
+            <div class="step active" data-step="1">
+                <span class="step-number">1</span>
+                <span class="step-label">Shipping</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="2">
+                <span class="step-number">2</span>
+                <span class="step-label">Payment</span>
+            </div>
+        </div>
+
+        <form id="checkoutForm" novalidate>
+            <!-- STEP 1: Order Summary + Shipping -->
+            <div class="checkout-step" id="step1">
+                <div class="checkout-container">
+                    <!-- Sidebar: Order Summary -->
+                    <aside class="checkout-sidebar">
+                        <div class="checkout-card-box">
+                            <h3>Order Summary</h3>
+                            <div id="orderSummary" class="order-summary-content">
+                                <!-- Order summary will be injected here -->
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- Main: Shipping Information -->
+                    <div class="checkout-main">
+                        <article class="checkout-card-box">
+                            <h3>Shipping Information</h3>
+                            <div class="checkout-form-fields">
+                        <div class="form-row">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="John Smith" minlength="5" maxlength="50" required>
+                            <span class="error-message" id="nameError"></span>
+                        </div>
+                                
+                                <div class="form-row">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                                    <span class="error-message" id="emailError"></span>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="+44 7123 456789" required>
+                                    <span class="error-message" id="phoneError"></span>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <label for="address">Shipping Address</label>
+                                    <textarea id="address" name="address" rows="3" placeholder="123 Fragrance Lane&#10;London, UK&#10;SW1A 1AA" minlength="10" maxlength="200" required></textarea>
+                                    <span class="error-message" id="addressError"></span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <div class="checkout-buttons">
+                            <a href="basket.html" class="checkout-btn">Back to Basket</a>
+                            <button type="button" id="toStep2" class="checkout-btn checkout-btn-next">Continue to Payment</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 2: Payment -->
+            <div class="checkout-step hidden" id="step2">
+                <div class="checkout-container">
+                    <!-- Sidebar: Order Summary -->
+                    <aside class="checkout-sidebar">
+                        <div class="checkout-card-box">
+                            <h3>Order Summary</h3>
+                            <div id="orderSummary2" class="order-summary-content">
+                                <!-- Order summary will be injected here -->
+                            </div>
+                        </div>
+                    </aside>
+
+                    <!-- Main: Payment Details -->
+                    <div class="checkout-main">
+                        <article class="checkout-card-box">
+                            <h3>Payment Details</h3>
+                            <div class="checkout-form-fields">
+                                <div class="form-row">
+                                    <label for="cardName">Name on Card</label>
+                                    <input type="text" id="cardName" name="cardName" placeholder="JOHN SMITH" maxlength="50" required>
+                                    <span class="error-message" id="cardNameError"></span>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <label for="cardNumber">Card Number</label>
+                                    <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                                    <span class="error-message" id="cardNumberError"></span>
+                                </div>
+                                
+                                <div class="checkout-row-split">
+                                    <div class="form-row">
+                                        <label for="expiry">Expiry Date</label>
+                                        <input type="text" id="expiry" name="expiry" placeholder="MM/YY" maxlength="5" required>
+                                        <span class="error-message" id="expiryError"></span>
+                                    </div>
+                                    <div class="form-row">
+                                        <label for="cvv">CVV</label>
+                                        <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="3" inputmode="numeric" required>
+                                        <span class="error-message" id="cvvError"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        <div class="checkout-buttons">
+                            <button type="button" id="toStep1" class="checkout-btn">Back to Shipping</button>
+                            <button type="submit" class="checkout-btn checkout-btn-next">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Success Toast -->
+        <div id="checkoutToast" class="success-toast">
+            <span class="toast-icon"></span>
+            <span class="toast-message" id="checkoutToastMessage"></span>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Luminous Scents. CS2TP Team 64.</p>
+    </footer>
+</body>
+</html>
