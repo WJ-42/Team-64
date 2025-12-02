@@ -1753,6 +1753,86 @@ main {
     }
 }
 
+/* Categories fade animations */
+@keyframes categoriesFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes categoriesFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+}
+
+/* Auto-scroll animation for categories */
+@keyframes autoScroll {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-240px);
+    }
+    50% {
+        transform: translateX(-480px);
+    }
+    75% {
+        transform: translateX(-720px);
+    }
+    100% {
+        transform: translateX(-960px);
+    }
+}
+
+/* Responsive auto-scroll */
+@keyframes autoScrollResponsive {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-220px);
+    }
+    50% {
+        transform: translateX(-440px);
+    }
+    75% {
+        transform: translateX(-660px);
+    }
+    100% {
+        transform: translateX(-880px);
+    }
+}
+
+/* Mobile auto-scroll */
+@keyframes autoScrollMobile {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-200px);
+    }
+    50% {
+        transform: translateX(-400px);
+    }
+    75% {
+        transform: translateX(-600px);
+    }
+    100% {
+        transform: translateX(-800px);
+    }
+}
+
 /* Custom Animations */
 @keyframes fadeInLeft {
     from {
@@ -1885,4 +1965,290 @@ main {
 @keyframes spin {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Categories Section for Home Page */
+.categories-section {
+    margin: 3rem auto;
+    max-width: 1100px;
+    position: relative;
+    z-index: 10;
+    text-align: center;
+}
+
+.categories-container {
+    padding: 0 1.5rem;
+}
+
+.categories-container h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.8px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(240, 194, 75, 0.3), 0 0 40px rgba(240, 194, 75, 0.15);
+    background: linear-gradient(90deg, #f0c24b 0%, #f0c24b 50%, #f6f6f6 50%, #f6f6f6 100%);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: background-position 0.5s ease;
+    animation: fadeInUp 0.8s ease-out 0.1s both;
+}
+
+.categories-container h3:hover {
+    background-position: 0% 0;
+}
+
+.categories-container p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.categories-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    max-width: 100%;
+    margin: 0 auto;
+    animation: fadeInUp 0.8s ease-out 0.3s both;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    padding: 0.5rem 0;
+    mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+.category-card {
+    flex: 0 0 auto;
+    width: 220px;
+    min-width: 220px;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(12, 10, 5, 0.82) 50%, rgba(0, 0, 0, 0.85) 100%);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(240, 194, 75, 0.25);
+    border-radius: 12px;
+    padding: 1.25rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    scroll-snap-align: start;
+}
+
+.category-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: rgba(240, 194, 75, 0.5);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(240, 194, 75, 0.2);
+    background: linear-gradient(135deg, rgba(5, 5, 5, 0.9) 0%, rgba(15, 12, 5, 0.87) 50%, rgba(5, 5, 5, 0.9) 100%);
+}
+
+.category-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(240, 194, 75, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.category-card:hover::before {
+    left: 100%;
+}
+
+.category-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 0 10px rgba(240, 194, 75, 0.3));
+    transition: all 0.3s ease;
+}
+
+.category-card:hover .category-icon {
+    filter: drop-shadow(0 0 20px rgba(240, 194, 75, 0.6));
+    transform: scale(1.1);
+}
+
+.category-card h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-accent);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.category-card p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 90%;
+}
+
+.category-count {
+    display: inline-block;
+    background: linear-gradient(135deg, rgba(240, 194, 75, 0.2) 0%, rgba(214, 158, 46, 0.15) 50%, rgba(240, 194, 75, 0.2) 100%);
+    border: 1px solid rgba(240, 194, 75, 0.3);
+    color: var(--text-accent);
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.category-card:hover .category-count {
+    background: linear-gradient(135deg, rgba(240, 194, 75, 0.3) 0%, rgba(214, 158, 46, 0.25) 50%, rgba(240, 194, 75, 0.3) 100%);
+    border-color: rgba(240, 194, 75, 0.5);
+    transform: scale(1.05);
+}
+
+/* Light mode styles for home page categories */
+[data-theme="light"] .categories-container h3 {
+    background: none !important;
+    background-clip: unset !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: initial !important;
+    color: #000000 !important;
+    text-shadow: none !important;
+}
+
+[data-theme="light"] .categories-grid {
+    mask-image: linear-gradient(to right, transparent 0%, white 10%, white 90%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, white 10%, white 90%, transparent 100%);
+}
+
+[data-theme="light"] .categories-section .category-card {
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .categories-section .category-card:hover {
+    background: #ffffff !important;
+    border-color: rgba(214, 158, 46, 0.4) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 0 0 20px rgba(214, 158, 46, 0.1) !important;
+    transform: translateY(-8px) scale(1.02);
+}
+
+[data-theme="light"] .categories-section .category-card * {
+    color: #000000 !important;
+    text-shadow: none !important;
+}
+
+[data-theme="light"] .categories-section .category-count {
+    background: rgba(214, 158, 46, 0.1) !important;
+    border: 1px solid rgba(214, 158, 46, 0.3) !important;
+    color: #000000 !important;
+}
+
+[data-theme="light"] .categories-section .category-card:hover .category-count {
+    background: rgba(214, 158, 46, 0.15) !important;
+    border-color: rgba(214, 158, 46, 0.5) !important;
+}
+
+/* Hide scrollbar for categories grid */
+.categories-grid::-webkit-scrollbar {
+    display: none;
+}
+
+.categories-grid {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Responsive design for home page categories */
+@media (max-width: 768px) {
+    .categories-section {
+        margin: 2rem auto;
+    }
+    
+    .categories-container {
+        padding: 0 1rem;
+    }
+    
+    .categories-container h3 {
+        font-size: 1.6rem;
+    }
+    
+    .categories-container p {
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .categories-grid {
+        gap: 0.75rem;
+        padding: 0.25rem 0;
+    }
+    
+    .category-card {
+        width: 200px;
+        min-width: 200px;
+        padding: 1rem;
+    }
+    
+    .category-icon {
+        font-size: 1.75rem;
+    }
+    
+    .category-card h4 {
+        font-size: 1rem;
+    }
+    
+    .category-card p {
+        font-size: 0.8rem;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .categories-container h3 {
+        font-size: 1.4rem;
+    }
+    
+    .categories-container p {
+        font-size: 0.9rem;
+    }
+    
+    .categories-grid {
+        gap: 0.5rem;
+        padding: 0.25rem 0;
+    }
+    
+    .category-card {
+        width: 180px;
+        min-width: 180px;
+        padding: 0.75rem;
+    }
+    
+    .category-icon {
+        font-size: 1.5rem;
+    }
+    
+    .category-card h4 {
+        font-size: 0.95rem;
+    }
+    
+    .category-card p {
+        font-size: 0.75rem;
+    }
+    
+    .category-count {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+    }
 }
