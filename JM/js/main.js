@@ -968,12 +968,25 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (page === "products") {
         renderProductsPage();
     } else if (page === "newproducts") {
+        // Check for category parameter in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoryParam = urlParams.get('category');
+        
         // SQL products will be loaded and rendered in initSQLProducts
         initSQLProducts();
         // Initialize search functionality
         setupProductSearch();
         // Initialize category filters
         setupCategoryFilters();
+        
+        // If category parameter exists, filter products after they load
+        if (categoryParam) {
+            console.log('Filtering by category from URL:', categoryParam);
+            setTimeout(() => {
+                filterProductsByCategoryFromURL(categoryParam);
+            }, 800); // Wait for products to load
+        }
+        
         // Initialize navigation after a longer delay to ensure products are fully loaded and rendered
         setTimeout(() => {
             console.log('Setting up navigation after products load...');
@@ -1272,4 +1285,109 @@ document.addEventListener('click', (e) => {
 function clearBasketForTesting() {
     localStorage.removeItem('luminousScentsBasket');
     location.reload();
+}
+
+// Filter products by category from URL parameter
+function filterProductsByCategoryFromURL(category) {
+    console.log('Filtering products by category:', category);
+    
+    if (!category || category === 'all') {
+        // Show all products
+        document.querySelectorAll('.category-section').forEach(section => {
+            section.style.display = 'block';
+        });
+        return;
+    }
+    
+    // Hide all category sections first
+    document.querySelectorAll('.category-section').forEach(section => {
+        section.style.display = 'none';
+    });
+    
+    // Find the target category section
+    const targetSection = Array.from(document.querySelectorAll('.category-section')).find(section => {
+        const header = section.querySelector('h3');
+        return header && header.textContent === category;
+    });
+    
+    if (targetSection) {
+        // Show only the target category
+        targetSection.style.display = 'block';
+        
+        // Update active category filter button
+        const targetButton = document.querySelector(`[data-category="${category}"]`);
+        if (targetButton) {
+            // Remove active class from all buttons
+            document.querySelectorAll('.category-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // Add active class to target button
+            targetButton.classList.add('active');
+        }
+        
+        // Update page header to show filtered category
+        updatePageHeaderForCategory(category);
+        
+        // Scroll to the category section
+        targetSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+        
+        console.log('Successfully filtered to category:', category);
+    } else {
+        console.warn('Category section not found for:', category);
+        // If category not found, show all products
+        document.querySelectorAll('.category-section').forEach(section => {
+            section.style.display = 'block';
+        });
+    }
+}
+
+// Update page header to show filtered category
+function updatePageHeaderForCategory(category) {
+    const pageHeader = document.querySelector('.page-header h2');
+    const pageSubtitle = document.querySelector('.page-header p');
+    
+    if (pageHeader && category && category !== 'all') {
+        pageHeader.textContent = `${category}`;
+        
+        // Create appropriate subtitle based on category
+        let subtitle = 'Explore our curated fragrances in this collection';
+        switch(category) {
+            case 'Signature Eau de Parfum':
+                subtitle = 'Our premium signature scents for any occasion';
+                break;
+            case 'Luxury Eau de Toilette':
+                subtitle = 'Elegant daytime fragrances with sophisticated character';
+                break;
+            case 'Home Fragrance Collection':
+                subtitle = 'Transform your living space with our aromatic collection';
+                break;
+            case 'Travel & Mini Sets':
+                subtitle = 'Perfect collections for exploring new scents on the go';
+                break;
+            case 'Wellness Aromatics':
+                subtitle = 'Therapeutic blends designed for wellbeing and relaxation';
+                break;
+        }
+        
+        if (pageSubtitle) {
+            pageSubtitle.textContent = subtitle;
+        }
+    }
+}
+
+// Reset page header to default
+function resetPageHeader() {
+    const pageHeader = document.querySelector('.page-header h2');
+    const pageSubtitle = document.querySelector('.page-header p');
+    
+    if (pageHeader) {
+        pageHeader.textContent = 'Our Product Collections';
+    }
+    
+    if (pageSubtitle) {
+        pageSubtitle.textContent = 'Explore our carefully curated fragrances organised by category';
+    }
 }
