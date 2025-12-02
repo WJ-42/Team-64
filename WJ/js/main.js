@@ -1812,6 +1812,9 @@ function initStarfield() {
     function drawStars() {
         ctx.clearRect(0, 0, w, h);
 
+        // Check if we're in light mode
+        const isLightMode = document.documentElement.getAttribute('data-theme') === 'light';
+
         for (let s of stars) {
             const parallaxX = mouseX * (s.size / 2);
             const parallaxY = mouseY * (s.size / 2);
@@ -1824,9 +1827,16 @@ function initStarfield() {
                 s.x + parallaxX, s.y + parallaxY, s.size * 4
             );
 
-            gradient.addColorStop(0, `rgba(255, 220, 130, ${s.alpha})`);
-            gradient.addColorStop(0.4, `rgba(245, 210, 120, ${s.alpha * 0.6})`);
-            gradient.addColorStop(1, `rgba(240, 194, 75, 0)`);
+            // Use darker gold/brown colors in light mode for better visibility
+            if (isLightMode) {
+                gradient.addColorStop(0, `rgba(180, 140, 80, ${s.alpha * 0.9})`);
+                gradient.addColorStop(0.4, `rgba(160, 120, 70, ${s.alpha * 0.7})`);
+                gradient.addColorStop(1, `rgba(140, 100, 60, 0)`);
+            } else {
+                gradient.addColorStop(0, `rgba(255, 220, 130, ${s.alpha})`);
+                gradient.addColorStop(0.4, `rgba(245, 210, 120, ${s.alpha * 0.6})`);
+                gradient.addColorStop(1, `rgba(240, 194, 75, 0)`);
+            }
 
             ctx.fillStyle = gradient;
             ctx.fill();
@@ -1837,9 +1847,14 @@ function initStarfield() {
     }
 
     function twinkle() {
+        const isLightMode = document.documentElement.getAttribute('data-theme') === 'light';
+        // In light mode, use higher alpha range for better visibility
+        const minAlpha = isLightMode ? 0.4 : 0.15;
+        const maxAlpha = isLightMode ? 0.95 : 0.7;
+        
         for (let s of stars) {
             s.alpha += (Math.random() - 0.5) * 0.02;
-            s.alpha = Math.min(Math.max(s.alpha, 0.15), 0.7);
+            s.alpha = Math.min(Math.max(s.alpha, minAlpha), maxAlpha);
         }
     }
 
@@ -2059,5 +2074,60 @@ const bulletObserver = new IntersectionObserver(entries => {
 
 document.querySelectorAll(".values-section").forEach(section => {
     bulletObserver.observe(section);
+});
+
+// ===========================
+// THEME TOGGLE FUNCTIONALITY
+// ===========================
+
+function initThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) return;
+
+    const html = document.documentElement;
+    const THEME_STORAGE_KEY = 'luminousScentsTheme';
+    
+    // Get saved theme or default to dark
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'dark';
+    html.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+        updateThemeIcon(newTheme);
+    });
+}
+
+function updateThemeIcon(theme) {
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) return;
+
+    const svg = themeToggle.querySelector('svg');
+    if (!svg) return;
+
+    if (theme === 'light') {
+        // Moon icon for light mode (to switch to dark)
+        svg.innerHTML = `
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" fill="none"/>
+        `;
+        themeToggle.setAttribute('aria-label', 'Switch to dark mode');
+    } else {
+        // Sun icon for dark mode (to switch to light)
+        svg.innerHTML = `
+            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2"/>
+        `;
+        themeToggle.setAttribute('aria-label', 'Switch to light mode');
+    }
+}
+
+// Initialize theme toggle on page load
+document.addEventListener('DOMContentLoaded', () => {
+    initThemeToggle();
 });
 
