@@ -951,6 +951,129 @@ function setupCategoryFilters() {
     }
 }
 
+// Categories scroll effects and auto-scroll functionality
+function setupCategoriesScrollEffects() {
+    const categoriesGrid = document.querySelector('.categories-grid');
+    const categoryCards = document.querySelectorAll('.category-card');
+    
+    if (!categoriesGrid || categoryCards.length === 0) return;
+    
+    // Scroll-based fade effects
+    function handleScroll() {
+        const scrollLeft = categoriesGrid.scrollLeft;
+        const cardWidth = 220;
+        const gap = 16; // 1rem gap
+        
+        categoryCards.forEach((card, index) => {
+            const cardLeft = index * (cardWidth + gap);
+            const cardRight = cardLeft + cardWidth;
+            const viewportLeft = scrollLeft;
+            const viewportRight = scrollLeft + categoriesGrid.clientWidth;
+            
+            // Calculate fade based on position relative to viewport
+            let opacity = 1;
+            let scale = 1;
+            
+            if (cardRight < viewportLeft) {
+                // Card is completely off the left side
+                opacity = 0.3;
+                scale = 0.9;
+            } else if (cardLeft > viewportRight) {
+                // Card is completely off the right side
+                opacity = 0.3;
+                scale = 0.9;
+            } else {
+                // Card is in viewport, calculate fade based on distance from center
+                const cardCenter = cardLeft + cardWidth / 2;
+                const viewportCenter = viewportLeft + categoriesGrid.clientWidth / 2;
+                const distance = Math.abs(cardCenter - viewportCenter);
+                const maxDistance = categoriesGrid.clientWidth / 2;
+                
+                opacity = Math.max(0.4, 1 - (distance / maxDistance) * 0.6);
+                scale = Math.max(0.95, 1 - (distance / maxDistance) * 0.05);
+            }
+            
+            // Apply fade effect
+            card.style.opacity = opacity;
+            card.style.transform = `scale(${scale})`;
+        });
+    }
+    
+    // Add scroll event listener
+    categoriesGrid.addEventListener('scroll', handleScroll);
+    
+    // Initial call to set fade state
+    handleScroll();
+    
+    // Auto-scroll functionality
+    let autoScrollInterval;
+    let isAutoScrolling = false;
+    
+    function startAutoScroll() {
+        if (isAutoScrolling) return;
+        
+        isAutoScrolling = true;
+        autoScrollInterval = setInterval(() => {
+            const scrollWidth = categoriesGrid.scrollWidth;
+            const clientWidth = categoriesGrid.clientWidth;
+            const maxScroll = scrollWidth - clientWidth;
+            
+            if (categoriesGrid.scrollLeft >= maxScroll - 10) {
+                // Reached the end, scroll back to start with fade
+                categoriesGrid.scrollTo({
+                    left: 0,
+                    behavior: 'smooth'
+                });
+            } else {
+                // Scroll to next card
+                const currentIndex = Math.round(categoriesGrid.scrollLeft / (220 + 16));
+                const nextIndex = currentIndex + 1;
+                const nextPosition = nextIndex * (220 + 16);
+                
+                categoriesGrid.scrollTo({
+                    left: nextPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }, 3000); // Scroll every 3 seconds
+    }
+    
+    function stopAutoScroll() {
+        if (!isAutoScrolling) return;
+        
+        isAutoScrolling = false;
+        clearInterval(autoScrollInterval);
+    }
+    
+    // Pause auto-scroll on user interaction
+    categoriesGrid.addEventListener('mouseenter', stopAutoScroll);
+    categoriesGrid.addEventListener('mouseleave', () => {
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            startAutoScroll();
+        }
+    });
+    
+    categoriesGrid.addEventListener('scroll', () => {
+        stopAutoScroll();
+        // Resume auto-scroll after 5 seconds of inactivity
+        setTimeout(() => {
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                startAutoScroll();
+            }
+        }, 5000);
+    });
+    
+    // Start auto-scroll if not reduced motion preferred
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        setTimeout(startAutoScroll, 2000); // Start after 2 seconds
+    }
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        handleScroll();
+    });
+}
+
 // Page initialiser
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -965,6 +1088,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // rest of the code...
     if (page === "home") {
         setupAuthForm();
+        setupCategoriesScrollEffects();
     } else if (page === "products") {
         renderProductsPage();
     } else if (page === "newproducts") {
