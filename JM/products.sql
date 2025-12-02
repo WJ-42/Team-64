@@ -53,7 +53,7 @@ INSERT INTO `products` (`id`, `product_name`, `brand`, `category`, `notes`, `pri
 (8, 'Golden Sandalwood', 'Luminous Scents', 'Luxury Eau de Toilette', 'Sandalwood, Cardamom, Cream', '59.99', 'Smooth sandalwood enriched with warm spices and creamy undertones.', 'images/golden-sandalwood.png'),
 (9, 'Jasmine Veil', 'Luminous Scents', 'Luxury Eau de Toilette', 'Jasmine, Pear, White Musk', '52.50', 'A light, breezy jasmine fragrance wrapped in delicate musk.', 'images/jasmine-veil.png'),
 (10, 'Spiced Cedar', 'Luminous Scents', 'Luxury Eau de Toilette', 'Cedarwood, Cinnamon, Clove', '57.00', 'A warm woody scent with aromatic spices for cozy wear.', 'images/spiced-cedar.png'),
-(11, 'Fresh Horizon', 'Luminous Scents', 'Luxury Eau de Toilette', 'Mint, Lemon, Green Notes', '49.99', 'Crisp and energizing, perfect for a refreshing start to the day.', 'images/fresh-horizon.png'),
+(11, 'Fresh Horizon', 'Luminous Scents', 'Luxury Eau de Toilette', 'Mint, Lemon, Green Notes', '49.99', 'Crisp and energising, perfect for a refreshing start to the day.', 'images/fresh-horizon.png'),
 (12, 'Rosewood Candle', 'Luminous Scents', 'Home Fragrance Collection', 'Rosewood, Amber, Floral Woods', '24.00', 'A rich wooden floral candle ideal for elegant home ambience.', 'images/rosewood-candle.png'),
 (13, 'Citrus Verbena Diffuser', 'Luminous Scents', 'Home Fragrance Collection', 'Verbena, Lemon Peel, Green Herbs', '27.50', 'Bright citrus aroma that freshens and energises any room.', 'images/citrus-verbena-diffuser.png'),
 (14, 'Vanilla Musk Wax Melts', 'Luminous Scents', 'Home Fragrance Collection', 'Vanilla, Musk, Soft Cream', '12.00', 'Sweet and cozy melts that create a warm, comforting atmosphere.', 'images/vanilla-musk-wax-melts.png'),
@@ -65,7 +65,7 @@ INSERT INTO `products` (`id`, `product_name`, `brand`, `category`, `notes`, `pri
 (20, 'Mini Candle Trio', 'Luminous Scents', 'Travel & Mini Sets', 'Floral / Citrus / Wood', '21.50', 'Three mini candles designed to match any mood or space.', 'images/mini-candle-trio.png'),
 (21, 'Refillable Atomizer Kit', 'Luminous Scents', 'Travel & Mini Sets', 'N/A', '16.99', 'A reusable atomizer for carrying your favorite perfume with ease.', 'images/refillable-atomizer-kit.png'),
 (22, 'Calming Lavender Mist', 'Luminous Scents', 'Wellness Aromatics', 'Lavender, Chamomile, Soft Woods', '13.50', 'A soothing mist that promotes calm and relaxation.', 'images/calming-lavender-mist.png'),
-(23, 'Energizing Citrus Oil Blend', 'Luminous Scents', 'Wellness Aromatics', 'Grapefruit, Lime, Mint', '11.99', 'A stimulating blend designed to boost mood and focus.', 'images/energizing-citrus-oil-blend.png'),
+(23, 'Energising Citrus Oil Blend', 'Luminous Scents', 'Wellness Aromatics', 'Grapefruit, Lime, Mint', '11.99', 'A stimulating blend designed to boost mood and focus.', 'images/energizing-citrus-oil-blend.png'),
 (24, 'Focus Eucalyptus Roller', 'Luminous Scents', 'Wellness Aromatics', 'Eucalyptus, Peppermint, Tea Tree', '9.99', 'A refreshing roller blend ideal for clarity and concentration.', 'images/focus-eucalyptus-roller.png'),
 (25, 'Relaxing Chamomile Balm', 'Luminous Scents', 'Wellness Aromatics', 'Chamomile, Vanilla, Powder', '12.50', 'A gentle balm for stress relief and nighttime relaxation.', 'images/relaxing-chamomile-balm.png'),
 (26, 'Sleep Serenity Pillow Spray', 'Luminous Scents', 'Wellness Aromatics', 'Lavender, Clary Sage, Soft Musk', '15.00', 'A calming sleep-focused spray for restful nights.', 'images/sleep-serenity-pillow-spray.png');
