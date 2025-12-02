@@ -324,6 +324,52 @@ function setupAuthForm() {
     });
 }
 
+// Contact form handler
+function setupContactForm() {
+    const form = document.getElementById("contactForm");
+    const message = document.getElementById("contactFormMessage");
+    
+    if (!form || !message) {
+        return;
+    }
+    
+    form.addEventListener("submit", event => {
+        event.preventDefault();
+        
+        const formData = new FormData(form);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const subject = formData.get('subject');
+        const messageText = formData.get('message');
+        
+        // Basic validation
+        if (!name || !email || !subject || !messageText) {
+            customAlert("Please fill in all fields.");
+            return;
+        }
+        
+        if (!email.includes('@')) {
+            customAlert("Please enter a valid email address.");
+            return;
+        }
+        
+        // Simulate form submission
+        message.textContent = "Thank you for your message! We'll get back to you within 24 hours.";
+        message.style.color = "#ffffff";
+        message.style.textShadow = "0 0 10px rgba(240, 194, 75, 0.6), 0 0 20px rgba(240, 194, 75, 0.3)";
+        message.style.opacity = "0";
+        message.classList.remove('scroll-reveal', 'revealed', 'show');
+        
+        setTimeout(() => {
+            message.style.opacity = "1";
+            message.classList.add('show');
+        }, 10);
+        
+        // Reset form
+        form.reset();
+    });
+}
+
 // Starfield canvas effect
 
 function initStarfield() {
@@ -367,9 +413,9 @@ function initStarfield() {
                 s.x + parallaxX, s.y + parallaxY, s.size * 4
             );
 
-            gradient.addColorStop(0, `rgba(50, 255, 50, ${s.alpha})`);
-            gradient.addColorStop(0.4, `rgba(50, 255, 50, ${s.alpha * 0.6})`);
-            gradient.addColorStop(1, `rgba(50, 255, 50, 0)`);
+            gradient.addColorStop(0, `rgba(240, 194, 75, ${s.alpha})`);
+            gradient.addColorStop(0.4, `rgba(240, 194, 75, ${s.alpha * 0.6})`);
+            gradient.addColorStop(1, `rgba(240, 194, 75, 0)`);
 
             ctx.fillStyle = gradient;
             ctx.fill();
@@ -424,6 +470,8 @@ document.addEventListener("DOMContentLoaded", () => {
         renderProductsPage();
     } else if (page === "basket") {
         renderBasketPage();
+    } else if (page === "contact") {
+        setupContactForm();
     }
 });
 // Scroll reveal animations
@@ -511,7 +559,7 @@ function initMouseTrail() {
                 ctx.beginPath();
                 ctx.moveTo(prevPoint.x, prevPoint.y);
                 ctx.lineTo(point.x, point.y);
-                ctx.strokeStyle = `rgba(50, 255, 50, ${alpha})`;
+                ctx.strokeStyle = `rgba(240, 194, 75, ${alpha})`;
                 ctx.lineWidth = size;
                 ctx.lineCap = 'round';
                 ctx.stroke();

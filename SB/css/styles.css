@@ -16,7 +16,7 @@ input, textarea {
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: transparent;
+    background: #000000;
     color: #f6f6f6;
     line-height: 1.8;
     position: relative;
@@ -134,7 +134,7 @@ h3, h4, h5, h6 {
     inset: 0;
     z-index: 1;
     overflow: hidden;
-    background: #00FF00;
+    background: transparent;
 }
 
 #starfield {
@@ -414,12 +414,14 @@ main {
 }
 
 .form-row input[type="email"],
-.form-row input[type="password"] {
+.form-row input[type="password"],
+.form-row input[type="text"],
+.form-row textarea {
     padding: 0.7rem;
     border-radius: 4px;
     border: 1px solid rgba(240, 194, 75, 0.3);
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(15, 12, 5, 0.75) 50%, rgba(0, 0, 0, 0.8) 100%);
-    color: #f6f6f6;
+    background: #ffffff;
+    color: #111119;
     transition: all 0.3s ease;
 }
 
