@@ -1889,7 +1889,7 @@ main {
 
 /* Categories Section for Home Page */
 .categories-section {
-    margin: 5rem auto;
+    margin: 3rem auto;
     max-width: 1100px;
     position: relative;
     z-index: 10;
@@ -1901,9 +1901,9 @@ main {
 }
 
 .categories-container h3 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     letter-spacing: 0.8px;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(240, 194, 75, 0.3), 0 0 40px rgba(240, 194, 75, 0.15);
     background: linear-gradient(90deg, #f0c24b 0%, #f0c24b 50%, #f6f6f6 50%, #f6f6f6 100%);
@@ -1921,20 +1921,20 @@ main {
 }
 
 .categories-container p {
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: var(--text-secondary);
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-    line-height: 1.6;
+    line-height: 1.5;
     animation: fadeInUp 0.8s ease-out 0.2s both;
 }
 
 .categories-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
     max-width: 900px;
     margin: 0 auto;
     animation: fadeInUp 0.8s ease-out 0.3s both;
@@ -1944,8 +1944,8 @@ main {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(12, 10, 5, 0.82) 50%, rgba(0, 0, 0, 0.85) 100%);
     backdrop-filter: blur(16px);
     border: 1px solid rgba(240, 194, 75, 0.25);
-    border-radius: 12px;
-    padding: 2rem;
+    border-radius: 10px;
+    padding: 1.25rem;
     text-decoration: none;
     color: var(--text-primary);
     transition: all 0.4s ease;
@@ -1977,8 +1977,8 @@ main {
 }
 
 .category-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
     filter: drop-shadow(0 0 10px rgba(240, 194, 75, 0.3));
     transition: all 0.3s ease;
 }
@@ -1989,18 +1989,18 @@ main {
 }
 
 .category-card h4 {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
     color: var(--text-accent);
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .category-card p {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 1.25rem;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
     margin-left: auto;
     margin-right: auto;
     max-width: 90%;
@@ -2011,9 +2011,9 @@ main {
     background: linear-gradient(135deg, rgba(240, 194, 75, 0.2) 0%, rgba(214, 158, 46, 0.15) 50%, rgba(240, 194, 75, 0.2) 100%);
     border: 1px solid rgba(240, 194, 75, 0.3);
     color: var(--text-accent);
-    padding: 0.4rem 0.8rem;
+    padding: 0.3rem 0.6rem;
     border-radius: 20px;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 500;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
@@ -2061,7 +2061,7 @@ main {
 /* Responsive design for home page categories */
 @media (max-width: 768px) {
     .categories-section {
-        margin: 3rem auto;
+        margin: 2rem auto;
     }
     
     .categories-container {
@@ -2069,56 +2069,56 @@ main {
     }
     
     .categories-container h3 {
-        font-size: 2rem;
+        font-size: 1.6rem;
     }
     
     .categories-container p {
-        font-size: 1.1rem;
-        margin-bottom: 2.5rem;
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
     }
     
     .categories-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
     }
     
     .category-card {
-        padding: 1.5rem;
+        padding: 1rem;
     }
     
     .category-icon {
-        font-size: 2.5rem;
+        font-size: 1.75rem;
     }
     
     .category-card h4 {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
     
     .category-card p {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         max-width: 100%;
     }
 }
 
 @media (max-width: 480px) {
     .categories-container h3 {
-        font-size: 1.8rem;
+        font-size: 1.4rem;
     }
     
     .categories-container p {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
     
     .categories-grid {
         grid-template-columns: 1fr;
-        gap: 1.25rem;
+        gap: 0.75rem;
     }
     
     .category-card {
-        padding: 1.25rem;
+        padding: 1rem;
     }
     
     .category-icon {
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
 }
