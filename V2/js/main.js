@@ -25,6 +25,47 @@ const products = [
         description: "Soft floral scent with a creamy sandalwood base."
     }
 ];
+
+// Sorting functionality
+let currentSort = 'default';
+
+function sortProducts(sortBy) {
+    const sortedProducts = [...products];
+    
+    switch(sortBy) {
+        case 'price-asc':
+            return sortedProducts.sort((a, b) => a.price - b.price);
+        case 'price-desc':
+            return sortedProducts.sort((a, b) => b.price - a.price);
+        case 'name-asc':
+            return sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+        case 'name-desc':
+            return sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
+        case 'default':
+        default:
+            return sortedProducts; // Return in original order
+    }
+}
+
+function setupSortingControls() {
+    const sortSelect = document.getElementById('sortBy');
+    const resetButton = document.getElementById('resetSort');
+    
+    if (!sortSelect || !resetButton) {
+        return;
+    }
+    
+    sortSelect.addEventListener('change', (e) => {
+        currentSort = e.target.value;
+        renderProductsPage();
+    });
+    
+    resetButton.addEventListener('click', () => {
+        currentSort = 'default';
+        sortSelect.value = 'default';
+        renderProductsPage();
+    });
+}
 function customAlert(message) {
     const overlay = document.createElement('div');
     overlay.className = 'custom-alert-overlay';
@@ -143,7 +184,10 @@ function renderProductsPage() {
 
     container.innerHTML = "";
 
-    products.forEach(product => {
+    // Get sorted products based on current sort option
+    const productsToRender = sortProducts(currentSort);
+
+    productsToRender.forEach(product => {
         const card = document.createElement("article");
         card.className = "card";
 
@@ -422,6 +466,9 @@ document.addEventListener("DOMContentLoaded", () => {
         setupAuthForm();
     } else if (page === "products") {
         renderProductsPage();
+        setupSortingControls();
+    } else if (page === "contact") {
+        setupContactForm();
     } else if (page === "basket") {
         renderBasketPage();
     }
@@ -452,10 +499,98 @@ observer.observe = function(element) {
     }
     originalObserve.call(this, element);
 };
-document.querySelectorAll('.main-header, .site-footer, .hero-text, .hero-text h2, .hero-text p, .page-header, .page-header h2, .page-header p, .card, .card h3, .card p, .card .btn-primary, .feature-card, .feature-card h4, .feature-card p, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .info-column h3, .info-column p, .steps-list li, .step-number, .feature-section h3, .auth-section, .auth-form').forEach(el => {
+document.querySelectorAll('.main-header, .site-footer, .hero-text, .hero-text h2, .hero-text p, .page-header, .page-header h2, .page-header p, .card, .card h3, .card p, .card .btn-primary, .feature-card, .feature-card h4, .feature-card p, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .info-column h3, .info-column p, .steps-list li, .step-number, .feature-section h3, .auth-section, .auth-form, .form-row, .form-row label, .form-row input, .form-row textarea').forEach(el => {
     el.classList.add('scroll-reveal');
     observer.observe(el);
 });
+
+// Contact form functionality
+function setupContactForm() {
+    const form = document.getElementById("contactForm");
+    const message = document.getElementById("contactMessage");
+    
+    if (!form || !message) {
+        return;
+    }
+
+    form.addEventListener("submit", event => {
+        event.preventDefault();
+
+        const productRequest = document.getElementById("productRequest").value.trim();
+        const priceRange = document.getElementById("priceRange").value.trim();
+        const ingredients = document.getElementById("ingredients").value.trim();
+        const contactEmail = document.getElementById("contactEmail").value.trim();
+        const notifyUpdates = document.getElementById("notifyUpdates").checked;
+
+        // Validation
+        if (!productRequest) {
+            customAlert("Please describe what product you'd like to see.");
+            return;
+        }
+
+        if (!priceRange || isNaN(priceRange) || priceRange < 10 || priceRange > 500) {
+            customAlert("Please enter a valid price between £10 and £500.");
+            return;
+        }
+
+        if (!ingredients) {
+            customAlert("Please specify what ingredients should be included.");
+            return;
+        }
+
+        if (!contactEmail) {
+            customAlert("Please enter your email address.");
+            return;
+        }
+
+        if (!contactEmail.includes('@')) {
+            customAlert("Please enter a valid email address.");
+            return;
+        }
+
+        // Simulate form submission
+        const requestData = {
+            productRequest,
+            priceRange: parseFloat(priceRange),
+            ingredients,
+            contactEmail,
+            notifyUpdates,
+            additionalNotes: document.getElementById("additionalNotes").value.trim(),
+            timestamp: new Date().toISOString()
+        };
+
+        // Store the request locally for demo purposes
+        const existingRequests = JSON.parse(localStorage.getItem("luminousScentsRequests") || "[]");
+        existingRequests.push(requestData);
+        localStorage.setItem("luminousScentsRequests", JSON.stringify(existingRequests));
+
+        // Show success message
+        message.innerHTML = `
+            <div style="background: linear-gradient(135deg, rgba(40, 180, 99, 0.2) 0%, rgba(30, 160, 80, 0.15) 50%, rgba(40, 180, 99, 0.2) 100%);
+                        border: 1px solid rgba(40, 180, 99, 0.4);
+                        border-radius: 4px;
+                        padding: 1rem;
+                        text-align: center;
+                        color: #d4edda;">
+                <strong>Thank you for your request!</strong><br>
+                Your product suggestion has been submitted successfully.
+                ${notifyUpdates ? 'You will be notified about updates.' : 'We appreciate your contribution.'}
+            </div>
+        `;
+        message.style.opacity = "0";
+        message.classList.remove('scroll-reveal', 'revealed', 'show');
+        setTimeout(() => {
+            message.style.opacity = "1";
+            message.classList.add('show');
+        }, 10);
+
+        // Reset form
+        form.reset();
+        
+        // Log for development (remove in production)
+        console.log("Contact form submission:", requestData);
+    });
+}
 
 
 function initMouseTrail() {

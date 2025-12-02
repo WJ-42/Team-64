@@ -36,6 +36,20 @@
             <p>Sample products for the MVP. Each item has a name, price, and key scent notes.</p>
         </section>
 
+        <section class="controls-section" style="margin-bottom: 2rem; text-align: center;">
+            <div style="display: inline-block; background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(12, 10, 5, 0.82) 50%, rgba(0, 0, 0, 0.85) 100%); padding: 1rem; border-radius: 8px; border: 1px solid rgba(240, 194, 75, 0.25);">
+                <label for="sortBy" style="margin-right: 0.5rem; font-weight: 600; color: #f6f6f6;">Sort by:</label>
+                <select id="sortBy" style="padding: 0.5rem; border-radius: 4px; border: 1px solid rgba(240, 194, 75, 0.3); background: rgba(0, 0, 0, 0.8); color: #f6f6f6; margin-right: 1rem;">
+                    <option value="default">Default Order</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="name-asc">Name: A to Z</option>
+                    <option value="name-desc">Name: Z to A</option>
+                </select>
+                <button id="resetSort" class="btn-secondary" style="padding: 0.5rem 1rem;">Reset</button>
+            </div>
+        </section>
+
         <section id="productsContainer" class="cards-grid">
             <!-- Products will be injected here by main.js -->
         </section>
