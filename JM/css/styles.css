@@ -227,7 +227,7 @@ h3, h4, h5, h6 {
     animation: headerShimmer 8s ease-in-out infinite;
 }
 
-/* Enhanced Light Mode Header - Completely Solid and Clear */
+/* Light Mode Header */
 [data-theme="light"] .main-header {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
@@ -240,7 +240,7 @@ h3, h4, h5, h6 {
     display: none;
 }
 
-/* Fix Text Clarity in Light Mode - Remove All Blur Effects */
+/* Text Clarity in Light Mode - Blur Effects Removed */
 [data-theme="light"] * {
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;
@@ -250,7 +250,7 @@ h3, h4, h5, h6 {
     opacity: 1 !important;
 }
 
-/* Clear All Text Shadows in Light Mode */
+/* All Shadows Cleared for Light Mode */
 [data-theme="light"] h1,
 [data-theme="light"] h2,
 [data-theme="light"] h3,
@@ -265,7 +265,7 @@ h3, h4, h5, h6 {
     -webkit-text-fill-color: initial !important;
 }
 
-/* Fix Hero Text Specifically */
+/* Hero Text Specifically */
 [data-theme="light"] .hero-text h2 {
     background: none !important;
     background-clip: unset !important;
@@ -275,7 +275,7 @@ h3, h4, h5, h6 {
     text-shadow: none !important;
 }
 
-/* Fix Page Headers */
+/* Page Headers */
 [data-theme="light"] .page-header h2 {
     background: none !important;
     background-clip: unset !important;
@@ -285,7 +285,7 @@ h3, h4, h5, h6 {
     text-shadow: none !important;
 }
 
-/* Fix Feature Section Headers */
+/* Feature Section Headers */
 [data-theme="light"] .feature-section h3 {
     background: none !important;
     background-clip: unset !important;
@@ -295,7 +295,7 @@ h3, h4, h5, h6 {
     text-shadow: none !important;
 }
 
-/* Make All Boxes/Cards White with Black Text in Light Mode */
+/* Light mode Boxes */
 [data-theme="light"] .card,
 [data-theme="light"] .feature-card,
 [data-theme="light"] .info-column,
@@ -323,7 +323,7 @@ h3, h4, h5, h6 {
     color: #4a5568 !important;
 }
 
-/* Remove Any Blur from Scroll Reveal Animations in Light Mode */
+/* Removed Blur Animations for Light mode */
 [data-theme="light"] .scroll-reveal {
     filter: none !important;
     opacity: 1 !important;
@@ -333,7 +333,7 @@ h3, h4, h5, h6 {
     opacity: 1 !important;
 }
 
-/* Fix Secondary Button Text in Light Mode */
+/* Secondary Button Text in Light Mode */
 [data-theme="light"] .btn-secondary {
     color: #000000 !important;
     background: var(--btn-secondary-bg) !important;
@@ -837,7 +837,6 @@ main {
     margin-bottom: 0.6rem;
 }
 
-/* New sections on homepage */
 
 /* info-grid is a layout wrapper */
 .info-grid {
