@@ -324,6 +324,52 @@ function setupAuthForm() {
     });
 }
 
+// Contact form handler
+function setupContactForm() {
+    const form = document.getElementById("contactForm");
+    const message = document.getElementById("contactFormMessage");
+    
+    if (!form || !message) {
+        return;
+    }
+    
+    form.addEventListener("submit", event => {
+        event.preventDefault();
+        
+        const formData = new FormData(form);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const subject = formData.get('subject');
+        const messageText = formData.get('message');
+        
+        // Basic validation
+        if (!name || !email || !subject || !messageText) {
+            customAlert("Please fill in all fields.");
+            return;
+        }
+        
+        if (!email.includes('@')) {
+            customAlert("Please enter a valid email address.");
+            return;
+        }
+        
+        // Simulate form submission
+        message.textContent = "Thank you for your message! We'll get back to you within 24 hours.";
+        message.style.color = "#ffffff";
+        message.style.textShadow = "0 0 10px rgba(240, 194, 75, 0.6), 0 0 20px rgba(240, 194, 75, 0.3)";
+        message.style.opacity = "0";
+        message.classList.remove('scroll-reveal', 'revealed', 'show');
+        
+        setTimeout(() => {
+            message.style.opacity = "1";
+            message.classList.add('show');
+        }, 10);
+        
+        // Reset form
+        form.reset();
+    });
+}
+
 // Starfield canvas effect
 
 function initStarfield() {
@@ -367,8 +413,8 @@ function initStarfield() {
                 s.x + parallaxX, s.y + parallaxY, s.size * 4
             );
 
-            gradient.addColorStop(0, `rgba(255, 220, 130, ${s.alpha})`);
-            gradient.addColorStop(0.4, `rgba(245, 210, 120, ${s.alpha * 0.6})`);
+            gradient.addColorStop(0, `rgba(240, 194, 75, ${s.alpha})`);
+            gradient.addColorStop(0.4, `rgba(240, 194, 75, ${s.alpha * 0.6})`);
             gradient.addColorStop(1, `rgba(240, 194, 75, 0)`);
 
             ctx.fillStyle = gradient;
@@ -424,6 +470,8 @@ document.addEventListener("DOMContentLoaded", () => {
         renderProductsPage();
     } else if (page === "basket") {
         renderBasketPage();
+    } else if (page === "contact") {
+        setupContactForm();
     }
 });
 // Scroll reveal animations
@@ -490,27 +538,34 @@ function initMouseTrail() {
     
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
+    
         const now = Date.now();
-        
+    
         for (let i = points.length - 1; i >= 0; i--) {
             if (now - points[i].time > maxAge) {
                 points.splice(i, 1);
             }
         }
-        
-        points.forEach((point) => {
-            const age = now - point.time;
-            const life = 1 - (age / maxAge);
-            const alpha = life * 0.6;
-            const size = life * 3;
-            
-            ctx.beginPath();
-            ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(240, 194, 75, ${alpha})`;
-            ctx.fill();
-        });
-        
+    
+        if (points.length > 1) {
+            for (let i = 1; i < points.length; i++) {
+                const point = points[i];
+                const prevPoint = points[i - 1];
+                const age = now - point.time;
+                const life = 1 - (age / maxAge);
+                const alpha = life * 0.6;
+                const size = life * 2;
+    
+                ctx.beginPath();
+                ctx.moveTo(prevPoint.x, prevPoint.y);
+                ctx.lineTo(point.x, point.y);
+                ctx.strokeStyle = `rgba(240, 194, 75, ${alpha})`;
+                ctx.lineWidth = size;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+            }
+        }
+    
         requestAnimationFrame(animate);
     }
     
