@@ -324,6 +324,52 @@ function setupAuthForm() {
     });
 }
 
+// Contact form handler
+function setupContactForm() {
+    const form = document.getElementById("contactForm");
+    const message = document.getElementById("contactFormMessage");
+    
+    if (!form || !message) {
+        return;
+    }
+    
+    form.addEventListener("submit", event => {
+        event.preventDefault();
+        
+        const formData = new FormData(form);
+        const name = formData.get('name');
+        const email = formData.get('email');
+        const subject = formData.get('subject');
+        const messageText = formData.get('message');
+        
+        // Basic validation
+        if (!name || !email || !subject || !messageText) {
+            customAlert("Please fill in all fields.");
+            return;
+        }
+        
+        if (!email.includes('@')) {
+            customAlert("Please enter a valid email address.");
+            return;
+        }
+        
+        // Simulate form submission
+        message.textContent = "Thank you for your message! We'll get back to you within 24 hours.";
+        message.style.color = "#ffffff";
+        message.style.textShadow = "0 0 10px rgba(240, 194, 75, 0.6), 0 0 20px rgba(240, 194, 75, 0.3)";
+        message.style.opacity = "0";
+        message.classList.remove('scroll-reveal', 'revealed', 'show');
+        
+        setTimeout(() => {
+            message.style.opacity = "1";
+            message.classList.add('show');
+        }, 10);
+        
+        // Reset form
+        form.reset();
+    });
+}
+
 // Starfield canvas effect
 
 function initStarfield() {
@@ -367,9 +413,9 @@ function initStarfield() {
                 s.x + parallaxX, s.y + parallaxY, s.size * 4
             );
 
-            gradient.addColorStop(0, `rgba(50, 255, 50, ${s.alpha})`);
-            gradient.addColorStop(0.4, `rgba(50, 255, 50, ${s.alpha * 0.6})`);
-            gradient.addColorStop(1, `rgba(50, 255, 50, 0)`);
+            gradient.addColorStop(0, `rgba(240, 194, 75, ${s.alpha})`);
+            gradient.addColorStop(0.4, `rgba(240, 194, 75, ${s.alpha * 0.6})`);
+            gradient.addColorStop(1, `rgba(240, 194, 75, 0)`);
 
             ctx.fillStyle = gradient;
             ctx.fill();
@@ -424,6 +470,8 @@ document.addEventListener("DOMContentLoaded", () => {
         renderProductsPage();
     } else if (page === "basket") {
         renderBasketPage();
+    } else if (page === "contact") {
+        setupContactForm();
     }
 });
 // Scroll reveal animations
@@ -511,7 +559,7 @@ function initMouseTrail() {
                 ctx.beginPath();
                 ctx.moveTo(prevPoint.x, prevPoint.y);
                 ctx.lineTo(point.x, point.y);
-                ctx.strokeStyle = `rgba(50, 255, 50, ${alpha})`;
+                ctx.strokeStyle = `rgba(240, 194, 75, ${alpha})`;
                 ctx.lineWidth = size;
                 ctx.lineCap = 'round';
                 ctx.stroke();
@@ -523,3 +571,205 @@ function initMouseTrail() {
     
     animate();
 }
+
+// AI Chatbot functionality
+let chatbotOpen = false;
+let conversationHistory = [];
+
+// Initialize chatbot
+document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.getElementById('chatbot-toggle');
+    const window = document.getElementById('chatbot-window');
+    const closeBtn = document.getElementById('chatbot-close');
+    const input = document.getElementById('chatbot-input');
+    const sendBtn = document.getElementById('chatbot-send');
+    const messages = document.getElementById('chatbot-messages');
+
+    if (!toggle || !window || !closeBtn || !input || !sendBtn || !messages) return;
+
+    // Toggle chatbot
+    toggle.addEventListener('click', () => {
+        chatbotOpen = !chatbotOpen;
+        window.classList.toggle('hidden');
+        if (chatbotOpen) {
+            input.focus();
+            toggle.style.transform = 'scale(0.8)';
+        } else {
+            toggle.style.transform = 'scale(1)';
+        }
+    });
+
+    // Close chatbot
+    closeBtn.addEventListener('click', () => {
+        chatbotOpen = false;
+        window.classList.add('hidden');
+        toggle.style.transform = 'scale(1)';
+    });
+
+    // Send message
+    function sendMessage() {
+        const message = input.value.trim();
+        if (!message) return;
+
+        addMessage('user', message);
+        input.value = '';
+        
+        // Show typing indicator
+        addMessage('bot', '', true);
+        
+        // Generate AI response
+        setTimeout(() => {
+            const response = generateAIResponse(message);
+            const typingMessage = messages.lastElementChild;
+            typingMessage.remove();
+            addMessage('bot', response);
+        }, 1000 + Math.random() * 1000); // Random delay for realism
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    // Add message to chat
+    function addMessage(sender, content, isTyping = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}-message${isTyping ? ' typing' : ''}`;
+        
+        messageDiv.innerHTML = `
+            <div class="message-avatar">
+                ${sender === 'bot' ? `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v-6h-2v6zm1-8c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1z" fill="currentColor"/>
+                    </svg>
+                ` : `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="currentColor"/>
+                    </svg>
+                `}
+            </div>
+            <div class="message-content">
+                ${isTyping ? '<span class="typing-dots">...</span>' : `<p>${content}</p>`}
+            </div>
+        `;
+
+        messages.appendChild(messageDiv);
+        messages.scrollTop = messages.scrollHeight;
+        
+        if (!isTyping) {
+            conversationHistory.push({ sender, content });
+        }
+    }
+
+    // Generate AI response based on input
+    function generateAIResponse(message) {
+        const lowerMessage = message.toLowerCase();
+        
+        // Product recommendations
+        if (lowerMessage.includes('recommend') || lowerMessage.includes('suggest') || lowerMessage.includes('help me choose')) {
+            return "I'd love to help you find the perfect fragrance! Our most popular scents are: " +
+                   "🌟 Aurora Oud (warm, deep evening scent) for a sophisticated look, " +
+                   "🌅 Citrus Dawn (fresh, bright daytime fragrance) for an uplifting energy, " +
+                   "and 🌸 Velvet Iris (soft, floral scent) for a gentle, creamy presence. " +
+                   "What's your preference - warm, fresh, or floral?";
+        }
+        
+        // Price inquiries
+        if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('how much')) {
+            return "Our fragrances are carefully curated luxury scents: " +
+                   "Aurora Oud at £89.99 for its premium oud and amber notes, " +
+                   "Citrus Dawn at £59.99 for refreshing citrus blends, " +
+                   "and Velvet Iris at £74.50 for its beautiful floral composition. " +
+                   "All come with our signature quality and elegant presentation.";
+        }
+        
+        // Scent descriptions
+        if (lowerMessage.includes('aurora oud') || lowerMessage.includes('oud')) {
+            return "Aurora Oud is our signature evening fragrance featuring rich oud, amber, and vanilla notes. " +
+                   "It's perfect for special occasions and evening wear, creating a warm and captivating presence that develops beautifully on the skin.";
+        }
+        
+        if (lowerMessage.includes('citrus dawn') || lowerMessage.includes('citrus') || lowerMessage.includes('fresh')) {
+            return "Citrus Dawn is our bright and uplifting daytime fragrance with bergamot, lemon, and neroli notes. " +
+                   "It's perfect for everyday wear, offering a fresh, energetic, and sophisticated scent that energizes your day.";
+        }
+        
+        if (lowerMessage.includes('velvet iris') || lowerMessage.includes('iris') || lowerMessage.includes('floral')) {
+            return "Velvet Iris is our soft, elegant floral fragrance featuring iris, violet, and sandalwood notes. " +
+                   "It's ideal for those who prefer gentle, sophisticated scents with a creamy, comforting presence.";
+        }
+        
+        // Usage occasions
+        if (lowerMessage.includes('evening') || lowerMessage.includes('night') || lowerMessage.includes('date') || lowerMessage.includes('formal')) {
+            return "For evening occasions, I highly recommend Aurora Oud. Its warm, sophisticated blend creates an enchanting presence " +
+                   "perfect for dinner dates, formal events, or any evening when you want to make a lasting impression.";
+        }
+        
+        if (lowerMessage.includes('day') || lowerMessage.includes('work') || lowerMessage.includes('office') || lowerMessage.includes('casual')) {
+            return "For daily wear and casual occasions, Citrus Dawn is perfect. Its fresh, clean scent is office-friendly " +
+                   "while still feeling elegant and uplifting for any casual setting.";
+        }
+        
+        if (lowerMessage.includes('special') || lowerMessage.includes('gift') || lowerMessage.includes('romantic')) {
+            return "For special gifts or romantic occasions, I recommend Velvet Iris. Its soft, romantic floral profile " +
+                   "is universally flattering and creates a gentle, enchanting presence that feels both sophisticated and intimate.";
+        }
+        
+        // Company information
+        if (lowerMessage.includes('about') || lowerMessage.includes('company') || lowerMessage.includes('luminous scents')) {
+            return "Luminous Scents is dedicated to bringing you meticulously curated fragrances that tell stories of elegance and luxury. " +
+                   "We believe every scent should be a masterpiece, carefully selected to elevate your personal style and create unforgettable olfactory experiences.";
+        }
+        
+        // Shipping/delivery
+        if (lowerMessage.includes('shipping') || lowerMessage.includes('delivery') || lowerMessage.includes('how long')) {
+            return "We offer elegant packaging and careful delivery of your fragrance selections. " +
+                   "For detailed shipping information and delivery options, please visit our Contact page or speak with our customer service team.";
+        }
+        
+        // Account/basket
+        if (lowerMessage.includes('account') || lowerMessage.includes('basket') || lowerMessage.includes('order') || lowerMessage.includes('purchase')) {
+            return "You can create an account for a personalized experience, add fragrances to your basket, and manage your orders easily. " +
+                   "Visit the Account section to sign up or log in, and check your Basket for current selections.";
+        }
+        
+        // General help
+        if (lowerMessage.includes('help') || lowerMessage.includes('what can you do') || lowerMessage.includes('how do you work')) {
+            return "I'm here to help you discover the perfect fragrance! I can recommend scents based on your preferences, " +
+                   "explain our products, suggest fragrances for different occasions, and answer questions about our company. " +
+                   "What would you like to know about our fragrances?";
+        }
+        
+        // Greetings
+        if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+            const greetings = [
+                "Hello! I'm here to help you find your perfect fragrance. What kind of scent experience are you looking for?",
+                "Welcome to Luminous Scents! I can help you discover fragrances that match your style and preferences.",
+                "Hi there! Ready to explore our collection? What type of scent appeals to you - fresh, warm, or floral?"
+            ];
+            return greetings[Math.floor(Math.random() * greetings.length)];
+        }
+        
+        // Goodbye
+        if (lowerMessage.includes('bye') || lowerMessage.includes('goodbye') || lowerMessage.includes('thanks') || lowerMessage.includes('thank you')) {
+            const farewells = [
+                "Thank you for visiting Luminous Scents! Feel free to ask if you have any other questions about our fragrances.",
+                "Pleasure helping you! Remember, the perfect fragrance is waiting for you in our collection.",
+                "Goodbye! I hope you find the perfect scent to illuminate your essence. Come back anytime!"
+            ];
+            return farewells[Math.floor(Math.random() * farewells.length)];
+        }
+        
+        // Default response
+        const defaultResponses = [
+            "I'd be happy to help you with fragrance recommendations! Could you tell me what kind of scent experience you're looking for?",
+            "That's an interesting question! I can help you explore our Aurora Oud, Citrus Dawn, and Velvet Iris fragrances. What interests you most?",
+            "I'm here to guide you through our fragrance collection. Are you looking for something fresh, warm, or floral today?",
+            "Let me help you discover the perfect scent! Our collection includes warm evening fragrances, fresh daytime scents, and soft floral blends."
+        ];
+        
+        return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+    }
+});

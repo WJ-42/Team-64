@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="js/sql-parser.js" defer></script>
     <script src="js/main.js" defer></script>
 </head>
 <body data-page="basket">
@@ -23,10 +24,15 @@
             </div>
         </div>
         <nav class="navbar">
-            <a href="index.html">Home</a>
-            <a href="products.html">Fragrances</a>
-            <a href="basket.html">Basket</a>
-            <a href="account.html">Account</a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="products.html">Fragrances</a>
+                <a href="basket.html">Basket</a>
+                <a href="account.html">Account</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                🌙
+            </button>
         </nav>
     </header>
 

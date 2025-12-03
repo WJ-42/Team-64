@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Luminous Scents</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="contact">
+    <!-- Parallax stars background -->
+    <div class="parallax-stars">
+        <canvas id="starfield"></canvas>
+    </div>
+    
+    <canvas id="trailCanvas"></canvas>
+
+    <header class="main-header">
+        <div class="logo">
+            <img src="images/luminous-logo.png" alt="Luminous Scents" class="logo-image">
+            <div class="logo-text">
+                <h1>Luminous Scents</h1>
+                <p>Premium Fragrance Collection</p>
+            </div>
+        </div>
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="about.html">About</a>
+            <a href="account.html">Account</a>
+            <a href="basket.html">Basket</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h2>Contact Us</h2>
+            <p>Get in touch with our team for any questions or inquiries</p>
+        </section>
+
+        <section class="contact-section">
+            <div class="info-grid">
+                <div class="info-column">
+                    <h3>Send us a Message</h3>
+                    <form id="contactForm" class="auth-form">
+                        <div class="form-row">
+                            <label for="contactName">Name</label>
+                            <input type="text" id="contactName" name="name" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="contactEmail">Email</label>
+                            <input type="email" id="contactEmail" name="email" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="contactSubject">Subject</label>
+                            <input type="text" id="contactSubject" name="subject" required>
+                        </div>
+                        <div class="form-row">
+                            <label for="contactMessage">Message</label>
+                            <textarea id="contactMessage" name="message" rows="6" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Send Message</button>
+                        <div id="contactFormMessage" class="form-message"></div>
+                    </form>
+                </div>
+                
+                <div class="info-column">
+                    <h3>Contact Information</h3>
+                    <div class="contact-info">
+                        <p><strong>Email:</strong> hello@luminou scents.com</p>
+                        <p><strong>Phone:</strong> +44 20 7123 4567</p>
+                        <p><strong>Address:</strong> 123 Fragrance Street<br>London, UK EC1A 1BB</p>
+                        <p><strong>Business Hours:</strong><br>
+                        Monday - Friday: 9:00 AM - 6:00 PM<br>
+                        Saturday: 10:00 AM - 4:00 PM<br>
+                        Sunday: Closed</p>
+                    </div>
+                    
+                    <div class="feature-section">
+                        <h3>Follow Us</h3>
+                        <div class="feature-grid">
+                            <div class="feature-card">
+                                <h4>Instagram</h4>
+                                <p>@luminou scents</p>
+                            </div>
+                            <div class="feature-card">
+                                <h4>Twitter</h4>
+                                <p>@LuminousScents</p>
+                            </div>
+                            <div class="feature-card">
+                                <h4>Facebook</h4>
+                                <p>Luminous Scents Official</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="feature-section">
+            <h3>Frequently Asked Questions</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>Shipping Information</h4>
+                    <p>We offer free shipping on orders over £50. Standard delivery takes 3-5 business days within the UK.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Returns Policy</h4>
+                    <p>30-day return policy for unopened items in original packaging. Contact us for return authorization.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Product Authenticity</h4>
+                    <p>All our fragrances are 100% authentic and sourced directly from authorized distributors.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Storage Tips</h4>
+                    <p>Store fragrances in a cool, dry place away from direct sunlight and extreme temperatures to maintain quality.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Fragrance Concentrations</h4>
+                    <p>EDT (Eau de Toilette) lasts 3-5 hours, EDP (Eau de Parfum) lasts 5-8 hours, and Parfum lasts 8+ hours.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Choosing the Right Scent</h4>
+                    <p>Consider your personality, lifestyle, and when you'll wear it. Sample sets are available to help you decide.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Cruelty-Free Guarantee</h4>
+                    <p>All our products are cruelty-free. We never test on animals and work only with ethical suppliers.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Fragrance Longevity</h4>
+                    <p>Properly stored fragrances can last 3-5 years. Most lose quality after opening due to oxidation.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Sample Options</h4>
+                    <p>Try before you buy with our discovery sample sets and individual 2ml samples available for £3 each.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Payment Methods</h4>
+                    <p>We accept all major credit cards, PayPal, Apple Pay, and Google Pay for your convenience.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>International Shipping</h4>
+                    <p>Yes! We ship worldwide. International delivery times vary by location, typically 7-14 business days.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>Allergy Information</h4>
+                    <p>Each product page lists full ingredient lists. We recommend patch testing for sensitive skin.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Luminous Scents. All rights reserved.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
