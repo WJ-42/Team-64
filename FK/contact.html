@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us - Luminous Scents</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/main.js" defer></script>
+</head>
+<body data-page="contact">
+    <div class="parallax-stars">
+        <canvas id="starfield"></canvas>
+        <canvas id="trailCanvas"></canvas>
+    </div>
+    <header class="main-header">
+        <div class="logo">
+            <img src="images/luminous-logo.png" alt="Luminous Scents logo" class="logo-image">
+            <div class="logo-text">
+                <h1>Luminous Scents</h1>
+                <p>Illuminating the story behind every fragrance</p>
+            </div>
+        </div>
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="products.html">Fragrances</a>
+            <a href="basket.html">Basket</a>
+            <a href="account.html">Account</a>
+            <a href="contact.html" class="active">Contact Us</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- PAGE HEADER -->
+        <section class="page-header">
+            <h2>Contact Luminous Scents</h2>
+            <p>We're here to help you find your perfect fragrance. Reach out to our team of fragrance experts.</p>
+        </section>
+
+        <!-- CONTACT INFORMATION -->
+        <section class="info-grid">
+            <div class="info-column">
+                <h3>Get in Touch</h3>
+                <p>Our knowledgeable fragrance consultants are ready to assist you in finding your signature scent. Whether you're looking for advice, have questions about our products, or need assistance with your order, we're here to help.</p>
+                
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <h4>📧 Email</h4>
+                        <p>hello@luminousscents.co.uk</p>
+                    </div>
+                    <div class="contact-item">
+                        <h4>📞 Phone</h4>
+                        <p>+44 20 7123 4567</p>
+                    </div>
+                    <div class="contact-item">
+                        <h4>📍 Address</h4>
+                        <p>15 Scented Lane<br>
+                        Mayfair District<br>
+                        London W1K 7XY<br>
+                        United Kingdom</p>
+                    </div>
+                    <div class="contact-item">
+                        <h4>🕒 Business Hours</h4>
+                        <p>Monday - Friday: 9:00 AM - 7:00 PM<br>
+                        Saturday: 10:00 AM - 6:00 PM<br>
+                        Sunday: 12:00 PM - 5:00 PM</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-column">
+                <h3>Send us a Message</h3>
+                <div class="auth-section">
+                    <form class="auth-form" id="contactForm">
+                        <div class="form-row">
+                            <label for="contactEmail">Your Email Address</label>
+                            <input type="email" id="contactEmail" name="contactEmail" placeholder="your.email@example.com" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <label for="contactSubject">Subject</label>
+                            <input type="text" id="contactSubject" name="contactSubject" placeholder="How can we help you?" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <label for="contactMessage">Message</label>
+                            <textarea id="contactMessage" name="contactMessage" rows="6" placeholder="Tell us more about what you're looking for or any questions you have..." required></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <button type="submit" class="btn-primary">Send Message</button>
+                        </div>
+                        
+                        <div id="contactMessage" class="form-message"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADDITIONAL INFORMATION -->
+        <section class="feature-section">
+            <h3>Why Choose Luminous Scents?</h3>
+            <div class="feature-grid">
+                <article class="feature-card">
+                    <h4>Expert Consultation</h4>
+                    <p>Our fragrance specialists provide personalized recommendations based on your preferences, lifestyle, and occasions.</p>
+                </article>
+                <article class="feature-card">
+                    <h4>Quality Assurance</h4>
+                    <p>We source only authentic fragrances from authorized distributors, ensuring every bottle meets our high standards.</p>
+                </article>
+                <article class="feature-card">
+                    <h4>Exceptional Service</h4>
+                    <p>From your first consultation to after-purchase support, we provide comprehensive service for fragrance enthusiasts.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Luminous Scents. CS2TP Team 64.</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Contact form handling
+            const contactForm = document.getElementById("contactForm");
+            const contactEmail = document.getElementById("contactEmail");
+            const contactSubject = document.getElementById("contactSubject");
+            const contactMessage = document.getElementById("contactMessage");
+            const contactFormMsg = document.getElementById("contactMessage");
+
+            contactForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                const email = contactEmail.value.trim();
+                const subject = contactSubject.value.trim();
+                const message = contactMessage.value.trim();
+
+                // Validation
+                if (!email) {
+                    customAlert("Please enter your email address.");
+                    return;
+                }
+
+                if (!email.includes('@')) {
+                    customAlert("Please enter a valid email address.");
+                    return;
+                }
+
+                if (!subject) {
+                    customAlert("Please enter a subject.");
+                    return;
+                }
+
+                if (!message) {
+                    customAlert("Please enter your message.");
+                    return;
+                }
+
+                // Success message
+                contactFormMsg.textContent = "Thank you for your message! We'll get back to you within 24 hours.";
+                contactFormMsg.style.color = "#ffffff";
+                contactFormMsg.style.textShadow = "0 0 10px rgba(255, 20, 147, 0.6), 0 0 20px rgba(255, 20, 147, 0.3)";
+                contactFormMsg.style.opacity = "0";
+                contactFormMsg.classList.remove('scroll-reveal', 'revealed', 'show');
+                setTimeout(() => {
+                    contactFormMsg.style.opacity = "1";
+                    contactFormMsg.classList.add('show');
+                }, 10);
+
+                // Store contact info locally for demo
+                localStorage.setItem("luminousScentsLastContact", JSON.stringify({
+                    email: email,
+                    subject: subject,
+                    message: message,
+                    timestamp: new Date().toISOString()
+                }));
+
+                // Reset form
+                contactForm.reset();
+
+                customAlert("Your message has been sent successfully! We'll contact you soon.");
+            });
+
+            // Pre-fill email if user has contacted before
+            const lastContact = localStorage.getItem("luminousScentsUserEmail");
+            if (lastContact) {
+                contactEmail.value = lastContact;
+            }
+        });
+    </script>
+</body>
+</html>
