@@ -523,3 +523,234 @@ function initMouseTrail() {
     
     animate();
 }
+
+// AI Chat Functionality
+class AIChat {
+    constructor() {
+        this.chatContainer = document.getElementById('aiChat');
+        this.chatBubble = document.getElementById('chatBubble');
+        this.chatWindow = document.getElementById('chatWindow');
+        this.chatMessages = document.getElementById('chatMessages');
+        this.chatInput = document.getElementById('chatInput');
+        this.sendBtn = document.getElementById('sendMessage');
+        this.minimizeBtn = document.getElementById('minimizeChat');
+        this.isOpen = false;
+        this.isTyping = false;
+        
+        this.initializeEventListeners();
+        this.setupAIResponses();
+    }
+
+    initializeEventListeners() {
+        this.chatBubble.addEventListener('click', () => this.toggleChat());
+        this.minimizeBtn.addEventListener('click', () => this.toggleChat());
+        this.sendBtn.addEventListener('click', () => this.sendMessage());
+        this.chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.sendMessage();
+            }
+        });
+
+        // Quick replies
+        document.querySelectorAll('.quick-reply').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const message = e.target.getAttribute('data-message');
+                this.addUserMessage(message);
+                this.simulateAIResponse(message);
+            });
+        });
+
+        // Close chat when clicking outside
+        document.addEventListener('click', (e) => {
+            if (this.isOpen && !this.chatContainer.contains(e.target)) {
+                this.toggleChat();
+            }
+        });
+    }
+
+    setupAIResponses() {
+        this.responses = {
+            greetings: [
+                "Hello! I'm here to help you find your perfect fragrance. What kind of scent are you in the mood for today?",
+                "Welcome to Luminous Scents! I can help guide you through our collection. Are you looking for something fresh and citrusy or warm and mysterious?",
+                "Hi there! Ready to discover your signature scent? Tell me about your style and I'll recommend the perfect fragrance."
+            ],
+            citrus: [
+                "Citrus fragrances are perfect for a fresh, energizing start to your day! Our Citrus Dawn features bergamot, lemon, and neroli. It's bright, uplifting, and perfect for daytime wear. Would you like to add it to your basket?",
+                "Citrus scents are wonderfully refreshing! Citrus Dawn is one of our most popular daytime fragrances with its vibrant blend of bergamot, lemon, and neroli. It's perfect for spring and summer. Are you interested in trying it?",
+                "Citrus fragrances are like liquid sunshine! Citrus Dawn combines bergamot, lemon, and neroli for a bright, zesty experience that lasts all day. It's excellent for work or casual outings. Would you like to explore it further?"
+            ],
+            evening: [
+                "For evening wear, I'd recommend our Aurora Oud. It features rich oud, amber, and vanilla - perfect for creating an aura of mystery and elegance. It's our most sophisticated scent for special occasions.",
+                "Evening fragrances should be captivating! Aurora Oud offers warm, deep notes of oud, amber, and vanilla that unfold beautifully as the evening progresses. It's designed for those who want to make a lasting impression.",
+                "For nighttime elegance, Aurora Oud is unmatched. With its complex oud base, warm amber, and creamy vanilla, it's a fragrance that tells a story. Perfect for dinner dates, events, or when you want to feel extraordinary."
+            ],
+            popular: [
+                "Our most popular fragrances are Aurora Oud for evening wear, Citrus Dawn for everyday freshness, and Velvet Iris for soft, romantic occasions. Each has its own distinct personality!",
+                "The favorites among our customers are definitely Aurora Oud (sophisticated evenings), Citrus Dawn (bright days), and Velvet Iris (gentle elegance). They're all unique in their own way.",
+                "Our top three are Aurora Oud for luxury evenings, Citrus Dawn for energizing days, and Velvet Iris for intimate moments. Each is crafted to enhance different aspects of your personality."
+            ],
+            general: [
+                "I'd be happy to help you choose a fragrance! Are you looking for something fresh, warm, floral, or perhaps woody? Each of our scents has its own character and is perfect for different occasions.",
+                "Finding the right fragrance is like finding the perfect piece of art - it should speak to your soul. Our collection includes Aurora Oud for mysterious evenings, Citrus Dawn for bright days, and Velvet Iris for romantic moments.",
+                "Every fragrance tells a story, and I want to help you find yours! Whether you prefer the bold complexity of Aurora Oud, the bright freshness of Citrus Dawn, or the soft elegance of Velvet Iris, there's a perfect match for you.",
+                "I can help you discover a fragrance that matches your personality and lifestyle. What mood are you in today? Fresh and energetic, warm and mysterious, or soft and romantic?"
+            ],
+            product_info: {
+                "aurora oud": "Aurora Oud is our signature evening fragrance featuring rich oud, amber, and vanilla. It costs £89.99 and is perfect for sophisticated occasions. The scent unfolds in layers, revealing its complexity throughout the evening.",
+                "citrus dawn": "Citrus Dawn is our fresh daytime fragrance with bergamot, lemon, and neroli. It's priced at £59.99 and perfect for energizing your day. The bright, citrusy notes are uplifting and long-lasting.",
+                "velvet iris": "Velvet Iris offers soft floral elegance with iris, violet, and sandalwood. At £74.50, it's perfect for romantic occasions or when you want to feel gentle and sophisticated. The creamy sandalwood base provides wonderful longevity."
+            }
+        };
+    }
+
+    toggleChat() {
+        this.isOpen = !this.isOpen;
+        this.chatWindow.classList.toggle('active', this.isOpen);
+        this.chatIndicator = this.chatBubble.querySelector('.chat-indicator');
+        
+        if (this.isOpen) {
+            this.chatIndicator.style.display = 'none';
+            setTimeout(() => this.scrollToBottom(), 100);
+        }
+    }
+
+    sendMessage() {
+        const message = this.chatInput.value.trim();
+        if (!message || this.isTyping) return;
+
+        this.addUserMessage(message);
+        this.chatInput.value = '';
+        this.simulateAIResponse(message);
+    }
+
+    addUserMessage(message) {
+        const messageEl = document.createElement('div');
+        messageEl.className = 'message user-message';
+        messageEl.innerHTML = `
+            <div class="message-avatar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            </div>
+            <div class="message-content">
+                <div class="message-text">${this.escapeHtml(message)}</div>
+                <div class="message-time">${this.getCurrentTime()}</div>
+            </div>
+        `;
+        
+        this.chatMessages.appendChild(messageEl);
+        this.scrollToBottom();
+    }
+
+    addAIMessage(message, delay = 1000) {
+        setTimeout(() => {
+            this.removeTypingIndicator();
+            
+            const messageEl = document.createElement('div');
+            messageEl.className = 'message ai-message';
+            messageEl.innerHTML = `
+                <div class="message-avatar">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">${message}</div>
+                    <div class="message-time">${this.getCurrentTime()}</div>
+                </div>
+            `;
+            
+            this.chatMessages.appendChild(messageEl);
+            this.scrollToBottom();
+            this.isTyping = false;
+        }, delay);
+    }
+
+    showTypingIndicator() {
+        const typingEl = document.createElement('div');
+        typingEl.className = 'message ai-message';
+        typingEl.id = 'typingIndicator';
+        typingEl.innerHTML = `
+            <div class="message-avatar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+            </div>
+            <div class="message-content">
+                <div class="typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+        `;
+        
+        this.chatMessages.appendChild(typingEl);
+        this.scrollToBottom();
+    }
+
+    removeTypingIndicator() {
+        const typingEl = document.getElementById('typingIndicator');
+        if (typingEl) {
+            typingEl.remove();
+        }
+    }
+
+    simulateAIResponse(userMessage) {
+        if (this.isTyping) return;
+        
+        this.isTyping = true;
+        this.showTypingIndicator();
+
+        const lowerMessage = userMessage.toLowerCase();
+        let response = '';
+
+        // Check for product-specific queries
+        if (lowerMessage.includes('aurora') && lowerMessage.includes('oud')) {
+            response = this.responses.product_info["aurora oud"];
+        } else if (lowerMessage.includes('citrus') && (lowerMessage.includes('dawn') || lowerMessage.includes('citrus'))) {
+            response = this.responses.product_info["citrus dawn"];
+        } else if (lowerMessage.includes('velvet') && lowerMessage.includes('iris')) {
+            response = this.responses.product_info["velvet iris"];
+        } else if (lowerMessage.includes('citrus') || lowerMessage.includes('fresh') || lowerMessage.includes('bright') || lowerMessage.includes('daytime')) {
+            response = this.getRandomResponse(this.responses.citrus);
+        } else if (lowerMessage.includes('evening') || lowerMessage.includes('night') || lowerMessage.includes('warm') || lowerMessage.includes('oud')) {
+            response = this.getRandomResponse(this.responses.evening);
+        } else if (lowerMessage.includes('popular') || lowerMessage.includes('recommend') || lowerMessage.includes('best')) {
+            response = this.getRandomResponse(this.responses.popular);
+        } else if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+            response = this.getRandomResponse(this.responses.greetings);
+        } else {
+            response = this.getRandomResponse(this.responses.general);
+        }
+
+        this.addAIMessage(response, Math.random() * 1000 + 500);
+    }
+
+    getRandomResponse(responses) {
+        return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    getCurrentTime() {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return timeStr;
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    scrollToBottom() {
+        this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+    }
+}
+
+// Initialize chat when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize AI Chat
+    window.aiChat = new AIChat();
+});
