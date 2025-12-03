@@ -409,11 +409,32 @@ function initStarfield() {
     loop();
 }
 
+// Theme Toggle Functionality
+function initThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    const THEME_KEY = 'luminousScentsTheme';
+    
+    // Get saved theme or default to dark
+    const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem(THEME_KEY, newTheme);
+        });
+    }
+}
+
 // Page initialiser
 
 document.addEventListener("DOMContentLoaded", () => {
     const page = document.body.getAttribute("data-page");
 
+    initThemeToggle();
     initStarfield();
     initMouseTrail();
 
