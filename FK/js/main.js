@@ -86,6 +86,7 @@ function customConfirm(message, onConfirm) {
 }
 
 const BASKET_STORAGE_KEY = "luminousScentsBasket";
+const ORDERS_STORAGE_KEY = "luminousScentsOrders";
 
 // Basket helpers
 
@@ -244,7 +245,21 @@ function renderBasketPage() {
     const checkoutBtn = document.getElementById("mockCheckoutBtn");
     if (checkoutBtn) {
         checkoutBtn.addEventListener("click", () => {
-            customAlert("Checkout flow will be implemented in the full version. For MVP this is a demo only.");
+            const basket = loadBasket();
+            if (basket.length === 0) {
+                customAlert("Your basket is empty!");
+                return;
+            }
+            
+            // Create order from basket
+            const order = createOrder(basket, total);
+            saveOrder(order);
+            
+            // Clear basket
+            localStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify([]));
+            
+            customAlert(`Order #${order.id} placed successfully! View your orders in the Account section.`);
+            renderBasketPage();
         });
     }
 
@@ -259,9 +274,9 @@ function renderBasketPage() {
     }
 }
 
-// Scroll reveal helper function
+// Scroll reveal helper function - adds revealed class immediately so content is visible
 function applyScrollReveal(element) {
-    element.classList.add('scroll-reveal');
+    element.classList.add('scroll-reveal', 'revealed');
     observer.observe(element);
 }
 
@@ -429,6 +444,106 @@ function initThemeToggle() {
     }
 }
 
+// Orders functionality
+function loadOrders() {
+    const stored = localStorage.getItem(ORDERS_STORAGE_KEY);
+    if (!stored) {
+        return [];
+    }
+    try {
+        return JSON.parse(stored);
+    } catch (e) {
+        console.error("Could not parse stored orders", e);
+        return [];
+    }
+}
+
+function saveOrder(order) {
+    const orders = loadOrders();
+    orders.unshift(order); // Add new order at the beginning
+    localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(orders));
+}
+
+function createOrder(basket, total) {
+    const orderId = 'ORD-' + Date.now().toString(36).toUpperCase();
+    const statuses = ['processing', 'shipped', 'delivered'];
+    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+    
+    const items = basket.map(item => {
+        const product = products.find(p => p.id === item.productId);
+        return {
+            name: product ? product.name : 'Unknown Product',
+            price: product ? product.price : 0,
+            quantity: item.quantity
+        };
+    });
+    
+    return {
+        id: orderId,
+        date: new Date().toISOString(),
+        items: items,
+        total: total,
+        status: randomStatus
+    };
+}
+
+function renderOrdersPage() {
+    const container = document.getElementById("ordersContainer");
+    if (!container) return;
+    
+    const orders = loadOrders();
+    
+    if (orders.length === 0) {
+        container.innerHTML = `
+            <div class="no-orders">
+                <p>You haven't placed any orders yet.</p>
+                <a href="products.html" class="btn-primary">Browse Fragrances</a>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = orders.map(order => {
+        const orderDate = new Date(order.date).toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        const statusIcon = {
+            'processing': '⏳',
+            'shipped': '📦',
+            'delivered': '✅'
+        };
+        
+        const itemsHtml = order.items.map(item => `
+            <div class="order-item">
+                <span class="order-item-name">${item.name}</span>
+                <span class="order-item-qty">x${item.quantity}</span>
+                <span class="order-item-price">£${(item.price * item.quantity).toFixed(2)}</span>
+            </div>
+        `).join('');
+        
+        return `
+            <div class="order-card">
+                <div class="order-header">
+                    <span class="order-id">${order.id}</span>
+                    <span class="order-date">${orderDate}</span>
+                </div>
+                <div class="order-items">
+                    ${itemsHtml}
+                </div>
+                <div class="order-footer">
+                    <span class="order-status ${order.status}">${statusIcon[order.status] || ''} ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span>
+                    <span class="order-total">Total: £${order.total.toFixed(2)}</span>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
 // Page initialiser
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -445,9 +560,12 @@ document.addEventListener("DOMContentLoaded", () => {
         renderProductsPage();
     } else if (page === "basket") {
         renderBasketPage();
+    } else if (page === "account") {
+        setupAuthForm();
+        renderOrdersPage();
     }
 });
-// Scroll reveal animations
+// Scroll reveal animations - disabled, all content visible by default
 const observerOptions = {
     threshold: 0,
     rootMargin: '0px'
@@ -455,26 +573,27 @@ const observerOptions = {
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-        } else {
-            entry.target.classList.remove('revealed');
-        }
+        // Always keep elements visible
+        entry.target.classList.add('revealed');
     });
 }, observerOptions);
 
 // Prevent observer from catching dynamically added elements
 const originalObserve = observer.observe;
 observer.observe = function(element) {
-    if (element.classList.contains('custom-alert') || 
+    if (element.classList.contains('custom-alert') ||
         element.classList.contains('custom-alert-overlay') ||
         element.closest('.custom-alert')) {
         return;
     }
+    // Add revealed class immediately so content is visible
+    element.classList.add('revealed');
     originalObserve.call(this, element);
 };
+
+// Add scroll-reveal and revealed classes to all elements so they're visible immediately
 document.querySelectorAll('.main-header, .site-footer, .hero-text, .hero-text h2, .hero-text p, .page-header, .page-header h2, .page-header p, .card, .card h3, .card p, .card .btn-primary, .feature-card, .feature-card h4, .feature-card p, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .info-column h3, .info-column p, .steps-list li, .step-number, .feature-section h3, .auth-section, .auth-form').forEach(el => {
-    el.classList.add('scroll-reveal');
+    el.classList.add('scroll-reveal', 'revealed');
     observer.observe(el);
 });
 

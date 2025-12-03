@@ -150,10 +150,10 @@ h3, h4, h5, h6 {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
 }
-/* Scroll reveal animations */
+/* Scroll reveal animations - elements visible by default */
 .scroll-reveal {
-    opacity: 0;
-    transform: translateY(20px);
+    opacity: 1;
+    transform: translateY(0);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
@@ -582,8 +582,8 @@ main {
     height: 100%;
     object-fit: contain;
     object-position: center;
-    transform: translateY(-100%);
-    transition: transform 0.6s ease-out;
+    transform: scale(1);
+    transition: transform 0.3s ease-out;
     position: absolute;
     top: 0;
     left: 0;
@@ -591,16 +591,16 @@ main {
 }
 
 .card:hover .product-image {
-    transform: translateY(0);
+    transform: scale(1.05);
 }
 
 .card:hover .aurora-oud-image .product-image {
-    transform: scale(1.15) translateY(0);
+    transform: scale(1.1);
 }
 
 .aurora-oud-image .product-image {
     padding: 0.25rem;
-    transform: scale(1.15) translateY(-100%);
+    transform: scale(1);
 }
 
 .card {
@@ -717,6 +717,151 @@ main {
 
 .basket-summary p {
     margin-bottom: 0.6rem;
+}
+
+/* Orders Section */
+.orders-section {
+    margin-top: 3rem;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 700px;
+}
+
+.orders-section h3 {
+    margin-bottom: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    font-size: 1.5rem;
+    text-align: center;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.orders-container {
+    background: var(--bg-card);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1.5rem;
+    box-shadow: 0 24px 60px var(--shadow-color);
+    transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.order-card {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(15, 12, 5, 0.55) 50%, rgba(0, 0, 0, 0.6) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.order-card:last-child {
+    margin-bottom: 0;
+}
+
+.order-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--shadow-color);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.order-id {
+    font-weight: 600;
+    color: var(--accent-color);
+    font-size: 0.95rem;
+}
+
+.order-date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.order-items {
+    margin-bottom: 1rem;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.order-item-name {
+    flex: 1;
+}
+
+.order-item-qty {
+    margin: 0 1rem;
+    color: var(--text-muted);
+}
+
+.order-item-price {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.order-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.order-status.delivered {
+    background: rgba(74, 222, 128, 0.15);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.order-status.processing {
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.order-status.shipped {
+    background: rgba(96, 165, 250, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(96, 165, 250, 0.3);
+}
+
+.order-total {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+.no-orders {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-muted);
+}
+
+.no-orders p {
+    margin-bottom: 1rem;
 }
 
 /* New sections on homepage */

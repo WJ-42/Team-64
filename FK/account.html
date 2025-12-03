@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/main.js" defer></script>
 </head>
-<body data-page="home">
+<body data-page="account">
     <div class="parallax-stars">
         <canvas id="starfield"></canvas>
         <canvas id="trailCanvas"></canvas>
@@ -72,6 +72,16 @@
 
                 <p id="authMessage" class="form-message"></p>
             </form>
+        </section>
+
+        <!-- Previous Orders Section -->
+        <section class="orders-section">
+            <h3>Your Previous Orders</h3>
+            <p class="small-text">View your order history below. Orders are stored locally in this MVP demo.</p>
+            
+            <div id="ordersContainer" class="orders-container">
+                <!-- Orders will be rendered here by JavaScript -->
+            </div>
         </section>
     </main>
 
