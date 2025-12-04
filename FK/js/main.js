@@ -280,12 +280,14 @@ function applyScrollReveal(element) {
     observer.observe(element);
 }
 
-// Simple front end auth validation
+// Enhanced front end auth validation with password requirements
 
 function setupAuthForm() {
     const form = document.getElementById("authForm");
     const emailInput = document.getElementById("authEmail");
     const passwordInput = document.getElementById("authPassword");
+    const passwordConfirmInput = document.getElementById("authPasswordConfirm");
+    const confirmPasswordRow = document.getElementById("confirmPasswordRow");
     const message = document.getElementById("authMessage");
     const isNewUser = document.getElementById("isNewUser");
 
@@ -293,13 +295,106 @@ function setupAuthForm() {
         return;
     }
 
+    // Password requirements elements
+    const passwordRequirements = document.getElementById("passwordRequirements");
+    const requirements = {
+        length: document.getElementById("req-length"),
+        uppercase: document.getElementById("req-uppercase"),
+        lowercase: document.getElementById("req-lowercase"),
+        number: document.getElementById("req-number"),
+        special: document.getElementById("req-special")
+    };
+
+    // Password confirmation element
+    const passwordMatch = document.getElementById("passwordMatch");
+
+    // Show/hide password confirmation and requirements based on new user checkbox
+    isNewUser.addEventListener('change', () => {
+        if (isNewUser.checked) {
+            confirmPasswordRow.style.display = 'block';
+            passwordConfirmInput.required = true;
+            passwordRequirements.style.display = 'block';
+        } else {
+            confirmPasswordRow.style.display = 'none';
+            passwordConfirmInput.required = false;
+            passwordConfirmInput.value = '';
+            passwordMatch.textContent = '';
+            passwordMatch.className = 'password-match';
+            
+            // Hide password requirements and clear their validation state
+            passwordRequirements.style.display = 'none';
+            Object.values(requirements).forEach(req => req.classList.remove('valid'));
+            passwordInput.value = '';
+        }
+    });
+
+    // Real-time password validation
+    passwordInput.addEventListener('input', () => {
+        if (isNewUser.checked) {
+            validatePasswordRequirements(passwordInput.value);
+        }
+    });
+
+    // Real-time password confirmation validation
+    passwordConfirmInput.addEventListener('input', () => {
+        if (isNewUser.checked && passwordConfirmInput.value) {
+            validatePasswordMatch();
+        }
+    });
+
+    // Password requirements validation
+    function validatePasswordRequirements(password) {
+        const checks = {
+            length: password.length >= 8,
+            uppercase: /[A-Z]/.test(password),
+            lowercase: /[a-z]/.test(password),
+            number: /\d/.test(password),
+            special: /[!@#$%^&*]/.test(password)
+        };
+
+        Object.keys(checks).forEach(check => {
+            const element = requirements[check];
+            if (checks[check]) {
+                element.classList.add('valid');
+            } else {
+                element.classList.remove('valid');
+            }
+        });
+
+        return Object.values(checks).every(check => check);
+    }
+
+    // Password confirmation validation
+    function validatePasswordMatch() {
+        const password = passwordInput.value;
+        const confirmPassword = passwordConfirmInput.value;
+
+        if (confirmPassword === '') {
+            passwordMatch.textContent = '';
+            passwordMatch.className = 'password-match';
+            return false;
+        }
+
+        if (password === confirmPassword) {
+            passwordMatch.textContent = '✓ Passwords match';
+            passwordMatch.className = 'password-match match';
+            return true;
+        } else {
+            passwordMatch.textContent = '✗ Passwords do not match';
+            passwordMatch.className = 'password-match no-match';
+            return false;
+        }
+    }
+
+    // Form submission handler
     form.addEventListener("submit", event => {
         event.preventDefault();
 
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
+        const confirmPassword = passwordConfirmInput.value.trim();
 
-        // Custom validation with styled messages
+        // Basic email validation
         if (!email) {
             customAlert("Please enter your email address.");
             return;
@@ -310,24 +405,36 @@ function setupAuthForm() {
             return;
         }
 
+        // Basic password validation
         if (!password) {
             customAlert("Please enter a password.");
             return;
         }
 
-        if (password.length < 6) {
-            customAlert("Password must be at least 6 characters long.");
-            return;
+        // Enhanced validation for new users
+        if (isNewUser.checked) {
+            if (!validatePasswordRequirements(password)) {
+                customAlert("Your password doesn't meet all the requirements. Please check the requirements list above.");
+                return;
+            }
+
+            if (!validatePasswordMatch()) {
+                customAlert("Passwords do not match. Please make sure both passwords are identical.");
+                return;
+            }
+
+            // Success message for new user
+            message.textContent = "Account created successfully! Welcome to Luminous Scents.";
+            message.style.color = "var(--accent-color)";
+            message.style.fontWeight = "600";
+            
+        } else {
+            // Success message for existing user
+            message.textContent = "Login successful! Welcome back to Luminous Scents.";
+            message.style.color = "var(--accent-color)";
+            message.style.fontWeight = "600";
         }
 
-        // Rest of the existing success logic...
-        if (isNewUser.checked) {
-            message.textContent = "Account created locally for MVP. In the full system this will be stored securely.";
-        } else {
-            message.textContent = "Login successful in this demo. Real authentication will be added later.";
-        }
-        message.style.color = "#ffffff";
-        message.style.textShadow = "0 0 10px rgba(240, 194, 75, 0.6), 0 0 20px rgba(240, 194, 75, 0.3)";
         message.style.opacity = "0";
         message.classList.remove('scroll-reveal', 'revealed', 'show');
         setTimeout(() => {
@@ -336,6 +443,14 @@ function setupAuthForm() {
         }, 10);
 
         localStorage.setItem("luminousScentsUserEmail", email);
+        
+        // Clear the form and reset validation states after successful submission
+        setTimeout(() => {
+            form.reset();
+            confirmPasswordRow.style.display = 'none';
+            passwordRequirements.style.display = 'none';
+            Object.values(requirements).forEach(req => req.classList.remove('valid'));
+        }, 2000);
     });
 }
 

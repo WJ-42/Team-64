@@ -42,31 +42,47 @@
 
     <main>
         <section class="page-header">
-            <h2>Your account</h2>
-            <p>Use this form to sign up as a new customer or log in as a returning customer for this MVP demo.</p>
+            <h2>Your Account</h2>
+            <p>Create a new account or sign in to your existing account to access your fragrance collection and order history.</p>
         </section>
 
         <section class="auth-section">
-            <h3>Create an account or log in</h3>
+            <h3>Account Access</h3>
             <p class="small-text">
-                For the MVP this form only validates input on the front end. There is no real backend yet.
+                Please sign in to your existing account or create a new one to continue your fragrance journey with Luminous Scents.
             </p>
 
             <form id="authForm" class="auth-form" novalidate>
                 <div class="form-row">
-                    <label for="authEmail">Email address</label>
-                    <input type="email" id="authEmail" name="authEmail">
+                    <label for="authEmail">Email Address</label>
+                    <input type="email" id="authEmail" name="authEmail" placeholder="Enter your email address" required>
                 </div>
 
                 <div class="form-row">
                     <label for="authPassword">Password</label>
-                    <input type="password" id="authPassword" name="authPassword">
+                    <input type="password" id="authPassword" name="authPassword" placeholder="Enter your password" required>
+                    <div id="passwordRequirements" class="password-requirements" style="display: none;">
+                        <p class="requirements-title">Password Requirements:</p>
+                        <ul class="requirements-list">
+                            <li id="req-length" class="requirement">At least 8 characters long</li>
+                            <li id="req-uppercase" class="requirement">At least one uppercase letter (A-Z)</li>
+                            <li id="req-lowercase" class="requirement">At least one lowercase letter (a-z)</li>
+                            <li id="req-number" class="requirement">At least one number (0-9)</li>
+                            <li id="req-special" class="requirement">At least one special character (!@#$%^&*)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-row" id="confirmPasswordRow" style="display: none;">
+                    <label for="authPasswordConfirm">Confirm Password</label>
+                    <input type="password" id="authPasswordConfirm" name="authPasswordConfirm" placeholder="Re-enter your password">
+                    <div id="passwordMatch" class="password-match"></div>
                 </div>
 
                 <div class="form-row">
-                    <label>
+                    <label class="checkbox-label">
                         <input type="checkbox" id="isNewUser">
-                        I am a new customer
+                        I am creating a new account
                     </label>
                 </div>
 
