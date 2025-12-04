@@ -1346,9 +1346,9 @@ function renderWishlist(userEmail, container) {
     // Add event listeners for wishlist actions
     container.querySelectorAll('.wishlist-add-basket').forEach(btn => {
         btn.addEventListener('click', (e) => {
+            e.stopPropagation();
             const productId = Number(e.target.getAttribute('data-product-id'));
             addToBasket(productId);
-            customAlert("Added to basket");
         });
     });
     
