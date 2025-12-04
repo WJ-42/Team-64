@@ -327,13 +327,36 @@ function customAlert(message) {
     alertBox.classList.remove('scroll-reveal', 'revealed');
     overlay.classList.remove('scroll-reveal', 'revealed');
 
-    const closeAlert = () => {
+    const closeAlert = (e) => {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
         overlay.remove();
         alertBox.remove();
     };
 
-    document.getElementById('customAlertBtn').addEventListener('click', closeAlert);
-    overlay.addEventListener('click', closeAlert);
+    // Get the button and add event listener with stopPropagation
+    const okButton = document.getElementById('customAlertBtn');
+    if (okButton) {
+        okButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            closeAlert(e);
+        });
+    }
+    
+    // Also allow closing by clicking overlay, but prevent closing when clicking the alert box itself
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            closeAlert(e);
+        }
+    });
+    
+    // Prevent clicks on the alert box from closing it
+    alertBox.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
 }
 
 function customConfirm(message, onConfirm) {
@@ -445,6 +468,11 @@ function renderProductsPage() {
         card.className = "card";
         card.setAttribute("data-category", product.category);
 
+        const loggedInUser = getLoggedInUser();
+        const inWishlist = loggedInUser ? isInWishlist(product.id, loggedInUser) : false;
+        const wishlistButtonText = inWishlist ? "In Wishlist" : "Add to Wishlist";
+        const wishlistButtonClass = inWishlist ? "btn-wishlist-active" : "btn-wishlist";
+
         card.innerHTML = `
             <div class="product-image-container ${product.id === 1 ? 'aurora-oud-image' : ''}">
                 <img src="images/${product.image}" alt="${product.name}" class="product-image">
@@ -454,9 +482,14 @@ function renderProductsPage() {
             <p><strong>Notes:</strong> ${product.notes}</p>
             <p class="price">£${product.price.toFixed(2)}</p>
             <p>${product.description}</p>
-            <button class="btn-primary" data-product-id="${product.id}">
-                Add to basket
-            </button>
+            <div class="product-actions">
+                <button class="btn-primary" data-product-id="${product.id}" data-action="basket">
+                    Add to basket
+                </button>
+                <button class="${wishlistButtonClass}" data-product-id="${product.id}" data-action="wishlist">
+                    ${wishlistButtonText}
+                </button>
+            </div>
         `;
 
         return card;
@@ -480,16 +513,53 @@ function renderProductsPage() {
     renderToContainer(wellnessContainer, wellnessProducts);
     renderToContainer(giftContainer, giftProducts);
 
-    // Add click handlers to all product sections
-    document.querySelectorAll(".product-scroll-container, .cards-grid").forEach(container => {
-        container.addEventListener("click", event => {
-            const button = event.target.closest("button[data-product-id]");
-            if (button) {
+    // Add click handlers using event delegation
+    // Only attach listeners to product containers, not the entire document
+    if (!window.productClickHandlersAttached) {
+        const productContainers = document.querySelectorAll(".product-scroll-container, .cards-grid");
+        
+        productContainers.forEach(container => {
+            container.addEventListener('click', function(event) {
+                const button = event.target.closest("button[data-product-id]");
+                if (!button) return;
+                
+                // Stop propagation to prevent interference with other handlers
+                event.stopPropagation();
+                
                 const id = Number(button.getAttribute("data-product-id"));
-                addToBasket(id);
-            }
+                const action = button.getAttribute("data-action");
+                const loggedInUser = getLoggedInUser();
+                
+                if (action === "basket") {
+                    addToBasket(id);
+                } else if (action === "wishlist") {
+                    if (loggedInUser) {
+                        const wasInWishlist = isInWishlist(id, loggedInUser);
+                        
+                        if (wasInWishlist) {
+                            removeFromWishlist(id, loggedInUser);
+                            customAlert("Removed from wishlist");
+                            // Update button state
+                            button.textContent = "Add to Wishlist";
+                            button.className = "btn-wishlist";
+                        } else {
+                            const added = addToWishlist(id, loggedInUser);
+                            if (added) {
+                                customAlert("Added to wishlist");
+                                // Update button state
+                                button.textContent = "In Wishlist";
+                                button.className = "btn-wishlist-active";
+                            }
+                        }
+                    } else {
+                        customAlert("Please log in to add items to your wishlist.");
+                    }
+                }
+            });
         });
-    });
+        
+        window.productClickHandlersAttached = true;
+    }
 
     // Initialize scroll functionality for scrollable sections
     initScrollableSections();
@@ -1065,6 +1135,12 @@ function renderProfilePage(userEmail) {
         renderMessages(userEmail, messagesContainer);
     }
     
+    // Render wishlist
+    const wishlistContainer = document.getElementById("wishlistContainer");
+    if (wishlistContainer) {
+        renderWishlist(userEmail, wishlistContainer);
+    }
+    
     // Setup logout button (remove old listener first to prevent duplicates)
     const logoutBtn = document.getElementById("logoutBtn");
     if (logoutBtn) {
@@ -1193,6 +1269,75 @@ function renderMessages(userEmail, container) {
         
         container.appendChild(messageCard);
         applyScrollReveal(messageCard);
+    });
+}
+
+function renderWishlist(userEmail, container) {
+    if (!container) return;
+    
+    const wishlist = loadWishlist(userEmail);
+    container.innerHTML = "";
+    
+    if (wishlist.length === 0) {
+        container.innerHTML = `
+            <div class="empty-orders">
+                <p>Your wishlist is empty.</p>
+                <a href="products.html" class="btn-primary">Browse Fragrances</a>
+            </div>
+        `;
+        return;
+    }
+    
+    wishlist.forEach(productId => {
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+        
+        const wishlistCard = document.createElement("div");
+        wishlistCard.className = "wishlist-card";
+        
+        wishlistCard.innerHTML = `
+            <div class="wishlist-item-image">
+                <img src="images/${product.image}" alt="${product.name}" class="wishlist-image">
+            </div>
+            <div class="wishlist-item-details">
+                <h4 class="wishlist-item-name">${product.name}</h4>
+                <p class="wishlist-item-brand">${product.brand}</p>
+                <p class="wishlist-item-notes"><strong>Notes:</strong> ${product.notes}</p>
+                <p class="wishlist-item-description">${product.description}</p>
+                <div class="wishlist-item-footer">
+                    <span class="wishlist-item-price">£${product.price.toFixed(2)}</span>
+                    <div class="wishlist-item-actions">
+                        <button class="btn-primary wishlist-add-basket" data-product-id="${product.id}">
+                            Add to Basket
+                        </button>
+                        <button class="btn-secondary wishlist-remove" data-product-id="${product.id}">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(wishlistCard);
+        applyScrollReveal(wishlistCard);
+    });
+    
+    // Add event listeners for wishlist actions
+    container.querySelectorAll('.wishlist-add-basket').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const productId = Number(e.target.getAttribute('data-product-id'));
+            addToBasket(productId);
+            customAlert("Added to basket");
+        });
+    });
+    
+    container.querySelectorAll('.wishlist-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const productId = Number(e.target.getAttribute('data-product-id'));
+            removeFromWishlist(productId, userEmail);
+            renderWishlist(userEmail, container);
+            customAlert("Removed from wishlist");
+        });
     });
 }
 
@@ -2093,6 +2238,61 @@ function loadUserMessages(userEmail) {
     }
 }
 
+// Wishlist management functions
+function loadWishlist(userEmail) {
+    if (!userEmail) return [];
+    const wishlistKey = `luminousScentsWishlist_${userEmail}`;
+    const stored = localStorage.getItem(wishlistKey);
+    if (!stored) {
+        return [];
+    }
+    try {
+        return JSON.parse(stored);
+    } catch (e) {
+        console.error("Could not parse stored wishlist", e);
+        return [];
+    }
+}
+
+function saveWishlist(wishlist, userEmail) {
+    if (!userEmail) return;
+    const wishlistKey = `luminousScentsWishlist_${userEmail}`;
+    localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+}
+
+function addToWishlist(productId, userEmail) {
+    if (!userEmail) {
+        customAlert("Please log in to add items to your wishlist.");
+        return;
+    }
+    const wishlist = loadWishlist(userEmail);
+    if (!wishlist.includes(productId)) {
+        wishlist.push(productId);
+        saveWishlist(wishlist, userEmail);
+        // Alert is shown by the calling function
+        return true;
+    } else {
+        customAlert("This item is already in your wishlist.");
+        return false;
+    }
+}
+
+function removeFromWishlist(productId, userEmail) {
+    if (!userEmail) return;
+    const wishlist = loadWishlist(userEmail);
+    const index = wishlist.indexOf(productId);
+    if (index > -1) {
+        wishlist.splice(index, 1);
+        saveWishlist(wishlist, userEmail);
+    }
+}
+
+function isInWishlist(productId, userEmail) {
+    if (!userEmail) return false;
+    const wishlist = loadWishlist(userEmail);
+    return wishlist.includes(productId);
+}
+
 // Starfield canvas effect
 
 function initStarfield() {
@@ -2266,20 +2466,25 @@ window.addEventListener("load", () => {
 
 // Scroll reveal animations with hysteresis to prevent jitter at boundaries
 // Reveal observer: triggers when element enters viewport
+// Using requestAnimationFrame to batch DOM updates for better performance
 const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting && !entry.target.classList.contains('revealed')) {
-            entry.target.classList.add('revealed');
-        }
+    requestAnimationFrame(() => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !entry.target.classList.contains('revealed')) {
+                entry.target.classList.add('revealed');
+            }
+        });
     });
 }, { threshold: 0.05, rootMargin: '0px' });
 
 // Hide observer: triggers when element is fully outside viewport (with small buffer)
 const hideObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (!entry.isIntersecting && entry.target.classList.contains('revealed')) {
-            entry.target.classList.remove('revealed');
-        }
+    requestAnimationFrame(() => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting && entry.target.classList.contains('revealed')) {
+                entry.target.classList.remove('revealed');
+            }
+        });
     });
 }, { threshold: 0, rootMargin: '20px 0px 20px 0px' });
 
