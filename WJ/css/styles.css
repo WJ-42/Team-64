@@ -3713,12 +3713,18 @@ html body .site-footer {
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid var(--border-color);
+    background: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
 }
 
 .wishlist-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
 }
 
 .wishlist-item-details {
