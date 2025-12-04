@@ -118,5 +118,67 @@
     <footer class="site-footer">
         <p>&copy; 2025 Luminous Scents. CS2TP Team 64.</p>
     </footer>
+
+    <!-- AI Chat Box -->
+    <div id="aiChat" class="ai-chat-container">
+        <div id="chatBubble" class="chat-bubble" title="Chat with Lumi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v2c0 .55.45 1 1 1 .22 0 .42-.08.59-.21L14.17 19H20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+                <path d="M6 18l-2 2V4h16v12H6z"/>
+            </svg>
+            <div class="chat-indicator"></div>
+        </div>
+        
+        <div id="chatWindow" class="chat-window">
+            <div class="chat-header">
+                <div class="chat-title">
+                    <div class="ai-avatar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                        </svg>
+                    </div>
+                    <div class="chat-title-text">
+                        <div class="chat-name-full">Lumi - Fragrance Assistant</div>
+                        <div class="chat-status">Online</div>
+                    </div>
+                </div>
+                <button id="minimizeChat" class="minimize-btn" title="Minimize">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 13H5v-2h14v2z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div id="chatMessages" class="chat-messages">
+                <div class="message ai-message">
+                    <div class="message-avatar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                        </svg>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">Welcome to Luminous Scents! 💫 I'm Lumi, your AI fragrance expert. I can help you discover the perfect scent based on your preferences. What type of fragrance are you looking for today?</div>
+                        <div class="message-time">Just now</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="quick-replies">
+                    <button class="quick-reply" data-message="Tell me about citrus fragrances">Citrus scents</button>
+                    <button class="quick-reply" data-message="I prefer warm, evening fragrances">Evening scents</button>
+                    <button class="quick-reply" data-message="What are your most popular fragrances?">Popular picks</button>
+                </div>
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chatInput" placeholder="Ask about fragrances..." maxlength="200">
+                    <button id="sendMessage" class="send-btn" title="Send message">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
