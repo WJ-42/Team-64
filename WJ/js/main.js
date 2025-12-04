@@ -657,7 +657,28 @@ function filterProducts() {
         const matches = name.includes(searchTerm) || notes.includes(searchTerm) || description.includes(searchTerm);
 
         if (matches) {
-            card.style.display = "block";
+            // Check if card was previously hidden
+            const wasHidden = card.style.display === "none";
+            // Remove inline display style to use CSS default (flex)
+            card.style.display = "";
+            // If card was previously hidden, reset revealed state to allow animation
+            if (wasHidden && card.classList.contains('scroll-reveal')) {
+                card.classList.remove('revealed');
+                // Use requestAnimationFrame to ensure DOM is updated before checking intersection
+                requestAnimationFrame(() => {
+                    // Check if card is already in viewport and trigger reveal manually
+                    const rect = card.getBoundingClientRect();
+                    const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+                    if (isInViewport) {
+                        // Small delay to allow animation to trigger properly
+                        setTimeout(() => {
+                            if (card.classList.contains('scroll-reveal') && !card.classList.contains('revealed')) {
+                                card.classList.add('revealed');
+                            }
+                        }, 100);
+                    }
+                });
+            }
             sectionVisibility[category] = (sectionVisibility[category] || 0) + 1;
         } else {
             card.style.display = "none";

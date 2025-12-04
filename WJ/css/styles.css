@@ -1241,6 +1241,7 @@ textarea:-webkit-autofill:focus {
     flex-wrap: wrap;
     gap: 1.25rem;
     justify-content: center;
+    align-items: stretch;
 }
 
 /* Solaris duo section */
@@ -1275,6 +1276,7 @@ textarea:-webkit-autofill:focus {
 #solarisContainer {
     display: flex;
     justify-content: center;
+    align-items: stretch;
     gap: 1.25rem;
     max-width: 750px;
     margin: 0 auto;
@@ -1523,6 +1525,15 @@ textarea:-webkit-autofill:focus {
     color: var(--text-secondary);
     line-height: 1.7;
     transition: color 0.3s ease;
+}
+
+.card .price + p {
+    min-height: 3.4em;
+    max-height: 3.4em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 .card .price {
@@ -1959,6 +1970,7 @@ textarea:-webkit-autofill:focus {
 /* Horizontal scrolling container */
 .product-scroll-container {
     display: flex;
+    align-items: stretch;
     gap: 1.25rem;
     overflow-x: auto;
     overflow-y: hidden; /* Required for horizontal scroll to work as expected */
@@ -2058,10 +2070,25 @@ textarea:-webkit-autofill:focus {
     transform: translateY(-50%) scale(0.8);
 }
 
+/* Light mode styles for scroll buttons */
+[data-theme="light"] .scroll-btn {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(240, 194, 75, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    color: #d4af37;
+}
+
+[data-theme="light"] .scroll-btn:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(240, 194, 75, 0.7);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2), 0 0 20px rgba(240, 194, 75, 0.3);
+}
+
 /* Solaris grid - keeps the centered 2-card layout */
 .solaris-grid {
     display: flex;
     justify-content: center;
+    align-items: stretch;
     gap: 1.25rem;
     max-width: 750px;
     margin: 0 auto;
