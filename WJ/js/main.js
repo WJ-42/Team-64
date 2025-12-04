@@ -371,6 +371,8 @@ function customConfirm(message, onConfirm) {
 }
 
 const BASKET_STORAGE_KEY = "luminousScentsBasket";
+const USER_SESSION_KEY = "luminousScentsUserEmail";
+const USER_SESSION_DATE_KEY = "luminousScentsUserSessionDate";
 
 // Basket helpers
 
@@ -984,7 +986,213 @@ function setupAuthForm() {
         passwordInput.classList.remove('input-success');
         passwordRequirements.classList.remove('show');
 
-        localStorage.setItem("luminousScentsUserEmail", email);
+        // Save user session
+        localStorage.setItem(USER_SESSION_KEY, email);
+        localStorage.setItem(USER_SESSION_DATE_KEY, new Date().toISOString());
+        
+        // Switch to profile view
+        showProfileView(email);
+    });
+}
+
+// Check if user is logged in
+function isUserLoggedIn() {
+    return !!localStorage.getItem(USER_SESSION_KEY);
+}
+
+function getLoggedInUser() {
+    return localStorage.getItem(USER_SESSION_KEY);
+}
+
+function logout() {
+    localStorage.removeItem(USER_SESSION_KEY);
+    localStorage.removeItem(USER_SESSION_DATE_KEY);
+    showLoginView();
+    customAlert("You have been logged out successfully.");
+}
+
+function showLoginView() {
+    const loginView = document.getElementById("loginView");
+    const profileView = document.getElementById("profileView");
+    if (loginView && profileView) {
+        loginView.style.display = "block";
+        profileView.style.display = "none";
+    }
+}
+
+function showProfileView(userEmail) {
+    const loginView = document.getElementById("loginView");
+    const profileView = document.getElementById("profileView");
+    if (loginView && profileView) {
+        loginView.style.display = "none";
+        profileView.style.display = "block";
+        renderProfilePage(userEmail);
+    }
+}
+
+function renderProfilePage(userEmail) {
+    // Update profile info
+    const profileEmail = document.getElementById("profileEmail");
+    const profileMemberSince = document.getElementById("profileMemberSince");
+    const ordersContainer = document.getElementById("ordersContainer");
+    
+    if (profileEmail) {
+        profileEmail.textContent = userEmail;
+    }
+    
+    if (profileMemberSince) {
+        const sessionDate = localStorage.getItem(USER_SESSION_DATE_KEY);
+        if (sessionDate) {
+            const date = new Date(sessionDate);
+            profileMemberSince.textContent = date.toLocaleDateString('en-GB', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        } else {
+            profileMemberSince.textContent = "Recently";
+        }
+    }
+    
+    // Render orders
+    if (ordersContainer) {
+        renderOrders(userEmail, ordersContainer);
+    }
+    
+    // Render messages
+    const messagesContainer = document.getElementById("messagesContainer");
+    if (messagesContainer) {
+        renderMessages(userEmail, messagesContainer);
+    }
+    
+    // Setup logout button (remove old listener first to prevent duplicates)
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+        const newLogoutBtn = logoutBtn.cloneNode(true);
+        logoutBtn.parentNode.replaceChild(newLogoutBtn, logoutBtn);
+        newLogoutBtn.addEventListener("click", logout);
+    }
+}
+
+function renderOrders(userEmail, container) {
+    if (!container) return;
+    
+    const orders = loadUserOrders(userEmail);
+    container.innerHTML = "";
+    
+    if (orders.length === 0) {
+        container.innerHTML = `
+            <div class="empty-orders">
+                <p>You haven't placed any orders yet.</p>
+                <a href="products.html" class="btn-primary">Browse Fragrances</a>
+            </div>
+        `;
+        return;
+    }
+    
+    orders.forEach(order => {
+        const orderCard = document.createElement("div");
+        orderCard.className = "order-card";
+        
+        const orderDate = new Date(order.date);
+        const formattedDate = orderDate.toLocaleDateString('en-GB', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        const statusClass = order.status === 'delivered' ? 'status-delivered' : 
+                           order.status === 'shipped' ? 'status-shipped' : 'status-processing';
+        
+        let itemsHtml = '';
+        order.items.forEach(item => {
+            itemsHtml += `
+                <div class="order-item-row">
+                    <span class="order-item-name">${item.name}</span>
+                    <span class="order-item-qty">Qty: ${item.quantity}</span>
+                    <span class="order-item-price">£${(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+            `;
+        });
+        
+        orderCard.innerHTML = `
+            <div class="order-header">
+                <div class="order-id-date">
+                    <span class="order-id">${order.id}</span>
+                    <span class="order-date">${formattedDate}</span>
+                </div>
+                <span class="order-status ${statusClass}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span>
+            </div>
+            <div class="order-items">
+                ${itemsHtml}
+            </div>
+            <div class="order-footer">
+                <span class="order-total-label">Total:</span>
+                <span class="order-total-amount">£${order.total.toFixed(2)}</span>
+            </div>
+        `;
+        
+        container.appendChild(orderCard);
+        applyScrollReveal(orderCard);
+    });
+}
+
+function renderMessages(userEmail, container) {
+    if (!container) return;
+    
+    const messages = loadUserMessages(userEmail);
+    container.innerHTML = "";
+    
+    if (messages.length === 0) {
+        container.innerHTML = `
+            <div class="empty-orders">
+                <p>You haven't sent any messages yet.</p>
+                <a href="contact.html" class="btn-primary">Contact Us</a>
+            </div>
+        `;
+        return;
+    }
+    
+    messages.forEach(msg => {
+        const messageCard = document.createElement("div");
+        messageCard.className = "order-card";
+        
+        const messageDate = new Date(msg.date);
+        const formattedDate = messageDate.toLocaleDateString('en-GB', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        messageCard.innerHTML = `
+            <div class="order-header">
+                <div class="order-id-date">
+                    <span class="order-id">${msg.id}</span>
+                    <span class="order-date">${formattedDate}</span>
+                </div>
+            </div>
+            <div class="message-content">
+                <div class="message-field">
+                    <span class="message-label">Name:</span>
+                    <span class="message-value">${escapeHtml(msg.name)}</span>
+                </div>
+                <div class="message-field">
+                    <span class="message-label">Email:</span>
+                    <span class="message-value">${escapeHtml(msg.email)}</span>
+                </div>
+                <div class="message-field message-text-field">
+                    <span class="message-label">Message:</span>
+                    <p class="message-text">${escapeHtml(msg.message)}</p>
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(messageCard);
+        applyScrollReveal(messageCard);
     });
 }
 
@@ -1160,6 +1368,13 @@ function setupContactForm() {
 
         if (hasErrors) {
             return;
+        }
+
+        // Save message if user is logged in
+        const loggedInUser = getLoggedInUser();
+        if (loggedInUser) {
+            const messageObj = createMessage(name, email, message);
+            saveMessage(messageObj, loggedInUser);
         }
 
         // Success - show confirmation and clear form
@@ -1761,6 +1976,19 @@ function setupCheckoutForm() {
             return;
         }
 
+        // Calculate total
+        let total = 0;
+        basket.forEach(item => {
+            const product = products.find(p => p.id === item.productId);
+            if (!product) return;
+            const lineTotal = product.price * item.quantity;
+            total += lineTotal;
+        });
+
+        // Create and save order
+        const order = createOrder(basket, total, email);
+        saveOrder(order, email);
+        
         // Success - clear basket and show confirmation
         localStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify([]));
         
@@ -1779,6 +2007,90 @@ function setupCheckoutForm() {
         // Refresh order summary
         renderCheckoutSummary();
     });
+}
+
+// Order management functions
+function createOrder(basket, total, userEmail) {
+    const orderId = 'ORD-' + Date.now().toString(36).toUpperCase();
+    const statuses = ['processing', 'shipped', 'delivered'];
+    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+    
+    const items = basket.map(item => {
+        const product = products.find(p => p.id === item.productId);
+        return {
+            id: product ? product.id : 0,
+            name: product ? product.name : 'Unknown Product',
+            price: product ? product.price : 0,
+            quantity: item.quantity
+        };
+    });
+    
+    return {
+        id: orderId,
+        date: new Date().toISOString(),
+        items: items,
+        total: total,
+        status: randomStatus
+    };
+}
+
+function saveOrder(order, userEmail) {
+    if (!userEmail) return;
+    const userOrdersKey = `luminousScentsOrders_${userEmail}`;
+    const orders = loadUserOrders(userEmail);
+    orders.unshift(order); // Add new order at the beginning
+    localStorage.setItem(userOrdersKey, JSON.stringify(orders));
+}
+
+function loadUserOrders(userEmail) {
+    if (!userEmail) return [];
+    const userOrdersKey = `luminousScentsOrders_${userEmail}`;
+    const stored = localStorage.getItem(userOrdersKey);
+    if (!stored) {
+        return [];
+    }
+    try {
+        return JSON.parse(stored);
+    } catch (e) {
+        console.error("Could not parse stored orders", e);
+        return [];
+    }
+}
+
+// Message management functions
+function createMessage(name, email, message) {
+    const messageId = 'MSG-' + Date.now().toString(36).toUpperCase();
+    
+    return {
+        id: messageId,
+        date: new Date().toISOString(),
+        name: name,
+        email: email,
+        message: message
+    };
+}
+
+function saveMessage(message, userEmail) {
+    if (!userEmail) return;
+    const userMessagesKey = `luminousScentsMessages_${userEmail}`;
+    const messages = loadUserMessages(userEmail);
+    messages.unshift(message); // Add new message at the beginning
+    localStorage.setItem(userMessagesKey, JSON.stringify(messages));
+}
+
+function loadUserMessages(userEmail) {
+    if (!userEmail) return [];
+    const userMessagesKey = `luminousScentsMessages_${userEmail}`;
+    const stored = localStorage.getItem(userMessagesKey);
+    if (!stored) {
+        return [];
+    }
+    try {
+        return JSON.parse(stored);
+    } catch (e) {
+        console.error("Could not parse stored messages", e);
+        return [];
+    }
 }
 
 // Starfield canvas effect
@@ -1901,7 +2213,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // rest of the code...
     if (page === "home" || page === "account") {
-        setupAuthForm();
+        if (page === "account") {
+            // Check if user is logged in
+            if (isUserLoggedIn()) {
+                const userEmail = getLoggedInUser();
+                showProfileView(userEmail);
+            } else {
+                setupAuthForm();
+            }
+        } else {
+            setupAuthForm();
+        }
     } else if (page === "products") {
         renderProductsPage();
         initEnhancedSearch();
