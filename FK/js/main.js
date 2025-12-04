@@ -308,12 +308,16 @@ function setupAuthForm() {
     // Password confirmation element
     const passwordMatch = document.getElementById("passwordMatch");
 
-    // Show/hide password confirmation and requirements based on new user checkbox
+    // Profile fields section
+    const profileFields = document.getElementById("profileFields");
+
+    // Show/hide password confirmation, requirements, and profile fields based on new user checkbox
     isNewUser.addEventListener('change', () => {
         if (isNewUser.checked) {
             confirmPasswordRow.style.display = 'block';
             passwordConfirmInput.required = true;
             passwordRequirements.style.display = 'block';
+            profileFields.style.display = 'block';
         } else {
             confirmPasswordRow.style.display = 'none';
             passwordConfirmInput.required = false;
@@ -325,6 +329,16 @@ function setupAuthForm() {
             passwordRequirements.style.display = 'none';
             Object.values(requirements).forEach(req => req.classList.remove('valid'));
             passwordInput.value = '';
+            
+            // Hide profile fields and clear their values
+            profileFields.style.display = 'none';
+            const customerName = document.getElementById("customerName");
+            const customerPhone = document.getElementById("customerPhone");
+            const customerAddress = document.getElementById("customerAddress");
+            
+            if (customerName) customerName.value = '';
+            if (customerPhone) customerPhone.value = '';
+            if (customerAddress) customerAddress.value = '';
         }
     });
 
@@ -412,16 +426,44 @@ function setupAuthForm() {
         }
 
         // Enhanced validation for new users
+        let profileData = null;
         if (isNewUser.checked) {
+            const customerName = document.getElementById("customerName");
+            const customerPhone = document.getElementById("customerPhone");
+            const customerAddress = document.getElementById("customerAddress");
+            
+            // Validate password requirements
             if (!validatePasswordRequirements(password)) {
                 customAlert("Your password doesn't meet all the requirements. Please check the requirements list above.");
                 return;
             }
 
+            // Validate password match
             if (!validatePasswordMatch()) {
                 customAlert("Passwords do not match. Please make sure both passwords are identical.");
                 return;
             }
+
+            // Validate required address field
+            const address = customerAddress ? customerAddress.value.trim() : '';
+            if (!address) {
+                customAlert("Please enter your address. This field is required for new account creation.");
+                return;
+            }
+
+            // Validate required full name field
+            const fullName = customerName ? customerName.value.trim() : '';
+            if (!fullName) {
+                customAlert("Please enter your full name. This field is required for new account creation.");
+                return;
+            }
+
+            // Store profile data
+            profileData = {
+                name: fullName,
+                phone: customerPhone ? customerPhone.value.trim() : '',
+                address: address
+            };
 
             // Success message for new user
             message.textContent = "Account created successfully! Welcome to Luminous Scents.";
@@ -444,11 +486,23 @@ function setupAuthForm() {
 
         localStorage.setItem("luminousScentsUserEmail", email);
         
+        // Store profile data for new customers
+        if (isNewUser.checked && profileData) {
+            localStorage.setItem("luminousScentsUserProfile", JSON.stringify({
+                email: email,
+                name: profileData.name,
+                phone: profileData.phone,
+                address: profileData.address,
+                createdAt: new Date().toISOString()
+            }));
+        }
+        
         // Clear the form and reset validation states after successful submission
         setTimeout(() => {
             form.reset();
             confirmPasswordRow.style.display = 'none';
             passwordRequirements.style.display = 'none';
+            profileFields.style.display = 'none';
             Object.values(requirements).forEach(req => req.classList.remove('valid'));
         }, 2000);
     });

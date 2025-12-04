@@ -54,12 +54,12 @@
 
             <form id="authForm" class="auth-form" novalidate>
                 <div class="form-row">
-                    <label for="authEmail">Email Address</label>
+                    <label for="authEmail">Email Address *</label>
                     <input type="email" id="authEmail" name="authEmail" placeholder="Enter your email address" required>
                 </div>
 
                 <div class="form-row">
-                    <label for="authPassword">Password</label>
+                    <label for="authPassword">Password *</label>
                     <input type="password" id="authPassword" name="authPassword" placeholder="Enter your password" required>
                     <div id="passwordRequirements" class="password-requirements" style="display: none;">
                         <p class="requirements-title">Password Requirements:</p>
@@ -74,9 +74,32 @@
                 </div>
 
                 <div class="form-row" id="confirmPasswordRow" style="display: none;">
-                    <label for="authPasswordConfirm">Confirm Password</label>
+                    <label for="authPasswordConfirm">Confirm Password *</label>
                     <input type="password" id="authPasswordConfirm" name="authPasswordConfirm" placeholder="Re-enter your password">
                     <div id="passwordMatch" class="password-match"></div>
+                </div>
+
+                <!-- Profile Fields for New Customers -->
+                <div id="profileFields" style="display: none;">
+                    <div class="profile-fields-section">
+                        <h4 class="profile-section-title">Profile Information</h4>
+                        <p class="small-text">Help us personalize your fragrance experience</p>
+                        
+                        <div class="form-row">
+                            <label for="customerName">Full Name *</label>
+                            <input type="text" id="customerName" name="customerName" placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="customerPhone">Telephone Number</label>
+                            <input type="tel" id="customerPhone" name="customerPhone" placeholder="Enter your phone number (optional)">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="customerAddress">Address *</label>
+                            <textarea id="customerAddress" name="customerAddress" rows="3" placeholder="Enter your address" required></textarea>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-row">
