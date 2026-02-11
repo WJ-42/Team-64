@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luminous Scents - Account</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -9,7 +10,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/main.js" defer></script>
 </head>
-<body data-page="home">
+<body data-page="account">
     <div class="parallax-stars">
         <canvas id="starfield"></canvas>
         <canvas id="trailCanvas"></canvas>
@@ -23,53 +24,119 @@
             </div>
         </div>
         <nav class="navbar">
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="products.html">Fragrances</a>
-                <a href="basket.html">Basket</a>
-                <a href="account.html">Account</a>
-            </div>
+            <a href="index.html">Home</a>
+            <a href="products.html">Fragrances</a>
+            <a href="basket.html">Basket</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="account.html" class="active">Account</a>
             <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                🌙
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"/>
+                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                </svg>
             </button>
         </nav>
     </header>
 
     <main>
-        <section class="page-header">
-            <h2>Your account</h2>
-            <p>Use this form to sign up as a new customer or log in as a returning customer for this MVP demo.</p>
-        </section>
+        <!-- Login/Signup View -->
+        <div id="loginView">
+            <section class="page-header">
+                <h2>Your account</h2>
+                <p>Use this form to sign up as a new customer or log in as a returning customer for this MVP demo.</p>
+            </section>
 
-        <section class="auth-section">
-            <h3>Create an account or log in</h3>
-            <p class="small-text">
-                For the MVP this form only validates input on the front end. There is no real backend yet.
-            </p>
+            <section class="auth-section">
+                <h3>Create an account or log in</h3>
+                <p class="small-text">
+                    For the MVP this form only validates input on the front end. There is no real backend yet.
+                </p>
 
-            <form id="authForm" class="auth-form" novalidate>
-                <div class="form-row">
-                    <label for="authEmail">Email address</label>
-                    <input type="email" id="authEmail" name="authEmail">
+                <form id="authForm" class="auth-form" novalidate>
+                    <div class="form-row">
+                        <label for="authEmail">Email address</label>
+                        <input type="email" id="authEmail" name="authEmail" placeholder="you@example.com">
+                        <span class="field-error" id="emailError"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="authPassword">Password</label>
+                        <input type="password" id="authPassword" name="authPassword" placeholder="Enter your password">
+                        <span class="field-error" id="passwordError"></span>
+                        <div class="password-requirements" id="passwordRequirements">
+                            <span class="req" id="reqLength">✗ At least 8 characters</span>
+                            <span class="req" id="reqUpper">✗ One uppercase letter</span>
+                            <span class="req" id="reqLower">✗ One lowercase letter</span>
+                            <span class="req" id="reqNumber">✗ One number</span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label>
+                            <input type="checkbox" id="isNewUser">
+                            I am a new customer
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Continue</button>
+
+                    <p id="authMessage" class="form-message"></p>
+                </form>
+
+                <!-- Success Toast -->
+                <div id="successToast" class="success-toast">
+                    <span class="toast-icon"></span>
+                    <span class="toast-message" id="toastMessage"></span>
                 </div>
+            </section>
+        </div>
 
-                <div class="form-row">
-                    <label for="authPassword">Password</label>
-                    <input type="password" id="authPassword" name="authPassword">
+        <!-- User Profile View -->
+        <div id="profileView" style="display: none;">
+            <section class="page-header">
+                <h2>User Profile</h2>
+                <p>Welcome back! Manage your account and view your order history.</p>
+            </section>
+
+            <section class="profile-section">
+                <div class="profile-card">
+                    <h3>Profile Information</h3>
+                    <div class="profile-info">
+                        <div class="profile-field">
+                            <span class="profile-label">Email:</span>
+                            <span class="profile-value" id="profileEmail"></span>
+                        </div>
+                        <div class="profile-field">
+                            <span class="profile-label">Member since:</span>
+                            <span class="profile-value" id="profileMemberSince"></span>
+                        </div>
+                    </div>
+                    <button id="logoutBtn" class="btn-secondary">Logout</button>
                 </div>
+            </section>
 
-                <div class="form-row">
-                    <label>
-                        <input type="checkbox" id="isNewUser">
-                        I am a new customer
-                    </label>
+            <section class="orders-section">
+                <h3>Order History</h3>
+                <div id="ordersContainer" class="orders-container">
+                    <!-- Orders will be rendered here -->
                 </div>
+            </section>
 
-                <button type="submit" class="btn-primary">Continue</button>
+            <section class="messages-section">
+                <h3>Messages Sent</h3>
+                <div id="messagesContainer" class="messages-container">
+                    <!-- Messages will be rendered here -->
+                </div>
+            </section>
 
-                <p id="authMessage" class="form-message"></p>
-            </form>
-        </section>
+            <section class="wishlist-section">
+                <h3>My Wishlist</h3>
+                <div id="wishlistContainer" class="wishlist-container">
+                    <!-- Wishlist items will be rendered here -->
+                </div>
+            </section>
+        </div>
     </main>
 
     <footer class="site-footer">

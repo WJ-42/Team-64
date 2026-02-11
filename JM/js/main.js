@@ -1,3 +1,315 @@
+// Complete product data organized by category
+const products = [
+    // === SIGNATURE PERFUMES ===
+    {
+        id: 1,
+        name: "Aurora Oud",
+        brand: "Luminous Scents",
+        price: 89.99,
+        notes: "Oud, amber, vanilla",
+        description: "Warm and deep evening scent with a rich oud base.",
+        image: "aurora-oud.png",
+        category: "perfume"
+    },
+    {
+        id: 2,
+        name: "Citrus Dawn",
+        brand: "Luminous Scents",
+        price: 59.99,
+        notes: "Bergamot, lemon, neroli",
+        description: "Fresh daytime fragrance that is bright and uplifting.",
+        image: "citrus-dawn.png",
+        category: "perfume"
+    },
+    {
+        id: 3,
+        name: "Velvet Iris",
+        brand: "Luminous Scents",
+        price: 74.50,
+        notes: "Iris, violet, sandalwood",
+        description: "Soft floral scent with a creamy sandalwood base.",
+        image: "velvet-iris.png",
+        category: "perfume"
+    },
+    {
+        id: 6,
+        name: "Amber Eclipse",
+        brand: "Luminous Scents",
+        price: 84.99,
+        notes: "Amber, benzoin, tonka bean",
+        description: "A mysterious blend of warm amber and sweet tonka.",
+        image: "amber-eclipse.png",
+        category: "perfume"
+    },
+    {
+        id: 7,
+        name: "Citrus Bloom",
+        brand: "Luminous Scents",
+        price: 62.99,
+        notes: "Orange blossom, grapefruit, jasmine",
+        description: "Sparkling citrus meets delicate florals.",
+        image: "citrus-bloom.png",
+        category: "perfume"
+    },
+    {
+        id: 8,
+        name: "Fresh Horizon",
+        brand: "Luminous Scents",
+        price: 58.99,
+        notes: "Sea salt, cucumber, mint",
+        description: "Crisp and clean like an ocean breeze at dawn.",
+        image: "fresh-horizon.png",
+        category: "perfume"
+    },
+    {
+        id: 9,
+        name: "Golden Sandalwood",
+        brand: "Luminous Scents",
+        price: 92.99,
+        notes: "Sandalwood, saffron, cardamom",
+        description: "Luxurious sandalwood with warm spice notes.",
+        image: "golden-sandalwood.png",
+        category: "perfume"
+    },
+    {
+        id: 10,
+        name: "Jasmine Veil",
+        brand: "Luminous Scents",
+        price: 78.99,
+        notes: "Jasmine, ylang-ylang, musk",
+        description: "Intoxicating jasmine wrapped in soft musk.",
+        image: "jasmine-veil.png",
+        category: "perfume"
+    },
+    {
+        id: 11,
+        name: "Lavender Dream",
+        brand: "Luminous Scents",
+        price: 54.99,
+        notes: "Lavender, vanilla, honey",
+        description: "Soothing lavender with a sweet, dreamy finish.",
+        image: "lavender-dream.png",
+        category: "perfume"
+    },
+    {
+        id: 12,
+        name: "Midnight Rose",
+        brand: "Luminous Scents",
+        price: 82.99,
+        notes: "Rose, patchouli, blackcurrant",
+        description: "Dark and romantic rose for evening allure.",
+        image: "midnight-rose.png",
+        category: "perfume"
+    },
+    {
+        id: 13,
+        name: "Ocean Whisper",
+        brand: "Luminous Scents",
+        price: 64.99,
+        notes: "Marine accord, driftwood, white tea",
+        description: "Captures the serenity of waves on shore.",
+        image: "ocean-whisper.png",
+        category: "perfume"
+    },
+    {
+        id: 14,
+        name: "Spiced Cedar",
+        brand: "Luminous Scents",
+        price: 76.99,
+        notes: "Cedarwood, black pepper, nutmeg",
+        description: "Bold and woody with a spicy kick.",
+        image: "spiced-cedar.png",
+        category: "perfume"
+    },
+    {
+        id: 15,
+        name: "Velvet Oud",
+        brand: "Luminous Scents",
+        price: 98.99,
+        notes: "Oud, velvet rose, smoky incense",
+        description: "Our most luxurious oud, rich and velvety.",
+        image: "velvet-oud.png",
+        category: "perfume"
+    },
+    
+    // === SOLARIS DUO ===
+    {
+        id: 4,
+        name: "Solaris Femme",
+        brand: "Luminous Scents",
+        price: 79.99,
+        notes: "Jasmine, rose, musk",
+        description: "Elegant floral scent for her.",
+        image: "solaris-femme.png",
+        category: "solaris"
+    },
+    {
+        id: 5,
+        name: "Solaris Homme",
+        brand: "Luminous Scents",
+        price: 69.99,
+        notes: "Cedar, vetiver, citrus",
+        description: "Sophisticated woody scent for him.",
+        image: "solaris-homme.png",
+        category: "solaris"
+    },
+    
+    // === HOME FRAGRANCES ===
+    {
+        id: 20,
+        name: "Rosewood Candle",
+        brand: "Luminous Scents",
+        price: 38.99,
+        notes: "Rosewood, geranium, warm amber",
+        description: "Elegant ambiance for any room. Burns for 50+ hours.",
+        image: "rosewood-candle.png",
+        category: "home"
+    },
+    {
+        id: 21,
+        name: "Citrus Verbena Diffuser",
+        brand: "Luminous Scents",
+        price: 42.99,
+        notes: "Verbena, lemon zest, green tea",
+        description: "Continuous fragrance for up to 3 months.",
+        image: "citrus-verbena-diffuser.png",
+        category: "home"
+    },
+    {
+        id: 22,
+        name: "Midnight Garden Incense",
+        brand: "Luminous Scents",
+        price: 24.99,
+        notes: "Night-blooming jasmine, sandalwood, musk",
+        description: "Set of 30 hand-rolled incense sticks.",
+        image: "midnight-garden-incense.png",
+        category: "home"
+    },
+    {
+        id: 23,
+        name: "Vanilla Musk Wax Melts",
+        brand: "Luminous Scents",
+        price: 18.99,
+        notes: "Vanilla bean, white musk, caramel",
+        description: "Pack of 12 wax melts for electric warmers.",
+        image: "vanilla-musk-wax-melts.png",
+        category: "home"
+    },
+    {
+        id: 24,
+        name: "White Tea Linen Spray",
+        brand: "Luminous Scents",
+        price: 28.99,
+        notes: "White tea, cotton flower, soft woods",
+        description: "Refresh linens, curtains, and upholstery.",
+        image: "white-tea-linen-spray.png",
+        category: "home"
+    },
+    
+    // === WELLNESS ===
+    {
+        id: 30,
+        name: "Calming Lavender Mist",
+        brand: "Luminous Scents",
+        price: 26.99,
+        notes: "French lavender, chamomile, bergamot",
+        description: "Spritz on pillows or in the air for relaxation.",
+        image: "calming-lavender-mist.png",
+        category: "wellness"
+    },
+    {
+        id: 31,
+        name: "Energizing Citrus Oil Blend",
+        brand: "Luminous Scents",
+        price: 32.99,
+        notes: "Sweet orange, lemon, grapefruit, peppermint",
+        description: "Essential oil blend for diffusers. 30ml bottle.",
+        image: "energizing-citrus-oil-blend.png",
+        category: "wellness"
+    },
+    {
+        id: 32,
+        name: "Focus Eucalyptus Roller",
+        brand: "Luminous Scents",
+        price: 22.99,
+        notes: "Eucalyptus, rosemary, spearmint",
+        description: "Roll-on pulse point oil for mental clarity.",
+        image: "focus-eucalyptus-roller.png",
+        category: "wellness"
+    },
+    {
+        id: 33,
+        name: "Relaxing Chamomile Balm",
+        brand: "Luminous Scents",
+        price: 34.99,
+        notes: "Roman chamomile, neroli, sweet almond",
+        description: "Solid balm for temples and wrists. 15g tin.",
+        image: "relaxing-chamomile-balm.png",
+        category: "wellness"
+    },
+    {
+        id: 34,
+        name: "Sleep Serenity Pillow Spray",
+        brand: "Luminous Scents",
+        price: 29.99,
+        notes: "Lavender, vetiver, cedarwood",
+        description: "Promotes restful sleep. 100ml spray bottle.",
+        image: "sleep-serenity-pillow-spray.png",
+        category: "wellness"
+    },
+    
+    // === TRAVEL & GIFT SETS ===
+    {
+        id: 40,
+        name: "Discovery Sample Set",
+        brand: "Luminous Scents",
+        price: 48.99,
+        notes: "8 × 2ml samples of our bestsellers",
+        description: "Perfect introduction to our fragrance collection.",
+        image: "discovery-sample-set.png",
+        category: "gift"
+    },
+    {
+        id: 41,
+        name: "Duo Travel Set",
+        brand: "Luminous Scents",
+        price: 89.99,
+        notes: "2 × 30ml travel sprays in leather case",
+        description: "Choose any two fragrances. TSA-approved size.",
+        image: "duo-travel-set.png",
+        category: "gift"
+    },
+    {
+        id: 42,
+        name: "Mini Candle Trio",
+        brand: "Luminous Scents",
+        price: 44.99,
+        notes: "3 × 70g candles in gift box",
+        description: "Rosewood, Vanilla Musk, and White Tea scents.",
+        image: "mini-candle-trio.png",
+        category: "gift"
+    },
+    {
+        id: 43,
+        name: "Pocket Perfume Roll-Ons",
+        brand: "Luminous Scents",
+        price: 36.99,
+        notes: "4 × 5ml roll-on bottles",
+        description: "Portable favorites: Citrus Dawn, Velvet Iris, Ocean Whisper, Lavender Dream.",
+        image: "pocket-perfume-roll-ons.png",
+        category: "gift"
+    },
+    {
+        id: 44,
+        name: "Refillable Atomizer Kit",
+        brand: "Luminous Scents",
+        price: 28.99,
+        notes: "2 × 10ml refillable atomizers",
+        description: "Sleek metal design. Refill from any full-size bottle.",
+        image: "refillable-atomizer-kit.png",
+        category: "gift"
+    }
+];
 function customAlert(message) {
     const overlay = document.createElement('div');
     overlay.className = 'custom-alert-overlay';
@@ -15,13 +327,36 @@ function customAlert(message) {
     alertBox.classList.remove('scroll-reveal', 'revealed');
     overlay.classList.remove('scroll-reveal', 'revealed');
 
-    const closeAlert = () => {
+    const closeAlert = (e) => {
+        if (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
         overlay.remove();
         alertBox.remove();
     };
 
-    document.getElementById('customAlertBtn').addEventListener('click', closeAlert);
-    overlay.addEventListener('click', closeAlert);
+    // Get the button and add event listener with stopPropagation
+    const okButton = document.getElementById('customAlertBtn');
+    if (okButton) {
+        okButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            closeAlert(e);
+        });
+    }
+    
+    // Also allow closing by clicking overlay, but prevent closing when clicking the alert box itself
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            closeAlert(e);
+        }
+    });
+    
+    // Prevent clicks on the alert box from closing it
+    alertBox.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
 }
 
 function customConfirm(message, onConfirm) {
@@ -58,23 +393,9 @@ function customConfirm(message, onConfirm) {
     overlay.addEventListener('click', closeDialog);
 }
 
-// Legacy products array for backward compatibility with old functions
-let products = [];
-function updateProductsArray() {
-    // Convert SQL products to legacy format for compatibility
-    if (window.sqlProducts) {
-        products = window.sqlProducts.map(product => ({
-            id: product.id,
-            name: product.product_name,
-            brand: product.brand,
-            price: product.price,
-            notes: product.notes,
-            description: product.description
-        }));
-    }
-}
-
 const BASKET_STORAGE_KEY = "luminousScentsBasket";
+const USER_SESSION_KEY = "luminousScentsUserEmail";
+const USER_SESSION_DATE_KEY = "luminousScentsUserSessionDate";
 
 // Basket helpers
 
@@ -105,15 +426,6 @@ function addToBasket(productId) {
     }
     saveBasket(basket);
     customAlert("Added to basket");
-    
-    // Update display in real-time instead of full page refresh
-    const currentPage = document.body.getAttribute("data-page");
-    if (currentPage === "newproducts") {
-        const item = basket.find(i => i.productId === productId);
-        if (item) {
-            updateProductCardQuantity(productId, item.quantity);
-        }
-    }
 }
 
 function updateQuantity(productId, change) {
@@ -128,123 +440,347 @@ function updateQuantity(productId, change) {
         basket.splice(index, 1);
     }
     saveBasket(basket);
-    
-    // Update quantity displays in real-time instead of full page refresh
-    const currentPage = document.body.getAttribute("data-page");
-    if (currentPage === "newproducts") {
-        updateProductCardQuantity(productId, item.quantity);
-    } else if (currentPage === "basket") {
-        renderBasketPage();
-    }
-}
-
-function updateProductCardQuantity(productId, quantity) {
-    const product = window.sqlProducts.find(p => p.id === productId);
-    if (!product) return;
-    
-    const card = document.querySelector(`[data-product-id="${productId}"]`);
-    if (!card) return;
-    
-    if (quantity <= 0) {
-        // Remove quantity controls and show add to basket button
-        const qtyControls = card.querySelector('.product-quantity-controls');
-        if (qtyControls) {
-            qtyControls.remove();
-        }
-        
-        // Add back the add to basket button
-        const addButton = document.createElement('button');
-        addButton.className = 'btn-primary';
-        addButton.setAttribute('data-product-id', productId);
-        addButton.textContent = 'Add to basket';
-        addButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            addToBasket(productId);
-        });
-        
-        const description = card.querySelector('.description');
-        if (description) {
-            description.insertAdjacentElement('afterend', addButton);
-        }
-    } else {
-        // Update existing quantity controls
-        const qtyControls = card.querySelector('.product-quantity-controls');
-        if (qtyControls) {
-            const quantityDisplay = qtyControls.querySelector('.quantity-display');
-            const totalPrice = qtyControls.querySelector('.total-price');
-            
-            if (quantityDisplay) {
-                quantityDisplay.textContent = quantity;
-            }
-            if (totalPrice) {
-                totalPrice.textContent = `£${(product.price * quantity).toFixed(2)}`;
-            }
-        } else {
-            // Create quantity controls if they don't exist
-            const addButton = card.querySelector('.btn-primary');
-            if (addButton) {
-                addButton.remove();
-                
-                const newQtyControls = document.createElement('div');
-                newQtyControls.className = 'product-quantity-controls';
-                newQtyControls.setAttribute('data-product-id', productId);
-                newQtyControls.innerHTML = `
-                    <button class="qty-btn" data-action="decrease" data-id="${productId}">-</button>
-                    <span class="quantity-display">${quantity}</span>
-                    <button class="qty-btn" data-action="increase" data-id="${productId}">+</button>
-                    <span class="total-price">£${(product.price * quantity).toFixed(2)}</span>
-                `;
-                
-                const description = card.querySelector('.description');
-                if (description) {
-                    description.insertAdjacentElement('afterend', newQtyControls);
-                }
-            }
-        }
-    }
+    renderBasketPage();
 }
 
 // Rendering functions
 
 function renderProductsPage() {
-    const container = document.getElementById("productsContainer");
-    if (!container) {
-        return;
-    }
+    // Get all section containers
+    const perfumeContainer = document.getElementById("perfumeContainer");
+    const solarisContainer = document.getElementById("solarisContainer");
+    const homeContainer = document.getElementById("homeContainer");
+    const wellnessContainer = document.getElementById("wellnessContainer");
+    const giftContainer = document.getElementById("giftContainer");
+    
+    if (!perfumeContainer) return;
 
-    container.innerHTML = "";
+    // Filter products by category
+    const perfumeProducts = products.filter(p => p.category === "perfume");
+    const solarisProducts = products.filter(p => p.category === "solaris");
+    const homeProducts = products.filter(p => p.category === "home");
+    const wellnessProducts = products.filter(p => p.category === "wellness");
+    const giftProducts = products.filter(p => p.category === "gift");
 
-    products.forEach(product => {
+    // Helper function to create product card
+    function createProductCard(product) {
         const card = document.createElement("article");
         card.className = "card";
+        card.setAttribute("data-category", product.category);
+
+        const loggedInUser = getLoggedInUser();
+        const inWishlist = loggedInUser ? isInWishlist(product.id, loggedInUser) : false;
+        const wishlistButtonText = inWishlist ? "In Wishlist" : "Add to Wishlist";
+        const wishlistButtonClass = inWishlist ? "btn-wishlist-active" : "btn-wishlist";
 
         card.innerHTML = `
             <div class="product-image-container ${product.id === 1 ? 'aurora-oud-image' : ''}">
-                <img src="images/${product.id === 1 ? 'aurora-oud.png' : product.id === 2 ? 'citrus-dawn.png' : 'velvet-iris.png'}" alt="${product.name}" class="product-image">
+                <img src="images/${product.image}" alt="${product.name}" class="product-image">
             </div>
             <h3>${product.name}</h3>
             <p>${product.brand}</p>
             <p><strong>Notes:</strong> ${product.notes}</p>
             <p class="price">£${product.price.toFixed(2)}</p>
             <p>${product.description}</p>
-            <button class="btn-primary" data-product-id="${product.id}">
-                Add to basket
-            </button>
-                `;
+            <div class="product-actions">
+                <button class="btn-primary" data-product-id="${product.id}" data-action="basket">
+                    Add to basket
+                </button>
+                <button class="${wishlistButtonClass}" data-product-id="${product.id}" data-action="wishlist">
+                    ${wishlistButtonText}
+                </button>
+            </div>
+        `;
 
-        container.appendChild(card);
+        return card;
+    }
 
-        applyScrollReveal(card);
-        card.querySelectorAll('h3, p, .btn-primary').forEach(el => applyScrollReveal(el));
+    // Render products into their containers
+    function renderToContainer(container, productList) {
+        if (!container) return;
+        container.innerHTML = "";
+        productList.forEach(product => {
+            const card = createProductCard(product);
+            container.appendChild(card);
+            applyScrollReveal(card);
+        });
+    }
+
+    // Render all sections
+    renderToContainer(perfumeContainer, perfumeProducts);
+    renderToContainer(solarisContainer, solarisProducts);
+    renderToContainer(homeContainer, homeProducts);
+    renderToContainer(wellnessContainer, wellnessProducts);
+    renderToContainer(giftContainer, giftProducts);
+
+    // Add click handlers using event delegation
+    // Only attach listeners to product containers, not the entire document
+    if (!window.productClickHandlersAttached) {
+        const productContainers = document.querySelectorAll(".product-scroll-container, .cards-grid");
+        
+        productContainers.forEach(container => {
+            container.addEventListener('click', function(event) {
+                const button = event.target.closest("button[data-product-id]");
+                if (!button) return;
+                
+                // Stop propagation to prevent interference with other handlers
+                event.stopPropagation();
+                
+                const id = Number(button.getAttribute("data-product-id"));
+                const action = button.getAttribute("data-action");
+                const loggedInUser = getLoggedInUser();
+                
+                if (action === "basket") {
+                    addToBasket(id);
+                } else if (action === "wishlist") {
+                    if (loggedInUser) {
+                        const wasInWishlist = isInWishlist(id, loggedInUser);
+                        
+                        if (wasInWishlist) {
+                            removeFromWishlist(id, loggedInUser);
+                            customAlert("Removed from wishlist");
+                            // Update button state
+                            button.textContent = "Add to Wishlist";
+                            button.className = "btn-wishlist";
+                        } else {
+                            const added = addToWishlist(id, loggedInUser);
+                            if (added) {
+                                customAlert("Added to wishlist");
+                                // Update button state
+                                button.textContent = "In Wishlist";
+                                button.className = "btn-wishlist-active";
+                            }
+                        }
+                    } else {
+                        customAlert("Please log in to add items to your wishlist.");
+                    }
+                }
+            });
+        });
+        
+        window.productClickHandlersAttached = true;
+    }
+
+    // Initialize scroll functionality for scrollable sections
+    initScrollableSections();
+}
+
+// Scroll navigation for product sections
+function updateSectionUI(section) {
+    const container = section.querySelector(".product-scroll-container");
+    const leftBtn = section.querySelector(".scroll-btn-left");
+    const rightBtn = section.querySelector(".scroll-btn-right");
+
+    if (!container || !leftBtn || !rightBtn) return;
+
+    // Count visible cards
+    const visibleCards = Array.from(container.children).filter(
+        card => card.style.display !== 'none'
+    ).length;
+
+    // Logic for centering content
+    if (visibleCards <= 3) {
+        container.style.justifyContent = 'center';
+    } else {
+        container.style.justifyContent = 'flex-start';
+    }
+
+    // Logic for button visibility based on card count
+    const areButtonsNeeded = visibleCards > 3;
+    if (!areButtonsNeeded) {
+        // Hide both buttons if there aren't enough cards to scroll
+        leftBtn.classList.add("hidden");
+        rightBtn.classList.add("hidden");
+        return; // Exit early
+    }
+    
+    // If buttons ARE needed, determine their state based on scroll position
+    leftBtn.classList.toggle("hidden", container.scrollLeft <= 10);
+    const maxScroll = container.scrollWidth - container.clientWidth;
+    rightBtn.classList.toggle("hidden", container.scrollLeft >= maxScroll - 10);
+}
+
+function initScrollableSections() {
+    const scrollSections = document.querySelectorAll(".product-section-scrollable");
+    
+    scrollSections.forEach(section => {
+        const container = section.querySelector(".product-scroll-container");
+        const leftBtn = section.querySelector(".scroll-btn-left");
+        const rightBtn = section.querySelector(".scroll-btn-right");
+        
+        if (!container) return;
+
+        const cardWidth = 320; // Card width (300px) + gap (20px)
+        const scrollAmount = cardWidth * 3; // Scroll 3 cards at a time
+
+        // Scroll button click handlers
+        if (leftBtn) {
+            leftBtn.addEventListener("click", () => {
+                container.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+            });
+        }
+
+        if (rightBtn) {
+            rightBtn.addEventListener("click", () => {
+                container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+            });
+        }
+
+        // Update UI on scroll
+        container.addEventListener("scroll", () => updateSectionUI(section));
+        
+        // The initial UI update is now handled by the window.onload event
     });
+}
 
-    container.addEventListener("click", event => {
-        const button = event.target.closest("button[data-product-id]");
-        if (button) {
-            const id = Number(button.getAttribute("data-product-id"));
-            addToBasket(id);
+// Track if a filter was previously active
+let wasFiltered = false;
+
+function filterProducts() {
+    const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+    const allSections = document.querySelectorAll(".product-section");
+    const allCards = document.querySelectorAll(".product-scroll-container .card, .cards-grid .card");
+    
+    const isFilterActive = searchTerm !== "";
+    const filterJustRemoved = wasFiltered && !isFilterActive;
+
+    // Track visible cards per section
+    const sectionVisibility = {};
+
+    // Filter all cards
+    allCards.forEach(card => {
+        const name = card.querySelector("h3").textContent.toLowerCase();
+        const notes = card.querySelector("p:nth-of-type(2)").textContent.toLowerCase();
+        const description = card.querySelector("p:nth-of-type(4)").textContent.toLowerCase();
+        const category = card.getAttribute("data-category") || "unknown";
+        
+        const matches = name.includes(searchTerm) || notes.includes(searchTerm) || description.includes(searchTerm);
+
+        if (matches) {
+            // Check if card was previously hidden
+            const wasHidden = card.style.display === "none";
+            // Remove inline display style to use CSS default (flex)
+            card.style.display = "";
+            // If card was previously hidden, reset revealed state to allow animation
+            if (wasHidden && card.classList.contains('scroll-reveal')) {
+                card.classList.remove('revealed');
+                // Use requestAnimationFrame to ensure DOM is updated before checking intersection
+                requestAnimationFrame(() => {
+                    // Check if card is already in viewport and trigger reveal manually
+                    const rect = card.getBoundingClientRect();
+                    const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+                    if (isInViewport) {
+                        // Small delay to allow animation to trigger properly
+                        setTimeout(() => {
+                            if (card.classList.contains('scroll-reveal') && !card.classList.contains('revealed')) {
+                                card.classList.add('revealed');
+                            }
+                        }, 100);
+                    }
+                });
+            }
+            sectionVisibility[category] = (sectionVisibility[category] || 0) + 1;
+        } else {
+            card.style.display = "none";
         }
     });
+
+    // Update UI for each scrollable section (centering and buttons)
+    document.querySelectorAll(".product-section-scrollable").forEach(section => {
+        updateSectionUI(section);
+    });
+
+    // Hide/show sections based on visible products
+    allSections.forEach(section => {
+        const sectionCategory = section.getAttribute("data-section-category");
+        if (sectionCategory) {
+            const visibleCount = sectionVisibility[sectionCategory] || 0;
+            if (searchTerm === "" || visibleCount > 0) {
+                section.style.display = "block";
+            } else {
+                section.style.display = "none";
+            }
+        }
+    });
+
+    // Only animate when filter is REMOVED (going back to show all)
+    if (filterJustRemoved) {
+        // Remove animation class from all cards first
+        allCards.forEach(card => {
+            card.classList.remove('filter-animate');
+        });
+        
+        // Force reflow to reset animation
+        void document.body.offsetHeight;
+        
+        // Add animation class to trigger fade-in on ALL cards
+        allCards.forEach(card => {
+            card.classList.add('filter-animate');
+        });
+        
+        // Remove filter-animate class after animation completes so scroll animations work again
+        setTimeout(() => {
+            allCards.forEach(card => {
+                card.classList.remove('filter-animate');
+                card.classList.add('revealed');
+            });
+        }, 550);
+    }
+
+    // Update filter state for next time
+    wasFiltered = isFilterActive;
+}
+
+function initEnhancedSearch() {
+    const searchInput = document.getElementById("searchInput");
+    const searchBox = document.querySelector(".search-box");
+    const clearBtn = document.querySelector(".search-clear");
+    const suggestionTags = document.querySelectorAll(".suggestion-tag");
+
+    if (!searchInput || !searchBox) return;
+
+    // Update has-value class on input
+    function updateHasValue() {
+        if (searchInput.value.length > 0) {
+            searchBox.classList.add("has-value");
+        } else {
+            searchBox.classList.remove("has-value");
+        }
+    }
+
+    // Filter products on input
+    searchInput.addEventListener("input", () => {
+        updateHasValue();
+        filterProducts();
+    });
+
+    // Clear button functionality
+    if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+            searchInput.value = "";
+            updateHasValue();
+            filterProducts();
+            searchInput.focus();
+        });
+    }
+
+    // Suggestion tag click - fills search and filters
+    suggestionTags.forEach(tag => {
+        tag.addEventListener("click", () => {
+            searchInput.value = tag.textContent;
+            updateHasValue();
+            filterProducts();
+            
+            // Add a nice pulse effect to the search box
+            searchBox.style.transform = "scale(1.03)";
+            setTimeout(() => {
+                searchBox.style.transform = "";
+            }, 150);
+        });
+    });
+
+    // Initial state
+    updateHasValue();
 }
 
 function renderBasketPage() {
@@ -264,25 +800,14 @@ function renderBasketPage() {
         return;
     }
 
-    // Use SQL products if available, otherwise fall back to legacy products array
-    const productData = window.sqlProducts || products;
-    if (!productData || productData.length === 0) {
-        container.innerHTML = "<p>Loading products... Please try again in a moment.</p>";
-        return;
-    }
-
     let total = 0;
 
     basket.forEach(item => {
-        const product = productData.find(p => p.id === item.productId);
+        const product = products.find(p => p.id === item.productId);
         if (!product) {
-            console.warn(`Product with ID ${item.productId} not found in product data`);
             return;
         }
-        
-        const productName = product.product_name || product.name;
-        const productPrice = product.price;
-        const lineTotal = productPrice * item.quantity;
+        const lineTotal = product.price * item.quantity;
         total += lineTotal;
 
         const row = document.createElement("div");
@@ -290,8 +815,8 @@ function renderBasketPage() {
 
         row.innerHTML = `
             <div class="basket-item-name">
-                <p>${productName}</p>
-                <p class="small-text">£${productPrice.toFixed(2)} each</p>
+                <p>${product.name}</p>
+                <p class="small-text">£${product.price.toFixed(2)} each</p>
             </div>
             <div class="basket-item-controls">
                 <button class="qty-btn" data-action="decrease" data-id="${product.id}">-</button>
@@ -302,18 +827,33 @@ function renderBasketPage() {
         `;
 
         container.appendChild(row);
+
+        // Add listeners directly to buttons
+        row.querySelectorAll('.qty-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = Number(btn.getAttribute('data-id'));
+                const action = btn.getAttribute('data-action');
+                if (action === 'increase') {
+                    updateQuantity(id, 1);
+                } else if (action === 'decrease') {
+                    updateQuantity(id, -1);
+                }
+            });
+        });
     });
 
     summary.innerHTML = `
-        <p><strong>Total:</strong> £${total.toFixed(2)}</p>
-        <button id="clearBasketBtn" class="btn-secondary" style="margin-right: 1rem;">Clear basket</button>
-        <button id="mockCheckoutBtn" class="btn-primary">Proceed to checkout</button>
+        <p class="basket-total"><strong>Total:</strong> £${total.toFixed(2)}</p>
+        <div class="basket-actions">
+            <button id="clearBasketBtn" class="btn-secondary">Clear basket</button>
+            <button id="mockCheckoutBtn" class="btn-primary">Proceed to checkout</button>
+        </div>
     `;
 
     const checkoutBtn = document.getElementById("mockCheckoutBtn");
     if (checkoutBtn) {
         checkoutBtn.addEventListener("click", () => {
-            customAlert("Checkout flow will be implemented in the full version. For MVP this is a demo only.");
+            window.location.href = "checkout.html";
         });
     }
 
@@ -326,197 +866,9 @@ function renderBasketPage() {
             });
         });
     }
+
 }
 
-// New Products Page rendering with categories
-function renderNewProductsPage() {
-    const categories = [
-        'Signature Eau de Parfum',
-        'Luxury Eau de Toilette', 
-        'Home Fragrance Collection',
-        'Travel & Mini Sets',
-        'Wellness Aromatics'
-    ];
-
-    categories.forEach(category => {
-        const containerId = category.toLowerCase()
-            .replace(/\s+/g, '-')
-            .replace(/&/g, 'and')
-            .replace(/[^a-z0-9\-]/g, '') + '-content';
-        const container = document.getElementById(containerId);
-        
-        if (container) {
-            const categoryProducts = sqlProducts.filter(product => product.category === category);
-            
-            categoryProducts.forEach(product => {
-                const card = createProductCard(product);
-                container.appendChild(card);
-                applyScrollReveal(card);
-            });
-        }
-    });
-}
-
-function createProductCard(product) {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-    card.setAttribute('data-product-id', product.id);
-    
-    // Always start with "Add to basket" button initially
-    card.innerHTML = `
-        <div class="product-image-container">
-            <img src="${product.image_url}" alt="${product.product_name}" class="product-image">
-        </div>
-        <h4>${product.product_name}</h4>
-        <p class="brand">${product.brand}</p>
-        <p class="notes">${product.notes}</p>
-        <p class="price">£${product.price.toFixed(2)}</p>
-        <p class="description">${product.description}</p>
-        <button class="btn-primary" data-product-id="${product.id}">
-            Add to basket
-        </button>
-    `;
-    
-    // Add event listener for add to basket button
-    const addButton = card.querySelector('.btn-primary');
-    if (addButton) {
-        addButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            addToBasket(product.id);
-        });
-    }
-    
-    return card;
-}
-
-/**
- * Simple Counter-Based Circular Navigation Functions for Product Categories
- */
-
-// Track current card indices for each category
-const currentCardIndices = new Map();
-
-// Initialize circular navigation
-function initializeCircularNavigation() {
-    console.log('Initializing circular navigation...');
-    
-    // Initialize card counts and current indices for each category
-    document.querySelectorAll('.products-grid').forEach(grid => {
-        const categoryId = grid.id;
-        if (categoryId) {
-            const cardCount = grid.querySelectorAll('.product-card').length;
-            currentCardIndices.set(categoryId, {
-                currentIndex: 0,
-                cardCount: cardCount
-            });
-            console.log(`Initialized ${categoryId} with ${cardCount} cards`);
-        }
-    });
-    
-    // Add event listeners to all navigation arrows
-    document.querySelectorAll('.nav-arrow').forEach(button => {
-        button.addEventListener('click', handleArrowClick);
-    });
-    
-    console.log('Navigation initialization complete');
-}
-
-// Handle arrow button clicks
-function handleArrowClick(event) {
-    const button = event.currentTarget;
-    const categoryId = button.getAttribute('data-target');
-    const direction = parseInt(button.getAttribute('data-direction'));
-    
-    if (!categoryId || !direction) return;
-    
-    console.log(`Navigating ${direction > 0 ? 'right' : 'left'} in ${categoryId}`);
-    
-    scrollToNextCard(categoryId, direction);
-}
-
-// Ultra-simple navigation with extensive debugging
-function scrollToNextCard(categoryId, direction) {
-    console.log(`=== NAVIGATION START ===`);
-    console.log(`Category: ${categoryId}, Direction: ${direction} (${direction > 0 ? 'RIGHT' : 'LEFT'})`);
-    
-    const grid = document.getElementById(categoryId);
-    if (!grid) {
-        console.error(`Grid not found: ${categoryId}`);
-        return;
-    }
-    
-    // Get or create state
-    let state = currentCardIndices.get(categoryId);
-    if (!state) {
-        console.log('Creating new state for category');
-        state = { currentIndex: 0, cardCount: 0 };
-        currentCardIndices.set(categoryId, state);
-    }
-    
-    // Get fresh card count
-    const cards = grid.querySelectorAll('.product-card');
-    state.cardCount = cards.length;
-    console.log(`Found ${cards.length} cards`);
-    console.log(`Current state: index=${state.currentIndex}, count=${state.cardCount}`);
-    
-    // Calculate new index
-    let newIndex = state.currentIndex + direction;
-    console.log(`Initial calculation: ${state.currentIndex} + ${direction} = ${newIndex}`);
-    
-    // Check if we're at boundaries
-    const atEnd = state.currentIndex >= state.cardCount - 1;
-    const atStart = state.currentIndex <= 0;
-    
-    console.log(`At end? ${atEnd}, At start? ${atStart}`);
-    
-    // Handle wrapping - make it more explicit
-    if (direction > 0) { // RIGHT ARROW
-        console.log('Processing RIGHT ARROW logic...');
-        if (newIndex >= state.cardCount) {
-            newIndex = 0;
-            console.log(`RIGHT ARROW: Wrapping from ${state.currentIndex} to ${newIndex} (end → beginning)`);
-        } else {
-            console.log(`RIGHT ARROW: Normal move to ${newIndex}`);
-        }
-    } else { // LEFT ARROW
-        console.log('Processing LEFT ARROW logic...');
-        if (newIndex < 0) {
-            newIndex = state.cardCount - 1;
-            console.log(`LEFT ARROW: Wrapping from ${state.currentIndex} to ${newIndex} (beginning → end)`);
-        } else {
-            console.log(`LEFT ARROW: Normal move to ${newIndex}`);
-        }
-    }
-    
-    console.log(`Final newIndex: ${newIndex}`);
-    
-    // Use fixed card width
-    const cardWidth = 304;
-    const targetPosition = newIndex * cardWidth;
-    
-    console.log(`Target position: ${newIndex} × ${cardWidth} = ${targetPosition}`);
-    console.log('Executing scroll...');
-    
-    // Scroll to position
-    grid.scrollTo({
-        left: targetPosition,
-        behavior: 'smooth'
-    });
-    
-    // Update state
-    state.currentIndex = newIndex;
-    currentCardIndices.set(categoryId, state);
-    
-    console.log(`=== NAVIGATION COMPLETE ===`);
-    console.log(`Updated state: index=${state.currentIndex}, count=${state.cardCount}`);
-    console.log('');
-}
-
-// Auto-initialize navigation when products are loaded
-function setupNavigationAfterProductsLoad() {
-    console.log('Setting up navigation after products load...');
-    initializeCircularNavigation();
-}
 // Scroll reveal helper function
 function applyScrollReveal(element) {
     element.classList.add('scroll-reveal');
@@ -531,55 +883,1435 @@ function setupAuthForm() {
     const passwordInput = document.getElementById("authPassword");
     const message = document.getElementById("authMessage");
     const isNewUser = document.getElementById("isNewUser");
+    const emailError = document.getElementById("emailError");
+    const passwordError = document.getElementById("passwordError");
+    const passwordRequirements = document.getElementById("passwordRequirements");
+    const successToast = document.getElementById("successToast");
+    const toastMessage = document.getElementById("toastMessage");
 
-    if (!form || !emailInput || !passwordInput || !message) {
+    // Password requirement elements
+    const reqLength = document.getElementById("reqLength");
+    const reqUpper = document.getElementById("reqUpper");
+    const reqLower = document.getElementById("reqLower");
+    const reqNumber = document.getElementById("reqNumber");
+
+    if (!form || !emailInput || !passwordInput) {
         return;
     }
 
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Helper functions
+    function showError(input, errorElement, message) {
+        input.classList.add('input-error');
+        input.classList.remove('input-success');
+        errorElement.textContent = message;
+        errorElement.classList.add('show');
+    }
+
+    function clearError(input, errorElement) {
+        input.classList.remove('input-error');
+        errorElement.textContent = '';
+        errorElement.classList.remove('show');
+    }
+
+    function showSuccess(input) {
+        input.classList.remove('input-error');
+        input.classList.add('input-success');
+    }
+
+    function showToast(msg) {
+        toastMessage.textContent = msg;
+        successToast.classList.add('show');
+        setTimeout(() => {
+            successToast.classList.remove('show');
+        }, 4000);
+    }
+
+    // Validate password requirements
+    function validatePasswordRequirements(password) {
+        const hasLength = password.length >= 8;
+        const hasUpper = /[A-Z]/.test(password);
+        const hasLower = /[a-z]/.test(password);
+        const hasNumber = /[0-9]/.test(password);
+
+        // Update requirement indicators
+        reqLength.textContent = (hasLength ? '✓' : '✗') + ' At least 8 characters';
+        reqLength.classList.toggle('valid', hasLength);
+        
+        reqUpper.textContent = (hasUpper ? '✓' : '✗') + ' One uppercase letter';
+        reqUpper.classList.toggle('valid', hasUpper);
+        
+        reqLower.textContent = (hasLower ? '✓' : '✗') + ' One lowercase letter';
+        reqLower.classList.toggle('valid', hasLower);
+        
+        reqNumber.textContent = (hasNumber ? '✓' : '✗') + ' One number';
+        reqNumber.classList.toggle('valid', hasNumber);
+
+        return hasLength && hasUpper && hasLower && hasNumber;
+    }
+
+    // Real-time email validation
+    emailInput.addEventListener('input', () => {
+        const email = emailInput.value.trim();
+        if (email === '') {
+            clearError(emailInput, emailError);
+        } else if (!emailRegex.test(email)) {
+            showError(emailInput, emailError, 'Please enter a valid email address');
+        } else {
+            clearError(emailInput, emailError);
+            showSuccess(emailInput);
+        }
+    });
+
+    emailInput.addEventListener('blur', () => {
+        const email = emailInput.value.trim();
+        if (email === '') {
+            showError(emailInput, emailError, 'Email address is required');
+        }
+    });
+
+    // Show password requirements when focused (only for new users)
+    passwordInput.addEventListener('focus', () => {
+        if (isNewUser.checked) {
+            passwordRequirements.classList.add('show');
+        }
+    });
+
+    // Real-time password validation
+    passwordInput.addEventListener('input', () => {
+        const password = passwordInput.value;
+        
+        if (isNewUser.checked) {
+            passwordRequirements.classList.add('show');
+            const isValid = validatePasswordRequirements(password);
+            
+            if (password === '') {
+                clearError(passwordInput, passwordError);
+            } else if (!isValid) {
+                passwordInput.classList.add('input-error');
+                passwordInput.classList.remove('input-success');
+            } else {
+                clearError(passwordInput, passwordError);
+                showSuccess(passwordInput);
+            }
+        } else {
+            passwordRequirements.classList.remove('show');
+            if (password === '') {
+                clearError(passwordInput, passwordError);
+            } else if (password.length < 6) {
+                showError(passwordInput, passwordError, 'Password must be at least 6 characters');
+            } else {
+                clearError(passwordInput, passwordError);
+                showSuccess(passwordInput);
+            }
+        }
+    });
+
+    // Toggle password requirements visibility based on checkbox
+    isNewUser.addEventListener('change', () => {
+        if (isNewUser.checked) {
+            passwordRequirements.classList.add('show');
+            if (passwordInput.value) {
+                validatePasswordRequirements(passwordInput.value);
+            }
+        } else {
+            passwordRequirements.classList.remove('show');
+        }
+        // Re-validate password on checkbox change
+        const password = passwordInput.value;
+        if (password !== '') {
+            passwordInput.dispatchEvent(new Event('input'));
+        }
+    });
+
+    // Form submission
     form.addEventListener("submit", event => {
         event.preventDefault();
 
         const email = emailInput.value.trim();
-        const password = passwordInput.value.trim();
+        const password = passwordInput.value;
+        let hasErrors = false;
 
-        // Custom validation with styled messages
+        // Validate email
         if (!email) {
-            customAlert("Please enter your email address.");
-            return;
+            showError(emailInput, emailError, 'Email address is required');
+            hasErrors = true;
+        } else if (!emailRegex.test(email)) {
+            showError(emailInput, emailError, 'Please enter a valid email address');
+            hasErrors = true;
         }
 
-        if (!email.includes('@')) {
-            customAlert("Please enter a valid email address with an '@' symbol.");
-            return;
-        }
-
+        // Validate password
         if (!password) {
-            customAlert("Please enter a password.");
+            showError(passwordInput, passwordError, 'Password is required');
+            hasErrors = true;
+        } else if (isNewUser.checked) {
+            const isValidPassword = validatePasswordRequirements(password);
+            if (!isValidPassword) {
+                showError(passwordInput, passwordError, 'Password does not meet all requirements');
+                hasErrors = true;
+            }
+        } else if (password.length < 6) {
+            showError(passwordInput, passwordError, 'Password must be at least 6 characters');
+            hasErrors = true;
+        }
+
+        if (hasErrors) {
             return;
         }
 
-        if (password.length < 6) {
-            customAlert("Password must be at least 6 characters long.");
-            return;
-        }
-
-        // Rest of the existing success logic...
+        // Success - show toast and clear form
         if (isNewUser.checked) {
-            message.textContent = "Account created locally for MVP. In the full system this will be stored securely.";
+            showToast('Account created successfully! Welcome to Luminous Scents.');
         } else {
-            message.textContent = "Login successful in this demo. Real authentication will be added later.";
+            showToast('Welcome back! You have been logged in.');
         }
-        message.style.color = "#ffffff";
-        message.style.textShadow = "0 0 10px rgba(240, 194, 75, 0.6), 0 0 20px rgba(240, 194, 75, 0.3)";
-        message.style.opacity = "0";
-        message.classList.remove('scroll-reveal', 'revealed', 'show');
-        setTimeout(() => {
-            message.style.opacity = "1";
-            message.classList.add('show');
-        }, 10);
 
-        localStorage.setItem("luminousScentsUserEmail", email);
+        // Clear form
+        form.reset();
+        clearError(emailInput, emailError);
+        clearError(passwordInput, passwordError);
+        emailInput.classList.remove('input-success');
+        passwordInput.classList.remove('input-success');
+        passwordRequirements.classList.remove('show');
+
+        // Save user session
+        localStorage.setItem(USER_SESSION_KEY, email);
+        localStorage.setItem(USER_SESSION_DATE_KEY, new Date().toISOString());
+        
+        // Switch to profile view
+        showProfileView(email);
     });
+}
+
+// Check if user is logged in
+function isUserLoggedIn() {
+    return !!localStorage.getItem(USER_SESSION_KEY);
+}
+
+function getLoggedInUser() {
+    return localStorage.getItem(USER_SESSION_KEY);
+}
+
+function logout() {
+    localStorage.removeItem(USER_SESSION_KEY);
+    localStorage.removeItem(USER_SESSION_DATE_KEY);
+    showLoginView();
+    customAlert("You have been logged out successfully.");
+}
+
+function showLoginView() {
+    const loginView = document.getElementById("loginView");
+    const profileView = document.getElementById("profileView");
+    if (loginView && profileView) {
+        loginView.style.display = "block";
+        profileView.style.display = "none";
+    }
+}
+
+function showProfileView(userEmail) {
+    const loginView = document.getElementById("loginView");
+    const profileView = document.getElementById("profileView");
+    if (loginView && profileView) {
+        loginView.style.display = "none";
+        profileView.style.display = "block";
+        renderProfilePage(userEmail);
+    }
+}
+
+function renderProfilePage(userEmail) {
+    // Update profile info
+    const profileEmail = document.getElementById("profileEmail");
+    const profileMemberSince = document.getElementById("profileMemberSince");
+    const ordersContainer = document.getElementById("ordersContainer");
+    
+    if (profileEmail) {
+        profileEmail.textContent = userEmail;
+    }
+    
+    if (profileMemberSince) {
+        const sessionDate = localStorage.getItem(USER_SESSION_DATE_KEY);
+        if (sessionDate) {
+            const date = new Date(sessionDate);
+            profileMemberSince.textContent = date.toLocaleDateString('en-GB', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        } else {
+            profileMemberSince.textContent = "Recently";
+        }
+    }
+    
+    // Render orders
+    if (ordersContainer) {
+        renderOrders(userEmail, ordersContainer);
+    }
+    
+    // Render messages
+    const messagesContainer = document.getElementById("messagesContainer");
+    if (messagesContainer) {
+        renderMessages(userEmail, messagesContainer);
+    }
+    
+    // Render wishlist
+    const wishlistContainer = document.getElementById("wishlistContainer");
+    if (wishlistContainer) {
+        renderWishlist(userEmail, wishlistContainer);
+    }
+    
+    // Setup logout button (remove old listener first to prevent duplicates)
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+        const newLogoutBtn = logoutBtn.cloneNode(true);
+        logoutBtn.parentNode.replaceChild(newLogoutBtn, logoutBtn);
+        newLogoutBtn.addEventListener("click", logout);
+    }
+}
+
+function renderOrders(userEmail, container) {
+    if (!container) return;
+    
+    const orders = loadUserOrders(userEmail);
+    container.innerHTML = "";
+    
+    if (orders.length === 0) {
+        container.innerHTML = `
+            <div class="empty-orders">
+                <p>You haven't placed any orders yet.</p>
+                <a href="products.html" class="btn-primary">Browse Fragrances</a>
+            </div>
+        `;
+        return;
+    }
+    
+    orders.forEach(order => {
+        const orderCard = document.createElement("div");
+        orderCard.className = "order-card";
+        
+        const orderDate = new Date(order.date);
+        const formattedDate = orderDate.toLocaleDateString('en-GB', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        const statusClass = order.status === 'delivered' ? 'status-delivered' : 
+                           order.status === 'shipped' ? 'status-shipped' : 'status-processing';
+        
+        let itemsHtml = '';
+        order.items.forEach(item => {
+            itemsHtml += `
+                <div class="order-item-row">
+                    <span class="order-item-name">${item.name}</span>
+                    <span class="order-item-qty">Qty: ${item.quantity}</span>
+                    <span class="order-item-price">£${(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+            `;
+        });
+        
+        orderCard.innerHTML = `
+            <div class="order-header">
+                <div class="order-id-date">
+                    <span class="order-id">${order.id}</span>
+                    <span class="order-date">${formattedDate}</span>
+                </div>
+                <span class="order-status ${statusClass}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span>
+            </div>
+            <div class="order-items">
+                ${itemsHtml}
+            </div>
+            <div class="order-footer">
+                <span class="order-total-label">Total:</span>
+                <span class="order-total-amount">£${order.total.toFixed(2)}</span>
+            </div>
+        `;
+        
+        container.appendChild(orderCard);
+        applyScrollReveal(orderCard);
+    });
+}
+
+function renderMessages(userEmail, container) {
+    if (!container) return;
+    
+    const messages = loadUserMessages(userEmail);
+    container.innerHTML = "";
+    
+    if (messages.length === 0) {
+        container.innerHTML = `
+            <div class="empty-orders">
+                <p>You haven't sent any messages yet.</p>
+                <a href="contact.html" class="btn-primary">Contact Us</a>
+            </div>
+        `;
+        return;
+    }
+    
+    messages.forEach(msg => {
+        const messageCard = document.createElement("div");
+        messageCard.className = "order-card";
+        
+        const messageDate = new Date(msg.date);
+        const formattedDate = messageDate.toLocaleDateString('en-GB', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        
+        messageCard.innerHTML = `
+            <div class="order-header">
+                <div class="order-id-date">
+                    <span class="order-id">${msg.id}</span>
+                    <span class="order-date">${formattedDate}</span>
+                </div>
+            </div>
+            <div class="message-content">
+                <div class="message-field">
+                    <span class="message-label">Name:</span>
+                    <span class="message-value">${escapeHtml(msg.name)}</span>
+                </div>
+                <div class="message-field">
+                    <span class="message-label">Email:</span>
+                    <span class="message-value">${escapeHtml(msg.email)}</span>
+                </div>
+                <div class="message-field message-text-field">
+                    <span class="message-label">Message:</span>
+                    <p class="message-text">${escapeHtml(msg.message)}</p>
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(messageCard);
+        applyScrollReveal(messageCard);
+    });
+}
+
+function renderWishlist(userEmail, container) {
+    if (!container) return;
+    
+    const wishlist = loadWishlist(userEmail);
+    container.innerHTML = "";
+    
+    if (wishlist.length === 0) {
+        container.innerHTML = `
+            <div class="empty-orders">
+                <p>Your wishlist is empty.</p>
+                <a href="products.html" class="btn-primary">Browse Fragrances</a>
+            </div>
+        `;
+        return;
+    }
+    
+    wishlist.forEach(productId => {
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+        
+        const wishlistCard = document.createElement("div");
+        wishlistCard.className = "wishlist-card";
+        
+        wishlistCard.innerHTML = `
+            <div class="wishlist-item-image">
+                <img src="images/${product.image}" alt="${product.name}" class="wishlist-image">
+            </div>
+            <div class="wishlist-item-details">
+                <h4 class="wishlist-item-name">${product.name}</h4>
+                <p class="wishlist-item-brand">${product.brand}</p>
+                <p class="wishlist-item-notes"><strong>Notes:</strong> ${product.notes}</p>
+                <p class="wishlist-item-description">${product.description}</p>
+                <div class="wishlist-item-footer">
+                    <span class="wishlist-item-price">£${product.price.toFixed(2)}</span>
+                    <div class="wishlist-item-actions">
+                        <button class="btn-primary wishlist-add-basket" data-product-id="${product.id}">
+                            Add to Basket
+                        </button>
+                        <button class="btn-secondary wishlist-remove" data-product-id="${product.id}">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(wishlistCard);
+        applyScrollReveal(wishlistCard);
+    });
+    
+    // Add event listeners for wishlist actions
+    container.querySelectorAll('.wishlist-add-basket').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const productId = Number(e.target.getAttribute('data-product-id'));
+            addToBasket(productId);
+        });
+    });
+    
+    container.querySelectorAll('.wishlist-remove').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const productId = Number(e.target.getAttribute('data-product-id'));
+            removeFromWishlist(productId, userEmail);
+            renderWishlist(userEmail, container);
+            customAlert("Removed from wishlist");
+        });
+    });
+}
+
+// Contact form validation
+
+function setupContactForm() {
+    const form = document.getElementById("contactForm");
+    const nameInput = document.getElementById("contactName");
+    const emailInput = document.getElementById("contactEmail");
+    const messageInput = document.getElementById("contactMessage");
+    const nameError = document.getElementById("nameError");
+    const emailError = document.getElementById("contactEmailError");
+    const messageError = document.getElementById("messageError");
+    const charCounter = document.getElementById("charCounter");
+
+    if (!form || !nameInput || !emailInput || !messageInput) {
+        return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const nameRegex = /^[a-zA-Z\s'-]+$/;
+    const MAX_MESSAGE_LENGTH = 500;
+    const MIN_MESSAGE_LENGTH = 10;
+    const MIN_NAME_LENGTH = 2;
+
+    // Helper functions
+    function showError(input, errorElement, message) {
+        input.classList.add('input-error');
+        input.classList.remove('input-success');
+        errorElement.textContent = message;
+        errorElement.classList.add('show');
+    }
+
+    function clearError(input, errorElement) {
+        input.classList.remove('input-error');
+        errorElement.textContent = '';
+        errorElement.classList.remove('show');
+    }
+
+    function showSuccess(input) {
+        input.classList.remove('input-error');
+        input.classList.add('input-success');
+    }
+
+    // Update character counter
+    function updateCharCounter() {
+        const length = messageInput.value.length;
+        charCounter.textContent = `${length} / ${MAX_MESSAGE_LENGTH}`;
+        
+        if (length > MAX_MESSAGE_LENGTH * 0.9) {
+            charCounter.classList.add('warning');
+        } else {
+            charCounter.classList.remove('warning');
+        }
+        
+        if (length >= MAX_MESSAGE_LENGTH) {
+            charCounter.classList.add('limit');
+        } else {
+            charCounter.classList.remove('limit');
+        }
+    }
+
+    // Real-time name validation
+    nameInput.addEventListener('input', () => {
+        const name = nameInput.value.trim();
+        if (name === '') {
+            clearError(nameInput, nameError);
+        } else if (name.length < MIN_NAME_LENGTH) {
+            showError(nameInput, nameError, `Name must be at least ${MIN_NAME_LENGTH} characters`);
+        } else if (!nameRegex.test(name)) {
+            showError(nameInput, nameError, 'Name can only contain letters, spaces, hyphens and apostrophes');
+        } else {
+            clearError(nameInput, nameError);
+            showSuccess(nameInput);
+        }
+    });
+
+    nameInput.addEventListener('blur', () => {
+        const name = nameInput.value.trim();
+        if (name === '') {
+            showError(nameInput, nameError, 'Name is required');
+        }
+    });
+
+    // Real-time email validation
+    emailInput.addEventListener('input', () => {
+        const email = emailInput.value.trim();
+        if (email === '') {
+            clearError(emailInput, emailError);
+        } else if (!emailRegex.test(email)) {
+            showError(emailInput, emailError, 'Please enter a valid email address');
+        } else {
+            clearError(emailInput, emailError);
+            showSuccess(emailInput);
+        }
+    });
+
+    emailInput.addEventListener('blur', () => {
+        const email = emailInput.value.trim();
+        if (email === '') {
+            showError(emailInput, emailError, 'Email address is required');
+        }
+    });
+
+    // Real-time message validation with character counter
+    messageInput.addEventListener('input', () => {
+        updateCharCounter();
+        const message = messageInput.value.trim();
+        
+        if (message === '') {
+            clearError(messageInput, messageError);
+        } else if (message.length < MIN_MESSAGE_LENGTH) {
+            showError(messageInput, messageError, `Message must be at least ${MIN_MESSAGE_LENGTH} characters`);
+        } else if (messageInput.value.length > MAX_MESSAGE_LENGTH) {
+            showError(messageInput, messageError, `Message cannot exceed ${MAX_MESSAGE_LENGTH} characters`);
+        } else {
+            clearError(messageInput, messageError);
+            showSuccess(messageInput);
+        }
+    });
+
+    messageInput.addEventListener('blur', () => {
+        const message = messageInput.value.trim();
+        if (message === '') {
+            showError(messageInput, messageError, 'Message is required');
+        }
+    });
+
+    // Initialize character counter
+    updateCharCounter();
+
+    // Form submission
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const message = messageInput.value.trim();
+        let hasErrors = false;
+
+        // Validate name
+        if (!name) {
+            showError(nameInput, nameError, 'Name is required');
+            hasErrors = true;
+        } else if (name.length < MIN_NAME_LENGTH) {
+            showError(nameInput, nameError, `Name must be at least ${MIN_NAME_LENGTH} characters`);
+            hasErrors = true;
+        } else if (!nameRegex.test(name)) {
+            showError(nameInput, nameError, 'Name can only contain letters, spaces, hyphens and apostrophes');
+            hasErrors = true;
+        }
+
+        // Validate email
+        if (!email) {
+            showError(emailInput, emailError, 'Email address is required');
+            hasErrors = true;
+        } else if (!emailRegex.test(email)) {
+            showError(emailInput, emailError, 'Please enter a valid email address');
+            hasErrors = true;
+        }
+
+        // Validate message
+        if (!message) {
+            showError(messageInput, messageError, 'Message is required');
+            hasErrors = true;
+        } else if (message.length < MIN_MESSAGE_LENGTH) {
+            showError(messageInput, messageError, `Message must be at least ${MIN_MESSAGE_LENGTH} characters`);
+            hasErrors = true;
+        } else if (messageInput.value.length > MAX_MESSAGE_LENGTH) {
+            showError(messageInput, messageError, `Message cannot exceed ${MAX_MESSAGE_LENGTH} characters`);
+            hasErrors = true;
+        }
+
+        if (hasErrors) {
+            return;
+        }
+
+        // Save message if user is logged in
+        const loggedInUser = getLoggedInUser();
+        if (loggedInUser) {
+            const messageObj = createMessage(name, email, message);
+            saveMessage(messageObj, loggedInUser);
+        }
+
+        // Success - show confirmation and clear form
+        customAlert("Message sent! We will get back to you soon.");
+        
+        // Clear form
+        form.reset();
+        clearError(nameInput, nameError);
+        clearError(emailInput, emailError);
+        clearError(messageInput, messageError);
+        nameInput.classList.remove('input-success');
+        emailInput.classList.remove('input-success');
+        messageInput.classList.remove('input-success');
+        updateCharCounter();
+    });
+}
+
+// Checkout page functions
+
+function renderCheckoutSummary() {
+    // Render to both step 1 and step 2 order summary containers
+    const containers = [
+        document.getElementById("orderSummary"),
+        document.getElementById("orderSummary2")
+    ].filter(c => c !== null);
+    
+    if (containers.length === 0) return;
+
+    const basket = loadBasket();
+
+    containers.forEach(container => {
+        container.innerHTML = "";
+
+        if (basket.length === 0) {
+            container.innerHTML = `
+                <div class="empty-order">
+                    <p>Your basket is empty.</p>
+                    <a href="products.html" class="btn-primary">Browse Fragrances</a>
+                </div>
+            `;
+            return;
+        }
+
+        let total = 0;
+
+        basket.forEach(item => {
+            const product = products.find(p => p.id === item.productId);
+            if (!product) return;
+            
+            const lineTotal = product.price * item.quantity;
+            total += lineTotal;
+
+            const itemDiv = document.createElement("div");
+            itemDiv.className = "order-item";
+            itemDiv.innerHTML = `
+                <div class="order-item-details">
+                    <span class="order-item-name">${product.name}</span>
+                    <span class="order-item-qty">Qty: ${item.quantity} × £${product.price.toFixed(2)}</span>
+                </div>
+                <span class="order-item-price">£${lineTotal.toFixed(2)}</span>
+            `;
+            container.appendChild(itemDiv);
+        });
+
+        // Add divider and total
+        const divider = document.createElement("div");
+        divider.className = "order-divider";
+        container.appendChild(divider);
+
+        const totalDiv = document.createElement("div");
+        totalDiv.className = "order-total";
+        totalDiv.innerHTML = `
+            <span class="order-total-label">Total:</span>
+            <span class="order-total-price">£${total.toFixed(2)}</span>
+        `;
+        container.appendChild(totalDiv);
+    });
+}
+
+function setupCheckoutForm() {
+    const form = document.getElementById("checkoutForm");
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
+    const addressInput = document.getElementById("address");
+    const cardNameInput = document.getElementById("cardName");
+    const cardNumberInput = document.getElementById("cardNumber");
+    const expiryInput = document.getElementById("expiry");
+    const cvvInput = document.getElementById("cvv");
+
+    const nameError = document.getElementById("nameError");
+    const emailError = document.getElementById("emailError");
+    const phoneError = document.getElementById("phoneError");
+    const addressError = document.getElementById("addressError");
+    const cardNameError = document.getElementById("cardNameError");
+    const cardNumberError = document.getElementById("cardNumberError");
+    const expiryError = document.getElementById("expiryError");
+    const cvvError = document.getElementById("cvvError");
+
+    const toast = document.getElementById("checkoutToast");
+    const toastMessage = document.getElementById("checkoutToastMessage");
+
+    // Step navigation elements
+    const step1 = document.getElementById("step1");
+    const step2 = document.getElementById("step2");
+    const toStep2Btn = document.getElementById("toStep2");
+    const toStep1Btn = document.getElementById("toStep1");
+    const stepIndicators = document.querySelectorAll(".step");
+    const stepLine = document.querySelector(".step-line");
+
+    if (!form) return;
+
+    // Validation patterns
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const nameRegex = /^[a-zA-Z\s'-]+$/;
+    const phoneRegex = /^[\d\s\+\-\(\)]{10,}$/;
+    const cardNumberRegex = /^[\d\s]{13,19}$/;
+    const expiryRegex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+    const cvvRegex = /^[0-9]{3}$/;
+
+    // Helper functions
+    function showError(input, errorElement, message) {
+        input.classList.add('input-error');
+        input.classList.remove('input-success');
+        errorElement.textContent = message;
+        errorElement.classList.add('show');
+    }
+
+    function clearError(input, errorElement) {
+        input.classList.remove('input-error');
+        errorElement.textContent = '';
+        errorElement.classList.remove('show');
+    }
+
+    function showSuccess(input) {
+        input.classList.remove('input-error');
+        input.classList.add('input-success');
+    }
+
+    function showToast(msg) {
+        toastMessage.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 5000);
+    }
+
+    // Format card number with spaces - ONLY allows digits
+    function formatCardNumber(value) {
+        // Strip ALL non-digit characters first
+        const digitsOnly = value.replace(/\D/g, '');
+        // Limit to 16 digits
+        const limited = digitsOnly.substring(0, 16);
+        // Add spaces every 4 digits
+        const parts = [];
+        for (let i = 0; i < limited.length; i += 4) {
+            parts.push(limited.substring(i, i + 4));
+        }
+        return parts.join(' ');
+    }
+
+    // Format expiry date - ONLY allows digits
+    function formatExpiry(value) {
+        const digitsOnly = value.replace(/\D/g, '');
+        if (digitsOnly.length >= 2) {
+            return digitsOnly.substring(0, 2) + '/' + digitsOnly.substring(2, 4);
+        }
+        return digitsOnly;
+    }
+
+    // Step navigation functions
+    function goToStep(stepNum) {
+        if (stepNum === 1) {
+            step1.classList.remove("hidden");
+            step2.classList.add("hidden");
+            stepIndicators[0].classList.add("active");
+            stepIndicators[0].classList.remove("completed");
+            stepIndicators[1].classList.remove("active");
+            if (stepLine) stepLine.classList.remove("active");
+        } else if (stepNum === 2) {
+            step1.classList.add("hidden");
+            step2.classList.remove("hidden");
+            stepIndicators[0].classList.remove("active");
+            stepIndicators[0].classList.add("completed");
+            stepIndicators[1].classList.add("active");
+            if (stepLine) stepLine.classList.add("active");
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    // Step 1 to Step 2 button
+    if (toStep2Btn) {
+        toStep2Btn.addEventListener("click", () => {
+            // Validate step 1 fields first
+            let hasErrors = false;
+
+            const name = nameInput.value.trim();
+            if (!name) {
+                showError(nameInput, nameError, 'Full name is required');
+                hasErrors = true;
+            } else if (name.length < 2 || !nameRegex.test(name)) {
+                showError(nameInput, nameError, 'Please enter a valid name');
+                hasErrors = true;
+            }
+
+            const email = emailInput.value.trim();
+            if (!email) {
+                showError(emailInput, emailError, 'Email address is required');
+                hasErrors = true;
+            } else if (!emailRegex.test(email)) {
+                showError(emailInput, emailError, 'Please enter a valid email address');
+                hasErrors = true;
+            }
+
+            const phone = phoneInput.value.trim();
+            if (!phone) {
+                showError(phoneInput, phoneError, 'Phone number is required');
+                hasErrors = true;
+            } else if (!phoneRegex.test(phone)) {
+                showError(phoneInput, phoneError, 'Please enter a valid phone number');
+                hasErrors = true;
+            }
+
+            const address = addressInput.value.trim();
+            if (!address) {
+                showError(addressInput, addressError, 'Shipping address is required');
+                hasErrors = true;
+            } else if (address.length < 10) {
+                showError(addressInput, addressError, 'Please enter a complete address');
+                hasErrors = true;
+            }
+
+            if (!hasErrors) {
+                goToStep(2);
+            }
+        });
+    }
+
+    // Step 2 back to Step 1 button
+    if (toStep1Btn) {
+        toStep1Btn.addEventListener("click", () => {
+            goToStep(1);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // Helper to check for at least two names
+    function hasTwoNames(name) {
+        const parts = name.trim().split(/\s+/).filter(part => part.length >= 2);
+        return parts.length >= 2;
+    }
+
+    // Real-time name validation
+    nameInput.addEventListener('input', () => {
+        const name = nameInput.value.trim();
+        if (name === '') {
+            clearError(nameInput, nameError);
+        } else if (!nameRegex.test(name)) {
+            showError(nameInput, nameError, 'Please enter a valid name');
+        } else if (!hasTwoNames(name)) {
+            showError(nameInput, nameError, 'Please enter first and last name');
+        } else {
+            clearError(nameInput, nameError);
+            showSuccess(nameInput);
+        }
+    });
+
+    nameInput.addEventListener('blur', () => {
+        const name = nameInput.value.trim();
+        if (name === '') {
+            showError(nameInput, nameError, 'Full name is required');
+        } else if (!hasTwoNames(name)) {
+            showError(nameInput, nameError, 'Please enter first and last name');
+        }
+    });
+
+    // Real-time email validation
+    emailInput.addEventListener('input', () => {
+        const email = emailInput.value.trim();
+        if (email === '') {
+            clearError(emailInput, emailError);
+        } else if (!emailRegex.test(email)) {
+            showError(emailInput, emailError, 'Please enter a valid email address');
+        } else {
+            clearError(emailInput, emailError);
+            showSuccess(emailInput);
+        }
+    });
+
+    emailInput.addEventListener('blur', () => {
+        if (emailInput.value.trim() === '') {
+            showError(emailInput, emailError, 'Email address is required');
+        }
+    });
+
+    // Real-time phone validation
+    phoneInput.addEventListener('input', () => {
+        const phone = phoneInput.value.trim();
+        if (phone === '') {
+            clearError(phoneInput, phoneError);
+        } else if (!phoneRegex.test(phone)) {
+            showError(phoneInput, phoneError, 'Please enter a valid phone number');
+        } else {
+            clearError(phoneInput, phoneError);
+            showSuccess(phoneInput);
+        }
+    });
+
+    phoneInput.addEventListener('blur', () => {
+        if (phoneInput.value.trim() === '') {
+            showError(phoneInput, phoneError, 'Phone number is required');
+        }
+    });
+
+    // Real-time address validation
+    addressInput.addEventListener('input', () => {
+        const address = addressInput.value.trim();
+        if (address === '') {
+            clearError(addressInput, addressError);
+        } else if (address.length < 10) {
+            showError(addressInput, addressError, 'Please enter a complete address');
+        } else {
+            clearError(addressInput, addressError);
+            showSuccess(addressInput);
+        }
+    });
+
+    addressInput.addEventListener('blur', () => {
+        if (addressInput.value.trim() === '') {
+            showError(addressInput, addressError, 'Shipping address is required');
+        }
+    });
+
+    // Real-time card name validation
+    cardNameInput.addEventListener('input', () => {
+        cardNameInput.value = cardNameInput.value.toUpperCase();
+        const cardName = cardNameInput.value.trim();
+        if (cardName === '') {
+            clearError(cardNameInput, cardNameError);
+        } else if (!nameRegex.test(cardName)) {
+            showError(cardNameInput, cardNameError, 'Please enter a valid name');
+        } else if (!hasTwoNames(cardName)) {
+            showError(cardNameInput, cardNameError, 'Please enter first and last name');
+        } else {
+            clearError(cardNameInput, cardNameError);
+            showSuccess(cardNameInput);
+        }
+    });
+
+    cardNameInput.addEventListener('blur', () => {
+        const cardName = cardNameInput.value.trim();
+        if (cardName === '') {
+            showError(cardNameInput, cardNameError, 'Name on card is required');
+        } else if (!hasTwoNames(cardName)) {
+            showError(cardNameInput, cardNameError, 'Please enter first and last name');
+        }
+    });
+
+    // Real-time card number validation with formatting
+    cardNumberInput.addEventListener('input', (e) => {
+        const formatted = formatCardNumber(e.target.value);
+        e.target.value = formatted;
+        
+        const cardNum = formatted.replace(/\s/g, '');
+        if (cardNum === '') {
+            clearError(cardNumberInput, cardNumberError);
+        } else if (cardNum.length < 13) {
+            showError(cardNumberInput, cardNumberError, `Card number must be at least 13 digits (${cardNum.length}/13)`);
+        } else {
+            clearError(cardNumberInput, cardNumberError);
+            showSuccess(cardNumberInput);
+        }
+    });
+
+    // Block non-digit paste in card number
+    cardNumberInput.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+        const digitsOnly = pastedText.replace(/\D/g, '');
+        const formatted = formatCardNumber(digitsOnly);
+        cardNumberInput.value = formatted;
+        cardNumberInput.dispatchEvent(new Event('input'));
+    });
+
+    // Block non-digit keypress in card number
+    cardNumberInput.addEventListener('keypress', (e) => {
+        if (!/\d/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab') {
+            e.preventDefault();
+        }
+    });
+
+    cardNumberInput.addEventListener('blur', () => {
+        const cardNum = cardNumberInput.value.replace(/\s/g, '');
+        if (cardNum === '') {
+            showError(cardNumberInput, cardNumberError, 'Card number is required');
+        } else if (cardNum.length < 13) {
+            showError(cardNumberInput, cardNumberError, `Card number must be at least 13 digits (${cardNum.length}/13)`);
+        }
+    });
+
+    // Real-time expiry validation with formatting
+    expiryInput.addEventListener('input', (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        // Validate month part (01-12)
+        if (value.length >= 1) {
+            const firstDigit = parseInt(value[0], 10);
+            if (firstDigit > 1) {
+                value = '0' + value; // Auto-prefix with 0 for months 2-9
+            }
+        }
+        if (value.length >= 2) {
+            const month = parseInt(value.substring(0, 2), 10);
+            if (month > 12) {
+                value = '12' + value.substring(2);
+            } else if (month === 0) {
+                value = '01' + value.substring(2);
+            }
+            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+        }
+        e.target.value = value;
+        
+        if (value === '') {
+            clearError(expiryInput, expiryError);
+        } else if (!expiryRegex.test(value)) {
+            showError(expiryInput, expiryError, 'Use format MM/YY');
+        } else {
+            // Check if card is expired
+            const [month, year] = value.split('/');
+            const expDate = new Date(2000 + parseInt(year), parseInt(month));
+            const now = new Date();
+            now.setDate(1); // First of current month for comparison
+            if (expDate < now) {
+                showError(expiryInput, expiryError, 'Card has expired');
+            } else {
+                clearError(expiryInput, expiryError);
+                showSuccess(expiryInput);
+            }
+        }
+    });
+
+    // Block non-digit paste in expiry
+    expiryInput.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+        const digitsOnly = pastedText.replace(/\D/g, '');
+        expiryInput.value = formatExpiry(digitsOnly);
+        expiryInput.dispatchEvent(new Event('input'));
+    });
+
+    // Block non-digit keypress in expiry
+    expiryInput.addEventListener('keypress', (e) => {
+        if (!/\d/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab') {
+            e.preventDefault();
+        }
+    });
+
+    expiryInput.addEventListener('blur', () => {
+        if (expiryInput.value.trim() === '') {
+            showError(expiryInput, expiryError, 'Expiry date is required');
+        }
+    });
+
+    // Real-time CVV validation
+    cvvInput.addEventListener('input', (e) => {
+        // Only allow digits, max 3 characters
+        e.target.value = e.target.value.replace(/\D/g, '').substring(0, 3);
+        const cvv = e.target.value;
+        if (cvv === '') {
+            clearError(cvvInput, cvvError);
+        } else if (cvv.length < 3) {
+            showError(cvvInput, cvvError, 'CVV must be 3 digits');
+        } else {
+            clearError(cvvInput, cvvError);
+            showSuccess(cvvInput);
+        }
+    });
+
+    // Block non-digit paste in CVV
+    cvvInput.addEventListener('paste', (e) => {
+        e.preventDefault();
+        const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+        const digitsOnly = pastedText.replace(/\D/g, '').substring(0, 3);
+        cvvInput.value = digitsOnly;
+        cvvInput.dispatchEvent(new Event('input'));
+    });
+
+    // Block non-digit keypress in CVV
+    cvvInput.addEventListener('keypress', (e) => {
+        if (!/\d/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab') {
+            e.preventDefault();
+        }
+    });
+
+    cvvInput.addEventListener('blur', () => {
+        if (cvvInput.value.trim() === '') {
+            showError(cvvInput, cvvError, 'CVV is required');
+        }
+    });
+
+    // Form submission
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const basket = loadBasket();
+        if (basket.length === 0) {
+            customAlert("Your basket is empty. Please add items before checking out.");
+            return;
+        }
+
+        let hasErrors = false;
+
+        // Validate all fields
+        const name = nameInput.value.trim();
+        if (!name) {
+            showError(nameInput, nameError, 'Full name is required');
+            hasErrors = true;
+        } else if (!nameRegex.test(name)) {
+            showError(nameInput, nameError, 'Please enter a valid name');
+            hasErrors = true;
+        } else if (!hasTwoNames(name)) {
+            showError(nameInput, nameError, 'Please enter first and last name');
+            hasErrors = true;
+        }
+
+        const email = emailInput.value.trim();
+        if (!email) {
+            showError(emailInput, emailError, 'Email address is required');
+            hasErrors = true;
+        } else if (!emailRegex.test(email)) {
+            showError(emailInput, emailError, 'Please enter a valid email address');
+            hasErrors = true;
+        }
+
+        const phone = phoneInput.value.trim();
+        if (!phone) {
+            showError(phoneInput, phoneError, 'Phone number is required');
+            hasErrors = true;
+        } else if (!phoneRegex.test(phone)) {
+            showError(phoneInput, phoneError, 'Please enter a valid phone number');
+            hasErrors = true;
+        }
+
+        const address = addressInput.value.trim();
+        if (!address) {
+            showError(addressInput, addressError, 'Shipping address is required');
+            hasErrors = true;
+        } else if (address.length < 10) {
+            showError(addressInput, addressError, 'Please enter a complete address');
+            hasErrors = true;
+        }
+
+        const cardName = cardNameInput.value.trim();
+        if (!cardName) {
+            showError(cardNameInput, cardNameError, 'Name on card is required');
+            hasErrors = true;
+        } else if (!nameRegex.test(cardName)) {
+            showError(cardNameInput, cardNameError, 'Please enter a valid name');
+            hasErrors = true;
+        } else if (!hasTwoNames(cardName)) {
+            showError(cardNameInput, cardNameError, 'Please enter first and last name');
+            hasErrors = true;
+        }
+
+        const cardNum = cardNumberInput.value.replace(/\s/g, '');
+        if (!cardNum) {
+            showError(cardNumberInput, cardNumberError, 'Card number is required');
+            hasErrors = true;
+        } else if (cardNum.length < 13) {
+            showError(cardNumberInput, cardNumberError, `Card number must be at least 13 digits (${cardNum.length}/13)`);
+            hasErrors = true;
+        }
+
+        const expiry = expiryInput.value;
+        if (!expiry) {
+            showError(expiryInput, expiryError, 'Expiry date is required');
+            hasErrors = true;
+        } else if (!expiryRegex.test(expiry)) {
+            showError(expiryInput, expiryError, 'Use format MM/YY');
+            hasErrors = true;
+        } else {
+            const [month, year] = expiry.split('/');
+            const expDate = new Date(2000 + parseInt(year), parseInt(month) - 1);
+            if (expDate < new Date()) {
+                showError(expiryInput, expiryError, 'Card has expired');
+                hasErrors = true;
+            }
+        }
+
+        const cvv = cvvInput.value;
+        if (!cvv) {
+            showError(cvvInput, cvvError, 'CVV is required');
+            hasErrors = true;
+        } else if (!cvvRegex.test(cvv)) {
+            showError(cvvInput, cvvError, 'CVV must be 3 digits');
+            hasErrors = true;
+        }
+
+        if (hasErrors) {
+            return;
+        }
+
+        // Calculate total
+        let total = 0;
+        basket.forEach(item => {
+            const product = products.find(p => p.id === item.productId);
+            if (!product) return;
+            const lineTotal = product.price * item.quantity;
+            total += lineTotal;
+        });
+
+        // Create and save order
+        const order = createOrder(basket, total, email);
+        saveOrder(order, email);
+        
+        // Success - clear basket and show confirmation
+        localStorage.setItem(BASKET_STORAGE_KEY, JSON.stringify([]));
+        
+        showToast("Order placed successfully! Thank you for shopping with Luminous Scents.");
+        
+        // Clear form
+        form.reset();
+        [nameInput, emailInput, phoneInput, addressInput, cardNameInput, cardNumberInput, expiryInput, cvvInput].forEach(input => {
+            input.classList.remove('input-success', 'input-error');
+        });
+        [nameError, emailError, phoneError, addressError, cardNameError, cardNumberError, expiryError, cvvError].forEach(err => {
+            err.classList.remove('show');
+            err.textContent = '';
+        });
+
+        // Refresh order summary
+        renderCheckoutSummary();
+    });
+}
+
+// Order management functions
+function createOrder(basket, total, userEmail) {
+    const orderId = 'ORD-' + Date.now().toString(36).toUpperCase();
+    const statuses = ['processing', 'shipped', 'delivered'];
+    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+    
+    const items = basket.map(item => {
+        const product = products.find(p => p.id === item.productId);
+        return {
+            id: product ? product.id : 0,
+            name: product ? product.name : 'Unknown Product',
+            price: product ? product.price : 0,
+            quantity: item.quantity
+        };
+    });
+    
+    return {
+        id: orderId,
+        date: new Date().toISOString(),
+        items: items,
+        total: total,
+        status: randomStatus
+    };
+}
+
+function saveOrder(order, userEmail) {
+    if (!userEmail) return;
+    const userOrdersKey = `luminousScentsOrders_${userEmail}`;
+    const orders = loadUserOrders(userEmail);
+    orders.unshift(order); // Add new order at the beginning
+    localStorage.setItem(userOrdersKey, JSON.stringify(orders));
+}
+
+function loadUserOrders(userEmail) {
+    if (!userEmail) return [];
+    const userOrdersKey = `luminousScentsOrders_${userEmail}`;
+    const stored = localStorage.getItem(userOrdersKey);
+    if (!stored) {
+        return [];
+    }
+    try {
+        return JSON.parse(stored);
+    } catch (e) {
+        console.error("Could not parse stored orders", e);
+        return [];
+    }
+}
+
+// Message management functions
+function createMessage(name, email, message) {
+    const messageId = 'MSG-' + Date.now().toString(36).toUpperCase();
+    
+    return {
+        id: messageId,
+        date: new Date().toISOString(),
+        name: name,
+        email: email,
+        message: message
+    };
+}
+
+function saveMessage(message, userEmail) {
+    if (!userEmail) return;
+    const userMessagesKey = `luminousScentsMessages_${userEmail}`;
+    const messages = loadUserMessages(userEmail);
+    messages.unshift(message); // Add new message at the beginning
+    localStorage.setItem(userMessagesKey, JSON.stringify(messages));
+}
+
+function loadUserMessages(userEmail) {
+    if (!userEmail) return [];
+    const userMessagesKey = `luminousScentsMessages_${userEmail}`;
+    const stored = localStorage.getItem(userMessagesKey);
+    if (!stored) {
+        return [];
+    }
+    try {
+        return JSON.parse(stored);
+    } catch (e) {
+        console.error("Could not parse stored messages", e);
+        return [];
+    }
+}
+
+// Wishlist management functions
+function loadWishlist(userEmail) {
+    if (!userEmail) return [];
+    const wishlistKey = `luminousScentsWishlist_${userEmail}`;
+    const stored = localStorage.getItem(wishlistKey);
+    if (!stored) {
+        return [];
+    }
+    try {
+        return JSON.parse(stored);
+    } catch (e) {
+        console.error("Could not parse stored wishlist", e);
+        return [];
+    }
+}
+
+function saveWishlist(wishlist, userEmail) {
+    if (!userEmail) return;
+    const wishlistKey = `luminousScentsWishlist_${userEmail}`;
+    localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+}
+
+function addToWishlist(productId, userEmail) {
+    if (!userEmail) {
+        customAlert("Please log in to add items to your wishlist.");
+        return;
+    }
+    const wishlist = loadWishlist(userEmail);
+    if (!wishlist.includes(productId)) {
+        wishlist.push(productId);
+        saveWishlist(wishlist, userEmail);
+        // Alert is shown by the calling function
+        return true;
+    } else {
+        customAlert("This item is already in your wishlist.");
+        return false;
+    }
+}
+
+function removeFromWishlist(productId, userEmail) {
+    if (!userEmail) return;
+    const wishlist = loadWishlist(userEmail);
+    const index = wishlist.indexOf(productId);
+    if (index > -1) {
+        wishlist.splice(index, 1);
+        saveWishlist(wishlist, userEmail);
+    }
+}
+
+function isInWishlist(productId, userEmail) {
+    if (!userEmail) return false;
+    const wishlist = loadWishlist(userEmail);
+    return wishlist.includes(productId);
 }
 
 // Starfield canvas effect
@@ -613,6 +2345,9 @@ function initStarfield() {
     function drawStars() {
         ctx.clearRect(0, 0, w, h);
 
+        // Check if we're in light mode
+        const isLightMode = document.documentElement.getAttribute('data-theme') === 'light';
+
         for (let s of stars) {
             const parallaxX = mouseX * (s.size / 2);
             const parallaxY = mouseY * (s.size / 2);
@@ -625,22 +2360,34 @@ function initStarfield() {
                 s.x + parallaxX, s.y + parallaxY, s.size * 4
             );
 
-            gradient.addColorStop(0, `rgba(240, 194, 75, ${s.alpha})`);
-            gradient.addColorStop(0.4, `rgba(214, 158, 46, ${s.alpha * 0.6})`);
-            gradient.addColorStop(1, `rgba(184, 134, 11, 0)`);
+            // Use darker gold/brown colors in light mode for better visibility
+            if (isLightMode) {
+                gradient.addColorStop(0, `rgba(180, 140, 80, ${s.alpha * 0.9})`);
+                gradient.addColorStop(0.4, `rgba(160, 120, 70, ${s.alpha * 0.7})`);
+                gradient.addColorStop(1, `rgba(140, 100, 60, 0)`);
+            } else {
+                gradient.addColorStop(0, `rgba(255, 220, 130, ${s.alpha})`);
+                gradient.addColorStop(0.4, `rgba(245, 210, 120, ${s.alpha * 0.6})`);
+                gradient.addColorStop(1, `rgba(240, 194, 75, 0)`);
+            }
 
             ctx.fillStyle = gradient;
             ctx.fill();
 
-            s.x += s.speed * 0.2;
+            s.x += s.speed * 0.8;
             if (s.x > w) s.x = 0;
         }
     }
 
     function twinkle() {
+        const isLightMode = document.documentElement.getAttribute('data-theme') === 'light';
+        // In light mode, use higher alpha range for better visibility
+        const minAlpha = isLightMode ? 0.4 : 0.15;
+        const maxAlpha = isLightMode ? 0.95 : 0.7;
+        
         for (let s of stars) {
             s.alpha += (Math.random() - 0.5) * 0.02;
-            s.alpha = Math.min(Math.max(s.alpha, 0.15), 0.7);
+            s.alpha = Math.min(Math.max(s.alpha, minAlpha), maxAlpha);
         }
     }
 
@@ -667,592 +2414,131 @@ function initStarfield() {
     loop();
 }
 
-// SQL Products initialization function - now uses embedded SQL data via sql-parser
-async function initSQLProducts() {
-    console.log('Initializing SQL products...');
-    try {
-        const parser = new SQLParser();
-        const products = await parser.loadProducts();
-        
-        if (products.length > 0) {
-            // Add fallback for products with missing/invalid image URLs
-            const cleanedProducts = products.map(product => {
-                if (!product.image_url || product.image_url.toUpperCase() === 'NULL' ||
-                    product.image_url.includes("'") || product.image_url.includes('NULL')) {
-                    // Use a default image or empty string for products without valid images
-                    product.image_url = 'images/luminous-logo.png'; // fallback image
-                }
-                return product;
-            });
-            
-            window.sqlProducts = cleanedProducts;
-            updateProductsArray(); // Update legacy products array
-            console.log(`Successfully loaded ${products.length} products from embedded SQL file`);
-            
-            // Render the products page
-            renderNewProductsPage();
-            
-            // Initialize navigation after a short delay to ensure DOM is updated
-            setTimeout(() => {
-                console.log('Setting up navigation after SQL products loaded...');
-                setupNavigationAfterProductsLoad();
-            }, 300);
-        } else {
-            console.error('No products loaded from SQL file');
-            // Could add fallback here if needed
-        }
-    } catch (error) {
-        console.error('Failed to initialize SQL products:', error);
-        // Could add fallback here if needed
-    }
-}
-
-// Search functionality
-function setupProductSearch() {
-    const searchInput = document.getElementById('productSearch');
-    const searchBtn = document.getElementById('searchBtn');
-    const searchResultsInfo = document.getElementById('searchResultsInfo');
-    
-    if (!searchInput || !searchBtn) return;
-    
-    let currentSearchTerm = '';
-    
-    function performSearch(searchTerm) {
-        currentSearchTerm = searchTerm.toLowerCase().trim();
-        
-        if (!window.sqlProducts || currentSearchTerm === '') {
-            showAllProducts();
-            updateSearchResultsInfo(0, '');
-            return;
-        }
-        
-        const matchingProducts = window.sqlProducts.filter(product => {
-            const searchableText = [
-                product.product_name,
-                product.brand,
-                product.notes,
-                product.description
-            ].join(' ').toLowerCase();
-            
-            return searchableText.includes(currentSearchTerm);
-        });
-        
-        displaySearchResults(matchingProducts, currentSearchTerm);
-        updateSearchResultsInfo(matchingProducts.length, currentSearchTerm);
-        
-        // Clear active category filter when searching
-        clearActiveCategoryFilter();
-    }
-    
-    function showAllProducts() {
-        // Show all category sections and product cards
-        document.querySelectorAll('.category-section').forEach(section => {
-            section.style.display = 'block';
-        });
-        
-        document.querySelectorAll('.product-card').forEach(card => {
-            card.style.display = 'block';
-            // Remove any search highlighting
-            card.querySelectorAll('.search-highlight').forEach(span => {
-                span.outerHTML = span.textContent;
-            });
-        });
-    }
-    
-    function displaySearchResults(products, searchTerm) {
-        // Hide all category sections first
-        document.querySelectorAll('.category-section').forEach(section => {
-            section.style.display = 'none';
-        });
-        
-        // Group products by category
-        const productsByCategory = {};
-        products.forEach(product => {
-            if (!productsByCategory[product.category]) {
-                productsByCategory[product.category] = [];
-            }
-            productsByCategory[product.category].push(product);
-        });
-        
-        // Show only categories that have matching products
-        Object.keys(productsByCategory).forEach(category => {
-            const categorySection = Array.from(document.querySelectorAll('.category-section')).find(section => {
-                const header = section.querySelector('h3');
-                return header && header.textContent === category;
-            });
-            
-            if (categorySection) {
-                categorySection.style.display = 'block';
-                
-                // Hide all products in this category first
-                const allCards = categorySection.querySelectorAll('.product-card');
-                allCards.forEach(card => {
-                    card.style.display = 'none';
-                });
-                
-                // Show only matching products and highlight search terms
-                productsByCategory[category].forEach(product => {
-                    const card = categorySection.querySelector(`[data-product-id="${product.id}"]`);
-                    if (card) {
-                        card.style.display = 'block';
-                        highlightSearchTerms(card, searchTerm);
-                    }
-                });
-            }
-        });
-    }
-    
-    function highlightSearchTerms(card, searchTerm) {
-        if (!searchTerm) return;
-        
-        const elementsToHighlight = card.querySelectorAll('h4, .brand, .notes, .description');
-        elementsToHighlight.forEach(element => {
-            const text = element.textContent;
-            const regex = new RegExp(`(${escapeRegex(searchTerm)})`, 'gi');
-            const highlightedText = text.replace(regex, '<span class="search-highlight">$1</span>');
-            element.innerHTML = highlightedText;
-        });
-    }
-    
-    function escapeRegex(string) {
-        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }
-    
-    function updateSearchResultsInfo(count, searchTerm) {
-        if (!searchResultsInfo) return;
-        
-        if (!searchTerm) {
-            searchResultsInfo.classList.remove('visible');
-            return;
-        }
-        
-        if (count === 0) {
-            searchResultsInfo.innerHTML = `No products found for "${searchTerm}". Try a different search term.`;
-        } else {
-            searchResultsInfo.innerHTML = `Found ${count} product${count !== 1 ? 's' : ''} matching "${searchTerm}"`;
-        }
-        
-        searchResultsInfo.classList.add('visible');
-    }
-    
-    // Event listeners
-    searchInput.addEventListener('input', (e) => {
-        performSearch(e.target.value);
-    });
-    
-    searchBtn.addEventListener('click', () => {
-        performSearch(searchInput.value);
-    });
-    
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            performSearch(e.target.value);
-        }
-    });
-    
-    // Clear search when input is cleared
-    searchInput.addEventListener('input', (e) => {
-        if (e.target.value === '') {
-            showAllProducts();
-            updateSearchResultsInfo(0, '');
-        }
-    });
-}
-
-// Category filter functionality
-function setupCategoryFilters() {
-    const categoryButtons = document.querySelectorAll('.category-filter-btn');
-    
-    if (categoryButtons.length === 0) return;
-    
-    function filterByCategory(category) {
-        // Show all categories if "all" is selected
-        if (category === 'all') {
-            document.querySelectorAll('.category-section').forEach(section => {
-                section.style.display = 'block';
-            });
-        } else {
-            // Hide all category sections first
-            document.querySelectorAll('.category-section').forEach(section => {
-                section.style.display = 'none';
-            });
-            
-            // Show only the selected category
-            const targetSection = Array.from(document.querySelectorAll('.category-section')).find(section => {
-                const header = section.querySelector('h3');
-                return header && header.textContent === category;
-            });
-            
-            if (targetSection) {
-                targetSection.style.display = 'block';
-            }
-        }
-        
-        // Scroll to the top of the products area
-        document.querySelector('.category-filters-section').scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-    }
-    
-    function updateActiveButton(activeButton) {
-        // Remove active class from all buttons
-        categoryButtons.forEach(btn => {
-            btn.classList.remove('active');
-        });
-        
-        // Add active class to clicked button
-        if (activeButton) {
-            activeButton.classList.add('active');
-        }
-    }
-    
-    function clearActiveCategoryFilter() {
-        // Remove active class from category buttons
-        categoryButtons.forEach(btn => {
-            btn.classList.remove('active');
-        });
-    }
-    
-    // Add event listeners to category buttons
-    categoryButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const category = button.getAttribute('data-category');
-            
-            // Clear search input when filtering by category
-            const searchInput = document.getElementById('productSearch');
-            if (searchInput) {
-                searchInput.value = '';
-            }
-            
-            // Hide search results info
-            const searchResultsInfo = document.getElementById('searchResultsInfo');
-            if (searchResultsInfo) {
-                searchResultsInfo.classList.remove('visible');
-            }
-            
-            filterByCategory(category);
-            updateActiveButton(button);
-            
-            // Show all products in the selected category (remove any search highlighting)
-            document.querySelectorAll('.product-card').forEach(card => {
-                card.style.display = 'block';
-                card.querySelectorAll('.search-highlight').forEach(span => {
-                    span.outerHTML = span.textContent;
-                });
-            });
-        });
-    });
-    
-    // Initially set "All Products" as active
-    const allProductsButton = document.querySelector('[data-category="all"]');
-    if (allProductsButton) {
-        allProductsButton.classList.add('active');
-    }
-}
-
-// Categories scroll effects and auto-scroll functionality
-function setupCategoriesScrollEffects() {
-    const categoriesGrid = document.querySelector('.categories-grid');
-    const categoryCards = document.querySelectorAll('.category-card');
-    
-    if (!categoriesGrid || categoryCards.length === 0) return;
-    
-    // Scroll-based fade effects
-    function handleScroll() {
-        const scrollLeft = categoriesGrid.scrollLeft;
-        const cardWidth = 220;
-        const gap = 16; // 1rem gap
-        
-        categoryCards.forEach((card, index) => {
-            const cardLeft = index * (cardWidth + gap);
-            const cardRight = cardLeft + cardWidth;
-            const viewportLeft = scrollLeft;
-            const viewportRight = scrollLeft + categoriesGrid.clientWidth;
-            
-            // Calculate fade based on position relative to viewport
-            let opacity = 1;
-            let scale = 1;
-            
-            if (cardRight < viewportLeft) {
-                // Card is completely off the left side
-                opacity = 0.3;
-                scale = 0.9;
-            } else if (cardLeft > viewportRight) {
-                // Card is completely off the right side
-                opacity = 0.3;
-                scale = 0.9;
-            } else {
-                // Card is in viewport, calculate fade based on distance from center
-                const cardCenter = cardLeft + cardWidth / 2;
-                const viewportCenter = viewportLeft + categoriesGrid.clientWidth / 2;
-                const distance = Math.abs(cardCenter - viewportCenter);
-                const maxDistance = categoriesGrid.clientWidth / 2;
-                
-                opacity = Math.max(0.4, 1 - (distance / maxDistance) * 0.6);
-                scale = Math.max(0.95, 1 - (distance / maxDistance) * 0.05);
-            }
-            
-            // Apply fade effect
-            card.style.opacity = opacity;
-            card.style.transform = `scale(${scale})`;
-        });
-    }
-    
-    // Add scroll event listener
-    categoriesGrid.addEventListener('scroll', handleScroll);
-    
-    // Initial call to set fade state
-    handleScroll();
-    
-    // Auto-scroll functionality
-    let autoScrollInterval;
-    let isAutoScrolling = false;
-    
-    function startAutoScroll() {
-        if (isAutoScrolling) return;
-        
-        isAutoScrolling = true;
-        autoScrollInterval = setInterval(() => {
-            const scrollWidth = categoriesGrid.scrollWidth;
-            const clientWidth = categoriesGrid.clientWidth;
-            const maxScroll = scrollWidth - clientWidth;
-            
-            if (categoriesGrid.scrollLeft >= maxScroll - 10) {
-                // Reached the end, scroll back to start with fade
-                categoriesGrid.scrollTo({
-                    left: 0,
-                    behavior: 'smooth'
-                });
-            } else {
-                // Scroll to next card
-                const currentIndex = Math.round(categoriesGrid.scrollLeft / (220 + 16));
-                const nextIndex = currentIndex + 1;
-                const nextPosition = nextIndex * (220 + 16);
-                
-                categoriesGrid.scrollTo({
-                    left: nextPosition,
-                    behavior: 'smooth'
-                });
-            }
-        }, 3000); // Scroll every 3 seconds
-    }
-    
-    function stopAutoScroll() {
-        if (!isAutoScrolling) return;
-        
-        isAutoScrolling = false;
-        clearInterval(autoScrollInterval);
-    }
-    
-    // Pause auto-scroll on user interaction
-    categoriesGrid.addEventListener('mouseenter', stopAutoScroll);
-    categoriesGrid.addEventListener('mouseleave', () => {
-        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            startAutoScroll();
-        }
-    });
-    
-    categoriesGrid.addEventListener('scroll', () => {
-        stopAutoScroll();
-        // Resume auto-scroll after 5 seconds of inactivity
-        setTimeout(() => {
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                startAutoScroll();
-            }
-        }, 5000);
-    });
-    
-    // Start auto-scroll if not reduced motion preferred
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        setTimeout(startAutoScroll, 2000); // Start after 2 seconds
-    }
-    
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        handleScroll();
-    });
-}
-
 // Page initialiser
 
 document.addEventListener("DOMContentLoaded", () => {
-    const page = document.body.getAttribute("data-page");
+    // Auto-resize textarea (vertical)
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(textarea => {
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+    });
 
-    // Initialize theme system
-    initTheme();
+    const page = document.body.getAttribute("data-page");
 
     initStarfield();
     initMouseTrail();
+    initializeChatbot();
 
     // rest of the code...
-    if (page === "home") {
-        setupAuthForm();
-        setupCategoriesScrollEffects();
+    if (page === "home" || page === "account") {
+        if (page === "account") {
+            // Check if user is logged in
+            if (isUserLoggedIn()) {
+                const userEmail = getLoggedInUser();
+                showProfileView(userEmail);
+            } else {
+                setupAuthForm();
+            }
+        } else {
+            setupAuthForm();
+        }
     } else if (page === "products") {
         renderProductsPage();
-    } else if (page === "newproducts") {
-        // Check for category parameter in URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const categoryParam = urlParams.get('category');
-        
-        // SQL products will be loaded and rendered in initSQLProducts
-        initSQLProducts();
-        // Initialize search functionality
-        setupProductSearch();
-        // Initialize category filters
-        setupCategoryFilters();
-        
-        // If category parameter exists, filter products after they load
-        if (categoryParam) {
-            console.log('Filtering by category from URL:', categoryParam);
-            setTimeout(() => {
-                filterProductsByCategoryFromURL(categoryParam);
-            }, 800); // Wait for products to load
-        }
-        
-        // Initialize navigation after a longer delay to ensure products are fully loaded and rendered
-        setTimeout(() => {
-            console.log('Setting up navigation after products load...');
-            setupNavigationAfterProductsLoad();
-        }, 1000);
+        initEnhancedSearch();
     } else if (page === "basket") {
-        // For basket page, we need to load SQL products first before rendering
-        // This ensures we have product data to display in the basket
-        if (window.sqlProducts && window.sqlProducts.length > 0) {
-            renderBasketPage();
-        } else {
-            // Load SQL products first, then render basket
-            initSQLProducts().then(() => {
-                renderBasketPage();
-            }).catch(error => {
-                console.error('Failed to load products for basket:', error);
-                renderBasketPage(); // Render anyway, will show loading message if no products
-            });
-        }
+        renderBasketPage();
+    } else if (page === "contact") {
+        setupContactForm();
+    } else if (page === "checkout") {
+        renderCheckoutSummary();
+        setupCheckoutForm();
     }
 });
-// Scroll reveal animations
-const observerOptions = {
-    threshold: 0,
-    rootMargin: '0px'
+
+// Wait for all content (including images) to load before running initial UI updates.
+// This prevents layout flashes and incorrect calculations.
+window.addEventListener("load", () => {
+    if (document.body.getAttribute("data-page") === "products") {
+        document.querySelectorAll(".product-section-scrollable").forEach(section => {
+            const container = section.querySelector(".product-scroll-container");
+            
+            if (container) {
+                container.scrollLeft = 0;
+            }
+            
+            // Run calculations to determine layout
+            updateSectionUI(section);
+
+            // Force the browser to paint the layout before we make it visible
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    if (container) {
+                        container.scrollLeft = 0;
+                    }
+                    section.classList.add('loaded');
+                });
+            });
+        });
+    }
+});
+
+// Scroll reveal animations with hysteresis to prevent jitter at boundaries
+// Reveal observer: triggers when element enters viewport
+// Using requestAnimationFrame to batch DOM updates for better performance
+const revealObserver = new IntersectionObserver((entries) => {
+    requestAnimationFrame(() => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !entry.target.classList.contains('revealed')) {
+                entry.target.classList.add('revealed');
+            }
+        });
+    });
+}, { threshold: 0.05, rootMargin: '0px' });
+
+// Hide observer: triggers when element is fully outside viewport (with small buffer)
+const hideObserver = new IntersectionObserver((entries) => {
+    requestAnimationFrame(() => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting && entry.target.classList.contains('revealed')) {
+                entry.target.classList.remove('revealed');
+            }
+        });
+    });
+}, { threshold: 0, rootMargin: '20px 0px 20px 0px' });
+
+// Combined observer wrapper
+const observer = {
+    observe: function(element) {
+        revealObserver.observe(element);
+        hideObserver.observe(element);
+    }
 };
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-        } else {
-            entry.target.classList.remove('revealed');
-        }
-    });
-}, observerOptions);
-// Async version that waits for SQL data to be loaded
-async function renderNewProductsPageAsync() {
-    console.log('renderNewProductsPageAsync called');
-    console.log('window.sqlProducts exists:', !!window.sqlProducts);
-    console.log('window.sqlProducts length:', window.sqlProducts ? window.sqlProducts.length : 'undefined');
-    
-    // Wait for SQL data to be loaded
-    let attempts = 0;
-    const maxAttempts = 50; // 5 seconds max wait
-    
-    while (!window.sqlProducts && attempts < maxAttempts) {
-        console.log(`Waiting for SQL data... attempt ${attempts + 1}`);
-        await new Promise(resolve => setTimeout(resolve, 100));
-        attempts++;
-    }
-    
-    if (!window.sqlProducts) {
-        console.error('Failed to load SQL products after waiting');
-        return;
-    }
-    
-    console.log('SQL data loaded, proceeding to render products');
-    renderNewProductsPage();
-}
-
-// Original synchronous version (now uses global sqlProducts)
-function renderNewProductsPage() {
-    console.log('renderNewProductsPage called');
-    
-    if (!window.sqlProducts) {
-        console.error('SQL products not loaded');
-        return;
-    }
-    
-    console.log('Number of products available:', window.sqlProducts.length);
-    console.log('Sample product:', window.sqlProducts[0]);
-    
-    const categories = [
-        'Signature Eau de Parfum',
-        'Luxury Eau de Toilette',
-        'Home Fragrance Collection',
-        'Travel & Mini Sets',
-        'Wellness Aromatics'
-    ];
-
-    categories.forEach(category => {
-        console.log(`Processing category: ${category}`);
-        
-        // Match the exact HTML container IDs
-        let containerId;
-        switch(category) {
-            case 'Signature Eau de Parfum':
-                containerId = 'signature-parfum-grid';
-                break;
-            case 'Luxury Eau de Toilette':
-                containerId = 'luxury-toilette-grid';
-                break;
-            case 'Home Fragrance Collection':
-                containerId = 'home-fragrance-grid';
-                break;
-            case 'Travel & Mini Sets':
-                containerId = 'travel-sets-grid';
-                break;
-            case 'Wellness Aromatics':
-                containerId = 'wellness-aromatics-grid';
-                break;
-            default:
-                containerId = category.toLowerCase().replace(/\s+/g, '-').replace(/&/g, 'and').replace(/[^a-z0-9\-]/g, '') + '-grid';
-        }
-        
-        const container = document.getElementById(containerId);
-        console.log(`Container ID: ${containerId}, Found:`, !!container);
-        
-        if (container) {
-            const categoryProducts = window.sqlProducts.filter(product => product.category === category);
-            console.log(`Products in category ${category}:`, categoryProducts.length);
-            
-            categoryProducts.forEach(product => {
-                const card = createProductCard(product);
-                container.appendChild(card);
-                applyScrollReveal(card);
-            });
-        }
-    });
-    
-    console.log('renderNewProductsPage completed');
-    
-    // After all cards are created, update them to show quantity controls if in basket
-    setTimeout(() => {
-        updateProductCardsForBasket();
-    }, 100);
-}
-
-// Prevent observer from catching dynamically added elements
-const originalObserve = observer.observe;
+// Prevent observer from catching alert elements
+const originalObserve = observer.observe.bind(observer);
 observer.observe = function(element) {
     if (element.classList.contains('custom-alert') || 
         element.classList.contains('custom-alert-overlay') ||
         element.closest('.custom-alert')) {
         return;
     }
-    originalObserve.call(this, element);
+    originalObserve(element);
 };
-document.querySelectorAll('.main-header, .site-footer, .hero-text, .hero-text h2, .hero-text p, .page-header, .page-header h2, .page-header p, .card, .card h3, .card p, .card .btn-primary, .feature-card, .feature-card h4, .feature-card p, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .info-column h3, .info-column p, .steps-list li, .step-number, .feature-section h3, .auth-section, .auth-form, .category-section, .category-header').forEach(el => {
+// Add scroll-reveal class to content elements (excluding header to keep it stable)
+document.querySelectorAll('.site-footer, .hero-text, .page-header, .card, .feature-section h3, .feature-card, .feature-card h4, .basket-section, .basket-item, .basket-summary, .basket-summary p, .basket-summary .btn-primary, .info-column, .steps-list li, .step-number, .auth-section, .auth-form').forEach(el => {
     el.classList.add('scroll-reveal');
-    observer.observe(el);
+});
+
+// Wait for browser to paint the initial state before observing
+requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+    });
 });
 
 
@@ -1322,196 +2608,375 @@ function initMouseTrail() {
     animate();
 }
 
-function updateProductCardsForBasket() {
-    const basket = loadBasket();
-    
-    // Update each product card to show quantity controls if item is in basket
-    document.querySelectorAll('.product-card').forEach(card => {
-        const productId = Number(card.getAttribute('data-product-id'));
-        const product = window.sqlProducts.find(p => p.id === productId);
+// Chatbot Functionality (using FK's simpler approach)
+let chatbotOpen = false;
+let isTyping = false;
+
+// AI Chat responses (similar to FK implementation)
+const chatbotResponses = {
+    greetings: [
+        "Hello! I'm here to help you find your perfect fragrance. What kind of scent are you in the mood for today?",
+        "Welcome to Luminous Scents! I can help guide you through our collection. Are you looking for something fresh and citrusy or warm and mysterious?",
+        "Hi there! Ready to discover your signature scent? Tell me about your style and I'll recommend the perfect fragrance."
+    ],
+    citrus: [
+        "Citrus fragrances are perfect for a fresh, energizing start to your day! Our Citrus Dawn features bergamot, lemon, and neroli. It's bright, uplifting, and perfect for daytime wear. Would you like to add it to your basket?",
+        "Citrus scents are wonderfully refreshing! Citrus Dawn is one of our most popular daytime fragrances with its vibrant blend of bergamot, lemon, and neroli. It's perfect for spring and summer. Are you interested in trying it?",
+        "Citrus fragrances are like liquid sunshine! Citrus Dawn combines bergamot, lemon, and neroli for a bright, zesty experience that lasts all day. It's excellent for work or casual outings. Would you like to explore it further?"
+    ],
+    evening: [
+        "For evening wear, I'd recommend our Aurora Oud. It features rich oud, amber, and vanilla - perfect for creating an aura of mystery and elegance. It's our most sophisticated scent for special occasions.",
+        "Evening fragrances should be captivating! Aurora Oud offers warm, deep notes of oud, amber, and vanilla that unfold beautifully as the evening progresses. It's designed for those who want to make a lasting impression.",
+        "For nighttime elegance, Aurora Oud is unmatched. With its complex oud base, warm amber, and creamy vanilla, it's a fragrance that tells a story. Perfect for dinner dates, events, or when you want to feel extraordinary."
+    ],
+    popular: [
+        "Our most popular fragrances are Aurora Oud for evening wear, Citrus Dawn for everyday freshness, and Velvet Iris for soft, romantic occasions. Each has its own distinct personality!",
+        "The favorites among our customers are definitely Aurora Oud (sophisticated evenings), Citrus Dawn (bright days), and Velvet Iris (gentle elegance). They're all unique in their own way.",
+        "Our top three are Aurora Oud for luxury evenings, Citrus Dawn for energizing days, and Velvet Iris for intimate moments. Each is crafted to enhance different aspects of your personality."
+    ],
+    general: [
+        "I'd be happy to help you choose a fragrance! Are you looking for something fresh, warm, floral, or perhaps woody? Each of our scents has its own character and is perfect for different occasions.",
+        "Finding the right fragrance is like finding the perfect piece of art - it should speak to your soul. Our collection includes Aurora Oud for mysterious evenings, Citrus Dawn for bright days, and Velvet Iris for romantic moments.",
+        "Every fragrance tells a story, and I want to help you find yours! Whether you prefer the bold complexity of Aurora Oud, the bright freshness of Citrus Dawn, or the soft elegance of Velvet Iris, there's a perfect match for you.",
+        "I can help you discover a fragrance that matches your personality and lifestyle. What mood are you in today? Fresh and energetic, warm and mysterious, or soft and romantic?"
+    ],
+    product_info: {
+        "aurora oud": "Aurora Oud is our signature evening fragrance featuring rich oud, amber, and vanilla. It costs £89.99 and is perfect for sophisticated occasions. The scent unfolds in layers, revealing its complexity throughout the evening.",
+        "citrus dawn": "Citrus Dawn is our fresh daytime fragrance with bergamot, lemon, and neroli. It's priced at £59.99 and perfect for energizing your day. The bright, citrusy notes are uplifting and long-lasting.",
+        "velvet iris": "Velvet Iris offers soft floral elegance with iris, violet, and sandalwood. At £74.50, it's perfect for romantic occasions or when you want to feel gentle and sophisticated. The creamy sandalwood base provides wonderful longevity."
+    }
+};
+
+function initializeChatbot() {
+    const chatBubble = document.getElementById('chatBubble');
+    const chatWindow = document.getElementById('chatWindow');
+    const minimizeBtn = document.getElementById('minimizeChat');
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendMessage');
+
+    if (!chatBubble || !chatWindow || !chatInput || !sendBtn) {
+        return;
+    }
+
+    // Toggle chatbot
+    chatBubble.addEventListener('click', () => {
+        chatbotOpen = !chatbotOpen;
+        chatWindow.classList.toggle('active', chatbotOpen);
         
-        if (!product) return;
-        
-        const basketItem = basket.find(item => item.productId === productId);
-        const quantity = basketItem ? basketItem.quantity : 0;
-        
-        if (quantity > 0) {
-            // Replace add to basket button with quantity controls
-            const addButton = card.querySelector('.btn-primary');
-            if (addButton) {
-                addButton.remove();
-                
-                const qtyControls = document.createElement('div');
-                qtyControls.className = 'product-quantity-controls';
-                qtyControls.setAttribute('data-product-id', productId);
-                qtyControls.innerHTML = `
-                    <button class="qty-btn" data-action="decrease" data-id="${productId}">-</button>
-                    <span class="quantity-display">${quantity}</span>
-                    <button class="qty-btn" data-action="increase" data-id="${productId}">+</button>
-                    <span class="total-price">£${(product.price * quantity).toFixed(2)}</span>
-                `;
-                
-                // Insert after the description
-                const description = card.querySelector('.description');
-                if (description) {
-                    description.insertAdjacentElement('afterend', qtyControls);
-                }
-            }
+        if (chatbotOpen) {
+            chatInput.focus();
+            setTimeout(() => scrollToBottom(), 100);
+            // Hide indicator when chat opens
+            const indicator = chatBubble.querySelector('.chat-indicator');
+            if (indicator) indicator.style.display = 'none';
+        }
+    });
+
+    // Minimize chatbot
+    if (minimizeBtn) {
+        minimizeBtn.addEventListener('click', () => {
+            chatbotOpen = false;
+            chatWindow.classList.remove('active');
+        });
+    }
+
+    // Send message
+    sendBtn.addEventListener('click', () => sendChatbotMessage());
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendChatbotMessage();
+        }
+    });
+
+    // Quick replies
+    document.querySelectorAll('.quick-reply').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const message = e.target.getAttribute('data-message');
+            sendChatbotMessage(message);
+        });
+    });
+
+    // Add to basket buttons
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('add-to-basket-btn')) {
+            const productId = parseInt(e.target.getAttribute('data-product-id'));
+            addToBasket(productId);
+            addBotMessage("Great choice! I've added that fragrance to your basket. You can continue exploring or close the chat when you're ready!");
         }
     });
 }
 
-// Theme Management
-function initTheme() {
-    const savedTheme = localStorage.getItem('luminousScentsTheme') || 'dark';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    updateThemeIcon(savedTheme);
+function sendChatbotMessage(userInput = null) {
+    const chatInput = document.getElementById('chatInput');
+    const input = userInput || chatInput.value.trim();
+
+    if (!input || isTyping) return;
+
+    // Add user message
+    addUserMessage(input);
+    chatInput.value = '';
+
+    // Generate AI response
+    simulateAIResponse(input);
 }
 
-function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+function addUserMessage(message) {
+    const messagesContainer = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'message user-message';
+    messageDiv.innerHTML = `
+        <div class="message-avatar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+        </div>
+        <div class="message-content">
+            <div class="message-text">${escapeHtml(message)}</div>
+            <div class="message-time">${getCurrentTime()}</div>
+        </div>
+    `;
+
+    messagesContainer.appendChild(messageDiv);
+    scrollToBottom();
+}
+
+function addBotMessage(content, delay = 1000) {
+    setTimeout(() => {
+        removeTypingIndicator();
+        
+        const messagesContainer = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message ai-message';
+        messageDiv.innerHTML = `
+            <div class="message-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                </svg>
+            </div>
+            <div class="message-content">
+                <div class="message-text">${content}</div>
+                <div class="message-time">${getCurrentTime()}</div>
+            </div>
+        `;
+
+        messagesContainer.appendChild(messageDiv);
+        scrollToBottom();
+        isTyping = false;
+    }, delay);
+}
+
+function showTypingIndicator() {
+    const messagesContainer = document.getElementById('chatMessages');
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'message ai-message';
+    typingDiv.id = 'typingIndicator';
+    typingDiv.innerHTML = `
+        <div class="message-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+            </svg>
+        </div>
+        <div class="message-content">
+            <div class="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+    `;
+
+    messagesContainer.appendChild(typingDiv);
+    scrollToBottom();
+}
+
+function removeTypingIndicator() {
+    const typingEl = document.getElementById('typingIndicator');
+    if (typingEl) {
+        typingEl.remove();
+    }
+}
+
+function getCurrentTime() {
+    const now = new Date();
+    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function simulateAIResponse(userMessage) {
+    if (isTyping) return;
     
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('luminousScentsTheme', newTheme);
-    updateThemeIcon(newTheme);
+    isTyping = true;
+    showTypingIndicator();
+
+    const lowerMessage = userMessage.toLowerCase();
+    let response = '';
+
+    // Handle special actions first
+    if (lowerMessage.includes('surprise')) {
+        giveRandomRecommendation();
+        return;
+    }
+
+    if (lowerMessage.includes('clear') || lowerMessage.includes('reset')) {
+        resetChatbot();
+        return;
+    }
+
+    // Check for product-specific queries
+    if (lowerMessage.includes('aurora') && lowerMessage.includes('oud')) {
+        response = chatbotResponses.product_info["aurora oud"];
+    } else if (lowerMessage.includes('citrus') && (lowerMessage.includes('dawn') || lowerMessage.includes('citrus'))) {
+        response = chatbotResponses.product_info["citrus dawn"];
+    } else if (lowerMessage.includes('velvet') && lowerMessage.includes('iris')) {
+        response = chatbotResponses.product_info["velvet iris"];
+    } else if (lowerMessage.includes('citrus') || lowerMessage.includes('fresh') || lowerMessage.includes('bright') || lowerMessage.includes('daytime')) {
+        response = getRandomResponse(chatbotResponses.citrus);
+    } else if (lowerMessage.includes('evening') || lowerMessage.includes('night') || lowerMessage.includes('warm') || lowerMessage.includes('oud')) {
+        response = getRandomResponse(chatbotResponses.evening);
+    } else if (lowerMessage.includes('popular') || lowerMessage.includes('recommend') || lowerMessage.includes('best')) {
+        response = getRandomResponse(chatbotResponses.popular);
+    } else if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+        response = getRandomResponse(chatbotResponses.greetings);
+    } else {
+        response = getRandomResponse(chatbotResponses.general);
+    }
+
+    addBotMessage(response, Math.random() * 1000 + 500);
+}
+
+function getRandomResponse(responses) {
+    return responses[Math.floor(Math.random() * responses.length)];
+}
+
+function giveRandomRecommendation() {
+    const randomProduct = products[Math.floor(Math.random() * products.length)];
+    const response = `
+        <p>Since you want to be surprised, let me suggest something special!</p>
+        <div class="product-recommendation">
+            <h5>${randomProduct.name}</h5>
+            <p><strong>Notes:</strong> ${randomProduct.notes}</p>
+            <p>${randomProduct.description}</p>
+            <p><em>This is one of our most beloved fragrances - perfect for those who appreciate unique, sophisticated scents.</em></p>
+            <button class="add-to-basket-btn" data-product-id="${randomProduct.id}">
+                Add to Basket (£${randomProduct.price.toFixed(2)})
+            </button>
+        </div>
+        <p>What did you think of that suggestion?</p>
+    `;
+
+    addBotMessage(response, Math.random() * 1000 + 500);
+}
+
+function handleQuickAction(action) {
+    if (action === 'surprise') {
+        giveRandomRecommendation();
+    } else if (action === 'reset') {
+        resetChatbot();
+    }
+}
+
+function resetChatbot() {
+    isTyping = false;
+    removeTypingIndicator();
+    
+    const messagesContainer = document.getElementById('chatMessages');
+    messagesContainer.innerHTML = `
+        <div class="message ai-message">
+            <div class="message-avatar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                </svg>
+            </div>
+            <div class="message-content">
+                <div class="message-text">Welcome to Luminous Scents! 🌟 I'm Lumi, your AI fragrance expert. I can help you discover the perfect scent based on your preferences. What type of fragrance are you looking for today?</div>
+                <div class="message-time">Just now</div>
+            </div>
+        </div>
+    `;
+    scrollToBottom();
+}
+
+function scrollToBottom() {
+    const messagesContainer = document.getElementById('chatMessages');
+    if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+const bulletObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const bullets = entry.target.querySelectorAll("li");
+            bullets.forEach((li, i) => {
+                setTimeout(() => {
+                    li.classList.add("bullet-visible");
+                }, i * 150);
+            });
+        }
+    });
+}, { threshold: 0.2 });
+
+document.querySelectorAll(".values-section").forEach(section => {
+    bulletObserver.observe(section);
+});
+
+// ===========================
+// THEME TOGGLE FUNCTIONALITY
+// ===========================
+
+function initThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) return;
+
+    const html = document.documentElement;
+    const THEME_STORAGE_KEY = 'luminousScentsTheme';
+    
+    // Get saved theme or default to dark
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY) || 'dark';
+    html.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+        updateThemeIcon(newTheme);
+    });
 }
 
 function updateThemeIcon(theme) {
-    const toggleButton = document.getElementById('themeToggle');
-    if (toggleButton) {
-        toggleButton.innerHTML = theme === 'dark' ? '🌙' : '☀️';
-        toggleButton.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) return;
+
+    const svg = themeToggle.querySelector('svg');
+    if (!svg) return;
+
+    if (theme === 'light') {
+        // Moon icon for light mode (to switch to dark)
+        svg.innerHTML = `
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" fill="none"/>
+        `;
+        themeToggle.setAttribute('aria-label', 'Switch to dark mode');
+    } else {
+        // Sun icon for dark mode (to switch to light)
+        svg.innerHTML = `
+            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2"/>
+        `;
+        themeToggle.setAttribute('aria-label', 'Switch to light mode');
     }
 }
 
-// Add event delegation for quantity controls
-document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('qty-btn')) {
-        e.preventDefault();
-        e.stopPropagation();
-        const action = e.target.getAttribute('data-action');
-        const id = Number(e.target.getAttribute('data-id'));
-        if (action === 'increase') {
-            updateQuantity(id, 1);
-        } else if (action === 'decrease') {
-            updateQuantity(id, -1);
-        }
-    }
-    
-    // Theme toggle button
-    if (e.target.id === 'themeToggle' || e.target.closest('#themeToggle')) {
-        toggleTheme();
-    }
+// Initialize theme toggle on page load
+document.addEventListener('DOMContentLoaded', () => {
+    initThemeToggle();
 });
 
-// Clear basket function for testing
-function clearBasketForTesting() {
-    localStorage.removeItem('luminousScentsBasket');
-    location.reload();
-}
-
-// Filter products by category from URL parameter
-function filterProductsByCategoryFromURL(category) {
-    console.log('Filtering products by category:', category);
-    
-    if (!category || category === 'all') {
-        // Show all products
-        document.querySelectorAll('.category-section').forEach(section => {
-            section.style.display = 'block';
-        });
-        return;
-    }
-    
-    // Hide all category sections first
-    document.querySelectorAll('.category-section').forEach(section => {
-        section.style.display = 'none';
-    });
-    
-    // Find the target category section
-    const targetSection = Array.from(document.querySelectorAll('.category-section')).find(section => {
-        const header = section.querySelector('h3');
-        return header && header.textContent === category;
-    });
-    
-    if (targetSection) {
-        // Show only the target category
-        targetSection.style.display = 'block';
-        
-        // Update active category filter button
-        const targetButton = document.querySelector(`[data-category="${category}"]`);
-        if (targetButton) {
-            // Remove active class from all buttons
-            document.querySelectorAll('.category-filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            // Add active class to target button
-            targetButton.classList.add('active');
-        }
-        
-        // Update page header to show filtered category
-        updatePageHeaderForCategory(category);
-        
-        // Scroll to the category section
-        targetSection.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-        
-        console.log('Successfully filtered to category:', category);
-    } else {
-        console.warn('Category section not found for:', category);
-        // If category not found, show all products
-        document.querySelectorAll('.category-section').forEach(section => {
-            section.style.display = 'block';
-        });
-    }
-}
-
-// Update page header to show filtered category
-function updatePageHeaderForCategory(category) {
-    const pageHeader = document.querySelector('.page-header h2');
-    const pageSubtitle = document.querySelector('.page-header p');
-    
-    if (pageHeader && category && category !== 'all') {
-        pageHeader.textContent = `${category}`;
-        
-        // Create appropriate subtitle based on category
-        let subtitle = 'Explore our curated fragrances in this collection';
-        switch(category) {
-            case 'Signature Eau de Parfum':
-                subtitle = 'Our premium signature scents for any occasion';
-                break;
-            case 'Luxury Eau de Toilette':
-                subtitle = 'Elegant daytime fragrances with sophisticated character';
-                break;
-            case 'Home Fragrance Collection':
-                subtitle = 'Transform your living space with our aromatic collection';
-                break;
-            case 'Travel & Mini Sets':
-                subtitle = 'Perfect collections for exploring new scents on the go';
-                break;
-            case 'Wellness Aromatics':
-                subtitle = 'Therapeutic blends designed for wellbeing and relaxation';
-                break;
-        }
-        
-        if (pageSubtitle) {
-            pageSubtitle.textContent = subtitle;
-        }
-    }
-}
-
-// Reset page header to default
-function resetPageHeader() {
-    const pageHeader = document.querySelector('.page-header h2');
-    const pageSubtitle = document.querySelector('.page-header p');
-    
-    if (pageHeader) {
-        pageHeader.textContent = 'Our Product Collections';
-    }
-    
-    if (pageSubtitle) {
-        pageSubtitle.textContent = 'Explore our carefully curated fragrances organised by category';
-    }
-}

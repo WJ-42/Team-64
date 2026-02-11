@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luminous Scents - Home</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/main.js" defer></script>
 </head>
@@ -23,12 +24,17 @@
             </div>
         </div>
         <nav class="navbar">
-            <a href="index.html">Home</a>
+            <a href="index.html" class="active">Home</a>
             <a href="products.html">Fragrances</a>
             <a href="basket.html">Basket</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
             <a href="account.html">Account</a>
             <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                🌙
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"/>
+                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                </svg>
             </button>
         </nav>
     </header>
@@ -42,46 +48,6 @@
                     Indulge in meticulously curated scents, each telling a story of elegance and desire. Embark on a journey to discover the perfume that whispers your unique essence, crafted for those who appreciate the finer nuances of olfactory luxury.
                 </p>
                 <a href="products.html" class="btn-primary">Browse fragrances</a>
-            </div>
-        </section>
-
-        <!-- CATEGORIES SECTION -->
-        <section class="categories-section">
-            <div class="categories-container">
-                <h3>Explore Our Collections</h3>
-                <p>Discover our carefully curated fragrances, organised by collection</p>
-                <div class="categories-grid">
-                    <a href="products.html?category=Signature Eau de Parfum" class="category-card" data-category="Signature Eau de Parfum">
-                        <div class="category-icon">✨</div>
-                        <h4>Signature Collection</h4>
-                        <p>Our premium eau de parfum collection for any occasion</p>
-                        <span class="category-count">6 products</span>
-                    </a>
-                    <a href="products.html?category=Luxury Eau de Toilette" class="category-card" data-category="Luxury Eau de Toilette">
-                        <div class="category-icon">🌙</div>
-                        <h4>Luxury Daytime</h4>
-                        <p>Elegant eau de toilette with sophisticated character</p>
-                        <span class="category-count">5 products</span>
-                    </a>
-                    <a href="products.html?category=Home Fragrance Collection" class="category-card" data-category="Home Fragrance Collection">
-                        <div class="category-icon">🏠</div>
-                        <h4>Home Fragrance</h4>
-                        <p>Transform your living space with our aromatic collection</p>
-                        <span class="category-count">5 products</span>
-                    </a>
-                    <a href="products.html?category=Travel & Mini Sets" class="category-card" data-category="Travel & Mini Sets">
-                        <div class="category-icon">🧳</div>
-                        <h4>Travel Sets</h4>
-                        <p>Perfect collections for exploring new scents on the go</p>
-                        <span class="category-count">5 products</span>
-                    </a>
-                    <a href="products.html?category=Wellness Aromatics" class="category-card" data-category="Wellness Aromatics">
-                        <div class="category-icon">🧘</div>
-                        <h4>Wellness</h4>
-                        <p>Therapeutic blends designed for wellbeing and relaxation</p>
-                        <span class="category-count">5 products</span>
-                    </a>
-                </div>
             </div>
         </section>
 
@@ -152,5 +118,67 @@
     <footer class="site-footer">
         <p>&copy; 2025 Luminous Scents. CS2TP Team 64.</p>
     </footer>
+
+    <!-- AI Chat Box -->
+    <div id="aiChat" class="ai-chat-container">
+        <div id="chatBubble" class="chat-bubble" title="Chat with Lumi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v2c0 .55.45 1 1 1 .22 0 .42-.08.59-.21L14.17 19H20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+                <path d="M6 18l-2 2V4h16v12H6z"/>
+            </svg>
+            <div class="chat-indicator"></div>
+        </div>
+        
+        <div id="chatWindow" class="chat-window">
+            <div class="chat-header">
+                <div class="chat-title">
+                    <div class="ai-avatar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                        </svg>
+                    </div>
+                    <div class="chat-title-text">
+                        <div class="chat-name-full">Lumi - Fragrance Assistant</div>
+                        <div class="chat-status">Online</div>
+                    </div>
+                </div>
+                <button id="minimizeChat" class="minimize-btn" title="Minimize">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 13H5v-2h14v2z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div id="chatMessages" class="chat-messages">
+                <div class="message ai-message">
+                    <div class="message-avatar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                        </svg>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">Welcome to Luminous Scents! 💫 I'm Lumi, your AI fragrance expert. I can help you discover the perfect scent based on your preferences. What type of fragrance are you looking for today?</div>
+                        <div class="message-time">Just now</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="quick-replies">
+                    <button class="quick-reply" data-message="Tell me about citrus fragrances">Citrus scents</button>
+                    <button class="quick-reply" data-message="I prefer warm, evening fragrances">Evening scents</button>
+                    <button class="quick-reply" data-message="What are your most popular fragrances?">Popular picks</button>
+                </div>
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chatInput" placeholder="Ask about fragrances..." maxlength="200">
+                    <button id="sendMessage" class="send-btn" title="Send message">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
