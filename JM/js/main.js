@@ -3221,6 +3221,9 @@ function initAdminPage() {
     }
 
     // Form submission - Promotion
+    // Store current editing promo ID
+    let editingPromoId = null;
+
     if (promotionForm) {
         promotionForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -3243,32 +3246,74 @@ function initAdminPage() {
                 return;
             }
 
-            // Create promotion object
-            const promoData = {
-                id: Math.random().toString(36).substr(2, 9),
-                name: promoName,
-                type: promoType,
-                code: promoCode,
-                discount: promoDiscount,
-                minSpend: promoMinSpend,
-                maxUses: promoMaxUses,
-                startDate: promoStartDate,
-                endDate: promoEndDate,
-                products: promoProducts,
-                description: promoDescription,
-                status: 'active'
-            };
-
-            // Show success message
+            // Check if we're editing or creating
             const isEdit = submitPromoBtn.textContent === 'Update Promotion';
-            alert(`Promotion "${promoName}" has been ${isEdit ? 'updated' : 'created'} successfully!`);
+            
+            if (isEdit && editingPromoId) {
+                // Update existing promotion on the page
+                const editButton = document.querySelector(`.editPromoBtn[data-promo-id="${editingPromoId}"]`);
+                if (editButton) {
+                    const promoItem = editButton.closest('.promotion-item');
+                    
+                    // Update the HTML content
+                    promoItem.querySelector('.promotion-header h4').textContent = promoName;
+                    promoItem.querySelector('.promo-type').textContent = promoType.charAt(0).toUpperCase() + promoType.slice(1);
+                    
+                    // Update details based on type
+                    const detailsDiv = promoItem.querySelector('.promotion-details');
+                    let detailsHTML = `<p><strong>Discount:</strong> ${promoDiscount}</p>`;
+                    
+                    if (promoMinSpend) {
+                        detailsHTML += `<p><strong>Min. Spend:</strong> £${promoMinSpend}</p>`;
+                    }
+                    if (promoMaxUses) {
+                        detailsHTML += `<p><strong>Max Uses:</strong> ${promoMaxUses}</p>`;
+                    }
+                    if (promoCode) {
+                        detailsHTML += `<p><strong>Code:</strong> ${promoCode}</p>`;
+                    }
+                    detailsHTML += `<p><strong>Products:</strong> ${promoProducts}</p>`;
+                    detailsHTML += `<p><strong>Status:</strong> <span class="status-badge active">Active</span></p>`;
+                    
+                    detailsDiv.innerHTML = detailsHTML;
+                    
+                    // Update the edit button data attributes
+                    editButton.setAttribute('data-promo-name', promoName);
+                    editButton.setAttribute('data-promo-type', promoType);
+                    editButton.setAttribute('data-promo-code', promoCode);
+                    editButton.setAttribute('data-promo-discount', promoDiscount);
+                    editButton.setAttribute('data-promo-min-spend', promoMinSpend);
+                    editButton.setAttribute('data-promo-products', promoProducts);
+                    
+                    alert(`Promotion "${promoName}" has been updated successfully!`);
+                }
+                editingPromoId = null;
+            } else {
+                // Create new promotion object
+                const promoData = {
+                    id: Math.random().toString(36).substr(2, 9),
+                    name: promoName,
+                    type: promoType,
+                    code: promoCode,
+                    discount: promoDiscount,
+                    minSpend: promoMinSpend,
+                    maxUses: promoMaxUses,
+                    startDate: promoStartDate,
+                    endDate: promoEndDate,
+                    products: promoProducts,
+                    description: promoDescription,
+                    status: 'active'
+                };
+
+                alert(`Promotion "${promoName}" has been created successfully!`);
+                console.log('Promotion saved:', promoData);
+            }
 
             // Close modal and reset form
             closeModal(promotionModal);
+            promotionModalTitle.textContent = 'Create New Promotion';
+            submitPromoBtn.textContent = 'Create Promotion';
             promotionForm.reset();
-
-            // Log the promotion (in a real app, this would be sent to a server)
-            console.log('Promotion saved:', promoData);
         });
     }
 
@@ -3276,6 +3321,7 @@ function initAdminPage() {
     const editPromoButtons = document.querySelectorAll('.editPromoBtn');
     editPromoButtons.forEach(btn => {
         btn.addEventListener('click', () => {
+            editingPromoId = btn.getAttribute('data-promo-id');
             promotionModalTitle.textContent = 'Edit Promotion';
             submitPromoBtn.textContent = 'Update Promotion';
             
