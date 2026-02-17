@@ -622,7 +622,7 @@ body[data-page="products"] main {
     margin-top: 2.5rem;
     margin-left: auto;
     margin-right: auto;
-    max-width: 340px;
+    max-width: 760px; /* allow two-column layout for auth grid */
     text-align: center;
 }
 
