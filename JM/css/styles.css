@@ -4293,8 +4293,8 @@ html body .site-footer {
 
 .promo-type {
     display: inline-block;
-    background: rgba(240, 194, 75, 0.2);
-    color: var(--accent-primary);
+    background: #000; /* dark background for contrast */
+    color: #fff; /* white text on dark background */
     padding: 3px 8px;
     border-radius: 4px;
     font-size: 0.8em;
@@ -4560,6 +4560,18 @@ html body .site-footer {
 .form-row select option {
     background: var(--bg-primary);
     color: #000;
+}
+
+.product-form select#promoType,
+.product-form select#promoType option {
+    background: #000; /* match promo-type badge background */
+    color: #fff; /* white text for contrast */
+}
+
+.product-form select#productCategory,
+.product-form select#productCategory option {
+    background: #000; /* dark background to match promo select */
+    color: #fff; /* white text for contrast */
 }
 
 .form-row input:focus,
