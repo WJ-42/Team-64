@@ -397,6 +397,7 @@ const BASKET_STORAGE_KEY = "luminousScentsBasket";
 const USER_SESSION_KEY = "luminousScentsUserEmail";
 const USER_SESSION_DATE_KEY = "luminousScentsUserSessionDate";
 const ADMIN_SESSION_KEY = "luminousScentsAdmin"; // stores admin email when logged in
+const ADMIN_SESSION_DATE_KEY = "luminousScentsAdminSessionDate";
 
 // Basket helpers
 
@@ -1131,16 +1132,23 @@ function isAdminLoggedIn() {
 
 function setAdminSession(email) {
     localStorage.setItem(ADMIN_SESSION_KEY, email);
+    localStorage.setItem(ADMIN_SESSION_DATE_KEY, new Date().toISOString());
 }
 
 function clearAdminSession() {
     localStorage.removeItem(ADMIN_SESSION_KEY);
+    localStorage.removeItem(ADMIN_SESSION_DATE_KEY);
+}
+
+function getAdminEmail() {
+    return localStorage.getItem(ADMIN_SESSION_KEY);
 }
 
 function updateHeaderAdminLink() {
     const nav = document.querySelector('.navbar');
     if (!nav) return;
     const existing = nav.querySelector('a.admin-link');
+    // If admin logged in, ensure admin link and logout control exist
     if (isAdminLoggedIn()) {
         if (!existing) {
             const a = document.createElement('a');
@@ -1152,8 +1160,34 @@ function updateHeaderAdminLink() {
             if (themeBtn) nav.insertBefore(a, themeBtn);
             else nav.appendChild(a);
         }
+
+        // Add admin logout button if not present
+        let logoutBtn = nav.querySelector('button.admin-logout');
+        if (!logoutBtn) {
+            logoutBtn = document.createElement('button');
+            logoutBtn.type = 'button';
+            logoutBtn.className = 'admin-logout';
+            logoutBtn.textContent = 'Sign out';
+            // style like link
+            logoutBtn.style.marginLeft = '8px';
+            const themeBtn = nav.querySelector('.theme-toggle');
+            if (themeBtn) nav.insertBefore(logoutBtn, themeBtn);
+            else nav.appendChild(logoutBtn);
+
+            logoutBtn.addEventListener('click', () => {
+                clearAdminSession();
+                updateHeaderAdminLink();
+                // If currently on admin page, redirect away
+                if (document.body && document.body.getAttribute && document.body.getAttribute('data-page') === 'admin') {
+                    window.location.href = 'account.html';
+                }
+            });
+        }
     } else {
+        // Remove admin link and logout button when not logged in
         if (existing) existing.remove();
+        const logoutBtn = nav.querySelector('button.admin-logout');
+        if (logoutBtn) logoutBtn.remove();
     }
 
     // Ensure active class is set when viewing admin page
@@ -1197,6 +1231,43 @@ function showProfileView(userEmail) {
         loginView.style.display = "none";
         profileView.style.display = "block";
         renderProfilePage(userEmail);
+    }
+}
+
+// Show admin profile on the Account page
+function showAdminProfileView() {
+    const loginView = document.getElementById("loginView");
+    const profileView = document.getElementById("profileView");
+    if (loginView && profileView) {
+        loginView.style.display = "none";
+        profileView.style.display = "block";
+        // populate profile fields for admin
+        const profileEmail = document.getElementById("profileEmail");
+        const profileMemberSince = document.getElementById("profileMemberSince");
+        const adminEmail = getAdminEmail();
+        if (profileEmail) profileEmail.textContent = adminEmail || 'Admin';
+        if (profileMemberSince) {
+            const sessionDate = localStorage.getItem(ADMIN_SESSION_DATE_KEY);
+            if (sessionDate) {
+                const date = new Date(sessionDate);
+                profileMemberSince.textContent = date.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+            } else {
+                profileMemberSince.textContent = 'Recently';
+            }
+        }
+
+        // adjust logout button to sign out admin
+        const logoutBtn = document.getElementById("logoutBtn");
+        if (logoutBtn) {
+            const newLogoutBtn = logoutBtn.cloneNode(true);
+            logoutBtn.parentNode.replaceChild(newLogoutBtn, logoutBtn);
+            newLogoutBtn.addEventListener('click', () => {
+                clearAdminSession();
+                updateHeaderAdminLink();
+                showLoginView();
+                customAlert('Admin signed out successfully.');
+            });
+        }
     }
 }
 
@@ -2518,6 +2589,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (isUserLoggedIn()) {
                 const userEmail = getLoggedInUser();
                 showProfileView(userEmail);
+            } else if (isAdminLoggedIn()) {
+                // show admin profile when admin session present
+                showAdminProfileView();
+                updateHeaderAdminLink();
             } else {
                 setupAuthForm();
                 // Also setup admin login panel on the account page
