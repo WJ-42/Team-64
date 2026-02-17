@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luminous Scents - Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/main.js" defer></script>
+</head>
+<body data-page="admin">
+    <div class="parallax-stars">
+        <canvas id="starfield"></canvas>
+        <canvas id="trailCanvas"></canvas>
+    </div>
+    <header class="main-header">
+        <div class="logo">
+            <img src="images/luminous-logo.png" alt="Luminous Scents logo" class="logo-image">
+            <div class="logo-text">
+                <h1>Luminous Scents</h1>
+                <p>Illuminating the story behind every fragrance</p>
+            </div>
+        </div>
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="products.html">Fragrances</a>
+            <a href="basket.html">Basket</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="account.html">Account</a>
+            <a href="admin.html" class="active">Admin</a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"/>
+                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h2>Admin Panel</h2>
+            <p>Manage your Luminous Scents store, inventory, and view comprehensive analytics.</p>
+        </section>
+
+        <!-- Quick Actions Section -->
+        <section class="admin-box">
+            <div class="box-header">
+                <h3>Quick Actions</h3>
+            </div>
+            <div class="quick-actions">
+                <button class="action-btn">+ Add New Product</button>
+                <button class="action-btn">⚠ Process Pending Orders (3)</button>
+                <button class="action-btn">📧 View Customer Inquiries (2)</button>
+                <button class="action-btn">🔔 View Alerts</button>
+            </div>
+        </section>
+
+        <!-- Dashboard Overview Section -->
+        <section class="admin-box">
+            <div class="box-header">
+                <h3>Dashboard</h3>
+            </div>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h4>Daily Sales</h4>
+                    <p class="stat-number">£1,245</p>
+                    <p class="stat-label">Today</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h4>Weekly Sales</h4>
+                    <p class="stat-number">£8,920</p>
+                    <p class="stat-label">This week</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h4>Monthly Sales</h4>
+                    <p class="stat-number">£34,580</p>
+                    <p class="stat-label">This month</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h4>Total Orders</h4>
+                    <p class="stat-number">147</p>
+                    <p class="stat-label">All time</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h4>Top Selling Product</h4>
+                    <p class="stat-text">Midnight Elegance</p>
+                    <p class="stat-label">489 units sold</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h4>New Customers</h4>
+                    <p class="stat-number">12</p>
+                    <p class="stat-label">This month</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stock Alerts Section -->
+        <section class="admin-box">
+            <div class="box-header">
+                <h3>Stock Alerts</h3>
+            </div>
+            <div class="alerts-container">
+                <div class="alert-item critical">
+                    <span class="alert-icon">⚠️</span>
+                    <div class="alert-content">
+                        <p><strong>Twilight Bloom</strong> - Out of Stock</p>
+                        <p class="alert-meta">Last ordered: Jan 25, 2025</p>
+                    </div>
+                </div>
+
+                <div class="alert-item warning">
+                    <span class="alert-icon">⚡</span>
+                    <div class="alert-content">
+                        <p><strong>Golden Hour</strong> - Low Stock (5 units remaining)</p>
+                        <p class="alert-meta">Reorder recommended</p>
+                    </div>
+                </div>
+
+                <div class="alert-item warning">
+                    <span class="alert-icon">⚡</span>
+                    <div class="alert-content">
+                        <p><strong>Velvet Nights</strong> - Low Stock (8 units remaining)</p>
+                        <p class="alert-meta">Reorder recommended</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Management Section -->
+        <section class="admin-box">
+            <div class="box-header">
+                <h3>Product Management</h3>
+                <button class="btn-primary">+ Add Product</button>
+            </div>
+            <div class="products-table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Rating</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Midnight Elegance</td>
+                            <td>Evening Wear</td>
+                            <td>£45.00</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>★★★★★ (127 reviews)</td>
+                            <td>
+                                <button class="btn-small">Edit</button>
+                                <button class="btn-small neutral">Reviews</button>
+                                <button class="btn-small dangerous">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Golden Hour</td>
+                            <td>Day Fragrance</td>
+                            <td>£52.00</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>★★★★☆ (89 reviews)</td>
+                            <td>
+                                <button class="btn-small">Edit</button>
+                                <button class="btn-small neutral">Reviews</button>
+                                <button class="btn-small dangerous">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Twilight Bloom</td>
+                            <td>Floral</td>
+                            <td>£48.00</td>
+                            <td><span class="status-badge inactive">Inactive</span></td>
+                            <td>★★★★☆ (56 reviews)</td>
+                            <td>
+                                <button class="btn-small">Edit</button>
+                                <button class="btn-small neutral">Reviews</button>
+                                <button class="btn-small dangerous">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Velvet Nights</td>
+                            <td>Luxury</td>
+                            <td>£65.00</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>★★★★★ (203 reviews)</td>
+                            <td>
+                                <button class="btn-small">Edit</button>
+                                <button class="btn-small neutral">Reviews</button>
+                                <button class="btn-small dangerous">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Inventory Management Section -->
+        <section class="admin-box">
+            <div class="box-header">
+                <h3>Inventory Management</h3>
+                <button class="btn-primary">Bulk Update</button>
+            </div>
+            <div class="inventory-section">
+                <div class="inventory-table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Current Stock</th>
+                                <th>Min. Stock Level</th>
+                                <th>Reorder Qty</th>
+                                <th>Supplier</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Midnight Elegance</td>
+                                <td>18</td>
+                                <td>10</td>
+                                <td>50</td>
+                                <td>Global Fragrances Ltd</td>
+                                <td>
+                                    <button class="btn-small">Update</button>
+                                    <button class="btn-small neutral">Reorder</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Golden Hour</td>
+                                <td>5</td>
+                                <td>10</td>
+                                <td>50</td>
+                                <td>Essence Imports</td>
+                                <td>
+                                    <button class="btn-small">Update</button>
+                                    <button class="btn-small">Reorder</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Twilight Bloom</td>
+                                <td>0</td>
+                                <td>15</td>
+                                <td>75</td>
+                                <td>Perfume Premium</td>
+                                <td>
+                                    <button class="btn-small">Update</button>
+                                    <button class="btn-small">Reorder</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Velvet Nights</td>
+                                <td>32</td>
+                                <td>15</td>
+                                <td>40</td>
+                                <td>Global Fragrances Ltd</td>
+                                <td>
+                                    <button class="btn-small">Update</button>
+                                    <button class="btn-small neutral">Reorder</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="supplier-section">
+                <h4>Supplier Management</h4>
+                <div class="supplier-list">
+                    <div class="supplier-item">
+                        <p><strong>Global Fragrances Ltd</strong></p>
+                        <p>Contact: +44 123 456 7890 | Email: orders@globalfrag.com | Lead time: 5-7 days</p>
+                    </div>
+                    <div class="supplier-item">
+                        <p><strong>Essence Imports</strong></p>
+                        <p>Contact: +44 987 654 3210 | Email: supply@essenceimports.com | Lead time: 3-4 days</p>
+                    </div>
+                    <div class="supplier-item">
+                        <p><strong>Perfume Premium</strong></p>
+                        <p>Contact: +44 555 666 7777 | Email: orders@perfumepremium.com | Lead time: 7-10 days</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pending Orders Section -->
+        <section class="admin-box">
+            <div class="box-header">
+                <h3>Pending Orders (3)</h3>
+            </div>
+            <div class="orders-list">
+                <div class="order-item">
+                    <div class="order-header">
+                        <h4>Order #1082</h4>
+                        <span class="order-status pending">Pending</span>
+                    </div>
+                    <div class="order-details">
+                        <p><strong>Customer:</strong> sarah.j@example.com</p>
+                        <p><strong>Date:</strong> Feb 16, 2025</p>
+                        <p><strong>Items:</strong> Midnight Elegance x1, Golden Hour x2</p>
+                        <p><strong>Total:</strong> £149.00</p>
+                    </div>
+                    <div class="order-actions">
+                        <button class="btn-small">Approve & Ship</button>
+                        <button class="btn-small neutral">Edit Order</button>
+                        <button class="btn-small dangerous">Reject</button>
+                    </div>
+                </div>
+
+                <div class="order-item">
+                    <div class="order-header">
+                        <h4>Order #1083</h4>
+                        <span class="order-status pending">Pending</span>
+                    </div>
+                    <div class="order-details">
+                        <p><strong>Customer:</strong> james.m@example.com</p>
+                        <p><strong>Date:</strong> Feb 16, 2025</p>
+                        <p><strong>Items:</strong> Velvet Nights x1</p>
+                        <p><strong>Total:</strong> £65.00</p>
+                    </div>
+                    <div class="order-actions">
+                        <button class="btn-small">Approve & Ship</button>
+                        <button class="btn-small neutral">Edit Order</button>
+                        <button class="btn-small dangerous">Reject</button>
+                    </div>
+                </div>
+
+                <div class="order-item">
+                    <div class="order-header">
+                        <h4>Order #1084</h4>
+                        <span class="order-status pending">Pending</span>
+                    </div>
+                    <div class="order-details">
+                        <p><strong>Customer:</strong> lisa.c@example.com</p>
+                        <p><strong>Date:</strong> Feb 17, 2025</p>
+                        <p><strong>Items:</strong> Golden Hour x3</p>
+                        <p><strong>Total:</strong> £156.00</p>
+                    </div>
+                    <div class="order-actions">
+                        <button class="btn-small">Approve & Ship</button>
+                        <button class="btn-small neutral">Edit Order</button>
+                        <button class="btn-small dangerous">Reject</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Discounts and Promotions Section -->
+        <section class="admin-box">
+            <div class="box-header">
+                <h3>Discounts & Promotions</h3>
+                <button class="btn-primary">+ Create Promotion</button>
+            </div>
+            <div class="promotions-grid">
+                <div class="promotion-item">
+                    <div class="promotion-header">
+                        <h4>Winter Sale 2025</h4>
+                        <span class="promo-type">Seasonal Sale</span>
+                    </div>
+                    <div class="promotion-details">
+                        <p><strong>Discount:</strong> 20% off</p>
+                        <p><strong>Valid:</strong> Feb 17 - Mar 31, 2025</p>
+                        <p><strong>Products:</strong> All Fragrances</p>
+                        <p><strong>Status:</strong> <span class="status-badge active">Active</span></p>
+                    </div>
+                    <div class="promotion-actions">
+                        <button class="btn-small">Edit</button>
+                        <button class="btn-small dangerous">Deactivate</button>
+                    </div>
+                </div>
+
+                <div class="promotion-item">
+                    <div class="promotion-header">
+                        <h4>LUXURY25</h4>
+                        <span class="promo-type">Coupon Code</span>
+                    </div>
+                    <div class="promotion-details">
+                        <p><strong>Discount:</strong> £10 off</p>
+                        <p><strong>Min. Spend:</strong> £50</p>
+                        <p><strong>Usage:</strong> 47 / 100</p>
+                        <p><strong>Status:</strong> <span class="status-badge active">Active</span></p>
+                    </div>
+                    <div class="promotion-actions">
+                        <button class="btn-small">Edit</button>
+                        <button class="btn-small dangerous">Deactivate</button>
+                    </div>
+                </div>
+
+                <div class="promotion-item">
+                    <div class="promotion-header">
+                        <h4>Bundle Offer</h4>
+                        <span class="promo-type">Bundle</span>
+                    </div>
+                    <div class="promotion-details">
+                        <p><strong>Bundle:</strong> Buy 2, Get 10% Off</p>
+                        <p><strong>Valid:</strong> Ongoing</p>
+                        <p><strong>Products:</strong> Select items</p>
+                        <p><strong>Status:</strong> <span class="status-badge active">Active</span></p>
+                    </div>
+                    <div class="promotion-actions">
+                        <button class="btn-small">Edit</button>
+                        <button class="btn-small dangerous">Deactivate</button>
+                    </div>
+                </div>
+
+                <div class="promotion-item">
+                    <div class="promotion-header">
+                        <h4>Flash Sale</h4>
+                        <span class="promo-type">Flash Sale</span>
+                    </div>
+                    <div class="promotion-details">
+                        <p><strong>Discount:</strong> 35% off Selected</p>
+                        <p><strong>Ends in:</strong> 02:45:30</p>
+                        <p><strong>Products:</strong> Twilight Bloom</p>
+                        <p><strong>Status:</strong> <span class="status-badge active">Active</span></p>
+                    </div>
+                    <div class="promotion-actions">
+                        <button class="btn-small">Edit</button>
+                        <button class="btn-small dangerous">End Sale</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews and Feedback Section -->
+        <section class="admin-box">
+            <div class="box-header">
+                <h3>Reviews & Feedback</h3>
+            </div>
+            <div class="reviews-list">
+                <div class="review-item">
+                    <div class="review-header">
+                        <h4>Midnight Elegance</h4>
+                        <span class="review-rating">★★★★★</span>
+                    </div>
+                    <div class="review-content">
+                        <p><strong>sarah.j@example.com</strong> - Feb 15, 2025</p>
+                        <p>"Absolutely stunning fragrance! Perfect for evening events. Long-lasting and elegant."</p>
+                    </div>
+                    <div class="review-actions">
+                        <button class="btn-small neutral">Publish</button>
+                        <button class="btn-small dangerous">Remove</button>
+                    </div>
+                </div>
+
+                <div class="review-item">
+                    <div class="review-header">
+                        <h4>Golden Hour</h4>
+                        <span class="review-rating">★★★☆☆</span>
+                    </div>
+                    <div class="review-content">
+                        <p><strong>michael.p@example.com</strong> - Feb 14, 2025</p>
+                        <p>"Nice fragrance, but fades too quickly. Expected better longevity for the price."</p>
+                    </div>
+                    <div class="review-actions">
+                        <button class="btn-small neutral">Publish</button>
+                        <button class="btn-small dangerous">Remove</button>
+                    </div>
+                </div>
+
+                <div class="review-item">
+                    <div class="review-header">
+                        <h4>Velvet Nights</h4>
+                        <span class="review-rating">★★★★★</span>
+                    </div>
+                    <div class="review-content">
+                        <p><strong>emma.r@example.com</strong> - Feb 13, 2025</p>
+                        <p>"Love it! Best purchase I've made. Sophisticated and captivating scent. Highly recommend!"</p>
+                    </div>
+                    <div class="review-actions">
+                        <button class="btn-small neutral">Publish</button>
+                        <button class="btn-small dangerous">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics and Reports Section -->
+        <section class="admin-box">
+            <div class="box-header">
+                <h3>Analytics & Reports</h3>
+                <button class="btn-primary">Generate Report</button>
+            </div>
+            <div class="analytics-section">
+                <div class="analytics-row">
+                    <div class="analytics-card">
+                        <h4>Sales Trend</h4>
+                        <div class="chart-placeholder">📊 Sales Chart (7-day trend)</div>
+                        <p class="chart-caption">Weekly sales: ↑ 12.5% increase</p>
+                    </div>
+                    <div class="analytics-card">
+                        <h4>Top Products</h4>
+                        <ol class="top-products">
+                            <li>Midnight Elegance - 489 units (35%)</li>
+                            <li>Velvet Nights - 312 units (23%)</li>
+                            <li>Golden Hour - 278 units (20%)</li>
+                            <li>Twilight Bloom - 187 units (13%)</li>
+                            <li>Other - 113 units (9%)</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="analytics-row">
+                    <div class="analytics-card">
+                        <h4>Customer Metrics</h4>
+                        <p>Total Customers: 89</p>
+                        <p>New Customers (Feb): 12</p>
+                        <p>Returning Customers: 77</p>
+                        <p>Avg. Order Value: £32.85</p>
+                    </div>
+                    <div class="analytics-card">
+                        <h4>Report Options</h4>
+                        <button class="btn-small block">Daily Sales Report</button>
+                        <button class="btn-small block">Monthly Summary</button>
+                        <button class="btn-small block">Inventory Report</button>
+                        <button class="btn-small block">Customer Analytics</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Luminous Scents. CS2TP Team 64.</p>
+    </footer>
+</body>
+</html>
