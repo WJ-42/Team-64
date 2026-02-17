@@ -2975,8 +2975,143 @@ function updateThemeIcon(theme) {
     }
 }
 
+// ===========================
+// Admin Page Functions
+// ===========================
+
+function initAdminPage() {
+    const page = document.body.getAttribute("data-page");
+    if (page !== "admin") return;
+
+    // Modal elements
+    const addProductModal = document.getElementById('addProductModal');
+    const openAddProductBtn = document.getElementById('openAddProductBtn');
+    const addProductBtn2 = document.getElementById('addProductBtn2');
+    const closeProductModal = document.getElementById('closeProductModal');
+    const cancelProductForm = document.getElementById('cancelProductForm');
+    const addProductForm = document.getElementById('addProductForm');
+    const productImageInput = document.getElementById('productImage');
+    const fileNameSpan = document.getElementById('fileName');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+
+    // Open modal function
+    const openModal = () => {
+        addProductModal.classList.remove('hidden');
+        addProductForm.reset();
+        fileNameSpan.textContent = 'No file chosen';
+        imagePreview.classList.add('hidden');
+    };
+
+    // Open modal from quick actions
+    if (openAddProductBtn) {
+        openAddProductBtn.addEventListener('click', openModal);
+    }
+
+    // Open modal from product management section
+    if (addProductBtn2) {
+        addProductBtn2.addEventListener('click', openModal);
+    }
+
+    // Close modal
+    function closeModal() {
+        addProductModal.classList.add('hidden');
+        addProductForm.reset();
+        fileNameSpan.textContent = 'No file chosen';
+        imagePreview.classList.add('hidden');
+    }
+
+    if (closeProductModal) {
+        closeProductModal.addEventListener('click', closeModal);
+    }
+
+    if (cancelProductForm) {
+        cancelProductForm.addEventListener('click', closeModal);
+    }
+
+    // Close modal when clicking outside
+    if (addProductModal) {
+        addProductModal.addEventListener('click', (e) => {
+            if (e.target === addProductModal) {
+                closeModal();
+            }
+        });
+    }
+
+    // Image preview
+    if (productImageInput) {
+        productImageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                fileNameSpan.textContent = file.name;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    previewImg.src = event.target.result;
+                    imagePreview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // Form submission
+    if (addProductForm) {
+        addProductForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Get form data
+            const name = document.getElementById('productName').value.trim();
+            const category = document.getElementById('productCategory').value;
+            const price = parseFloat(document.getElementById('productPrice').value);
+            const stock = parseInt(document.getElementById('productStock').value);
+            const notes = document.getElementById('productNotes').value.trim();
+            const description = document.getElementById('productDescription').value.trim();
+            const imageFile = productImageInput.files[0];
+
+            // Validation
+            if (!name || !category || !price || !stock || !notes || !description || !imageFile) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // Create new product object
+            const newProductId = Math.max(...products.map(p => p.id), 0) + 1;
+            const newProduct = {
+                id: newProductId,
+                name: name,
+                brand: "Luminous Scents",
+                price: price,
+                notes: notes,
+                description: description,
+                image: imageFile.name,
+                category: category,
+                stock: stock
+            };
+
+            // Add to products array
+            products.push(newProduct);
+
+            // Show success message
+            alert(`Product "${name}" has been added successfully!`);
+
+            // Close modal and reset form
+            closeModal();
+
+            // If on products page, refresh the display
+            if (document.body.getAttribute("data-page") === "products") {
+                renderProductsPage();
+            }
+
+            // Log the new product (in a real app, this would be sent to a server)
+            console.log('New product added:', newProduct);
+            console.log('Total products:', products.length);
+        });
+    }
+}
+
 // Initialize theme toggle on page load
 document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
+    initAdminPage();
 });
 
