@@ -396,6 +396,7 @@ function customConfirm(message, onConfirm) {
 const BASKET_STORAGE_KEY = "luminousScentsBasket";
 const USER_SESSION_KEY = "luminousScentsUserEmail";
 const USER_SESSION_DATE_KEY = "luminousScentsUserSessionDate";
+const ADMIN_SESSION_KEY = "luminousScentsAdmin"; // stores admin email when logged in
 
 // Basket helpers
 
@@ -1084,6 +1085,76 @@ function setupAuthForm() {
         // Switch to profile view
         showProfileView(email);
     });
+}
+
+// Setup small admin login form on Account page
+function setupAdminAuth() {
+    const adminForm = document.getElementById('adminAuthForm');
+    if (!adminForm) return;
+    const adminEmailInput = document.getElementById('adminEmail');
+    const adminPasswordInput = document.getElementById('adminPassword');
+    const adminMessage = document.getElementById('adminLoginMessage');
+
+    // Demo credentials (client-side only). Change as needed.
+    const DEMO_ADMIN_EMAIL = 'admin@luminous.com';
+    const DEMO_ADMIN_PASSWORD = 'AdminPass123';
+
+    adminForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = (adminEmailInput.value || '').trim();
+        const pwd = adminPasswordInput.value || '';
+
+        if (!email || !pwd) {
+            adminMessage.textContent = 'Please enter admin credentials.';
+            adminMessage.classList.add('error');
+            return;
+        }
+
+        if (email === DEMO_ADMIN_EMAIL && pwd === DEMO_ADMIN_PASSWORD) {
+            setAdminSession(email);
+            adminMessage.textContent = 'Admin logged in.';
+            adminMessage.classList.remove('error');
+            updateHeaderAdminLink();
+            // Redirect to admin page
+            window.location.href = 'admin.html';
+        } else {
+            adminMessage.textContent = 'Invalid admin credentials.';
+            adminMessage.classList.add('error');
+        }
+    });
+}
+
+// Admin session helpers
+function isAdminLoggedIn() {
+    return !!localStorage.getItem(ADMIN_SESSION_KEY);
+}
+
+function setAdminSession(email) {
+    localStorage.setItem(ADMIN_SESSION_KEY, email);
+}
+
+function clearAdminSession() {
+    localStorage.removeItem(ADMIN_SESSION_KEY);
+}
+
+function updateHeaderAdminLink() {
+    const nav = document.querySelector('.navbar');
+    if (!nav) return;
+    const existing = nav.querySelector('a.admin-link');
+    if (isAdminLoggedIn()) {
+        if (!existing) {
+            const a = document.createElement('a');
+            a.href = 'admin.html';
+            a.className = 'admin-link';
+            a.textContent = 'Admin';
+            // insert before theme-toggle button
+            const themeBtn = nav.querySelector('.theme-toggle');
+            if (themeBtn) nav.insertBefore(a, themeBtn);
+            else nav.appendChild(a);
+        }
+    } else {
+        if (existing) existing.remove();
+    }
 }
 
 // Check if user is logged in
@@ -2441,6 +2512,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 showProfileView(userEmail);
             } else {
                 setupAuthForm();
+                // Also setup admin login panel on the account page
+                setupAdminAuth();
             }
         } else {
             setupAuthForm();
@@ -2983,6 +3056,14 @@ function initAdminPage() {
     const page = document.body.getAttribute("data-page");
     if (page !== "admin") return;
 
+    // Guard: only allow access if admin is logged in
+    if (!isAdminLoggedIn()) {
+        customAlert('Admin access required. Please log in via the Account page.');
+        // Redirect to account page
+        window.location.href = 'account.html';
+        return;
+    }
+
     // Modal elements
     const addProductModal = document.getElementById('addProductModal');
     const alertsModal = document.getElementById('alertsModal');
@@ -3452,5 +3533,7 @@ function initAdminPage() {
 document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
     initAdminPage();
+    // Ensure header reflects admin login state across pages
+    updateHeaderAdminLink();
 });
 

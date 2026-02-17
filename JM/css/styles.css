@@ -626,6 +626,42 @@ body[data-page="products"] main {
     text-align: center;
 }
 
+/* Two-column layout for auth area (customer / admin) */
+.auth-grid {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.auth-form {
+    width: 340px;
+}
+
+.admin-login-card {
+    width: 300px;
+    background: var(--bg-card);
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    text-align: left;
+}
+
+.admin-login-card h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.admin-form .form-row {
+    margin-bottom: 0.75rem;
+}
+
+@media (max-width: 820px) {
+    .auth-grid { flex-direction: column; align-items: center; }
+    .auth-form, .admin-login-card { width: 100%; max-width: 420px; }
+}
+
 .auth-section h3 {
     display: inline-block;
     margin-bottom: 0.75rem;
