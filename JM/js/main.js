@@ -1155,6 +1155,14 @@ function updateHeaderAdminLink() {
     } else {
         if (existing) existing.remove();
     }
+
+    // Ensure active class is set when viewing admin page
+    const onAdminPage = document.body && document.body.getAttribute && document.body.getAttribute('data-page') === 'admin';
+    const adminAnchor = nav.querySelector('a.admin-link');
+    if (adminAnchor) {
+        if (onAdminPage) adminAnchor.classList.add('active');
+        else adminAnchor.classList.remove('active');
+    }
 }
 
 // Check if user is logged in
