@@ -43,7 +43,7 @@
     <main>
         <section class="page-header">
             <h2>Admin Panel</h2>
-            <p>Manage your Luminous Scents store, inventory, and view comprehensive analytics.</p>
+            <p>Manage inventory, and view comprehensive analytics.</p>
         </section>
 
         <!-- Add Product Modal -->
@@ -274,6 +274,25 @@
                         <button type="button" class="btn-secondary" id="cancelPromoForm">Cancel</button>
                     </div>
                 </form>
+            </div>
+        </div>
+
+        <!-- Report Modal -->
+        <div id="reportModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Generated Report</h2>
+                    <button class="modal-close" id="closeReportModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="reportContent" class="report-content">
+                        <!-- Report HTML will be injected here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-primary" id="downloadReportBtn">Download CSV</button>
+                    <button class="btn-secondary" id="closeReportFooter">Close</button>
+                </div>
             </div>
         </div>
 
@@ -753,10 +772,10 @@
                     </div>
                     <div class="analytics-card">
                         <h4>Report Options</h4>
-                        <button class="btn-small block">Daily Sales Report</button>
-                        <button class="btn-small block">Monthly Summary</button>
-                        <button class="btn-small block">Inventory Report</button>
-                        <button class="btn-small block">Customer Analytics</button>
+                        <button id="btnDailyReport" class="btn-small block" data-report-type="daily">Daily Sales Report</button>
+                        <button id="btnMonthlyReport" class="btn-small block" data-report-type="monthly">Monthly Summary</button>
+                        <button id="btnInventoryReport" class="btn-small block" data-report-type="inventory">Inventory Report</button>
+                        <button id="btnCustomerReport" class="btn-small block" data-report-type="customers">Customer Analytics</button>
                     </div>
                 </div>
             </div>

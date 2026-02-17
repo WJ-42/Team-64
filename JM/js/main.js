@@ -3345,6 +3345,107 @@ function initAdminPage() {
             openModal(promotionModal);
         });
     });
+
+    // --- Report generation handlers ---
+    const reportModal = document.getElementById('reportModal');
+    const reportContent = document.getElementById('reportContent');
+    const downloadReportBtn = document.getElementById('downloadReportBtn');
+    const closeReportModal = document.getElementById('closeReportModal');
+    const closeReportFooter = document.getElementById('closeReportFooter');
+
+    const btnDailyReport = document.getElementById('btnDailyReport');
+    const btnMonthlyReport = document.getElementById('btnMonthlyReport');
+    const btnInventoryReport = document.getElementById('btnInventoryReport');
+    const btnCustomerReport = document.getElementById('btnCustomerReport');
+
+    const downloadCSV = (filename, csv) => {
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.setAttribute('download', filename);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
+    const generateReport = (type) => {
+        let html = '';
+        let csv = '';
+        let filename = `report-${type}-${new Date().toISOString().slice(0,10)}.csv`;
+
+        if (type === 'inventory') {
+            // Use products array to create inventory report
+            html += '<h4>Inventory Report</h4>';
+            html += '<table class="admin-table"><thead><tr><th>Product</th><th>Category</th><th>Stock</th></tr></thead><tbody>';
+            csv += 'Product,Category,Stock\n';
+            products.forEach(p => {
+                html += `<tr><td>${p.name}</td><td>${p.category || ''}</td><td>${p.stock || 0}</td></tr>`;
+                csv += `"${p.name}","${p.category || ''}",${p.stock || 0}\n`;
+            });
+            html += '</tbody></table>';
+        } else if (type === 'daily' || type === 'monthly') {
+            // Placeholder sales report
+            const period = type === 'daily' ? 'Daily' : 'Monthly';
+            html += `<h4>${period} Sales Report</h4>`;
+            html += '<table class="admin-table"><thead><tr><th>Order ID</th><th>Date</th><th>Customer</th><th>Total (£)</th></tr></thead><tbody>';
+            csv += 'Order ID,Date,Customer,Total\n';
+            // sample rows
+            const sample = [
+                { id: 1082, date: '2026-02-16', customer: 'sarah.j@example.com', total: 149.00 },
+                { id: 1083, date: '2026-02-16', customer: 'james.m@example.com', total: 65.00 },
+                { id: 1084, date: '2026-02-17', customer: 'lisa.c@example.com', total: 156.00 }
+            ];
+            sample.forEach(r => {
+                html += `<tr><td>${r.id}</td><td>${r.date}</td><td>${r.customer}</td><td>£${r.total.toFixed(2)}</td></tr>`;
+                csv += `${r.id},${r.date},${r.customer},${r.total}\n`;
+            });
+            html += '</tbody></table>';
+        } else if (type === 'customers') {
+            // Placeholder customer analytics
+            html += '<h4>Customer Analytics</h4>';
+            html += '<table class="admin-table"><thead><tr><th>Customer</th><th>Orders</th><th>Total Spent (£)</th></tr></thead><tbody>';
+            csv += 'Customer,Orders,Total Spent\n';
+            const sampleCust = [
+                { customer: 'sarah.j@example.com', orders: 5, total: 320.50 },
+                { customer: 'james.m@example.com', orders: 2, total: 140.00 },
+                { customer: 'lisa.c@example.com', orders: 3, total: 200.00 }
+            ];
+            sampleCust.forEach(c => {
+                html += `<tr><td>${c.customer}</td><td>${c.orders}</td><td>£${c.total.toFixed(2)}</td></tr>`;
+                csv += `"${c.customer}",${c.orders},${c.total}\n`;
+            });
+            html += '</tbody></table>';
+        }
+
+        return { html, csv, filename };
+    };
+
+    const openReport = (type) => {
+        if (!reportModal || !reportContent) return;
+        const { html, csv, filename } = generateReport(type);
+        reportContent.innerHTML = html;
+        if (downloadReportBtn) {
+            downloadReportBtn.onclick = () => downloadCSV(filename, csv);
+        }
+        openModal(reportModal);
+    };
+
+    if (btnDailyReport) btnDailyReport.addEventListener('click', () => openReport('daily'));
+    if (btnMonthlyReport) btnMonthlyReport.addEventListener('click', () => openReport('monthly'));
+    if (btnInventoryReport) btnInventoryReport.addEventListener('click', () => openReport('inventory'));
+    if (btnCustomerReport) btnCustomerReport.addEventListener('click', () => openReport('customers'));
+
+    if (closeReportModal) {
+        closeReportModal.addEventListener('click', () => closeModal(reportModal));
+    }
+    if (closeReportFooter) {
+        closeReportFooter.addEventListener('click', () => closeModal(reportModal));
+    }
+    if (reportModal) {
+        reportModal.addEventListener('click', (e) => { if (e.target === reportModal) closeModal(reportModal); });
+    }
 }
 
 // Initialize theme toggle on page load
