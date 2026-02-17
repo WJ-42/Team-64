@@ -2993,10 +2993,13 @@ function initAdminPage() {
     const processPendingBtn = document.getElementById('processPendingBtn');
     const viewInquiriesBtn = document.getElementById('viewInquiriesBtn');
     const viewAlertsBtn = document.getElementById('viewAlertsBtn');
+    const createPromotionBtn = document.getElementById('createPromotionBtn');
     
     const closeProductModal = document.getElementById('closeProductModal');
     const closeAlertsModal = document.getElementById('closeAlertsModal');
     const closeInquiriesModal = document.getElementById('closeInquiriesModal');
+    const promotionModal = document.getElementById('promotionModal');
+    const closePromotionModal = document.getElementById('closePromotionModal');
     
     const cancelProductForm = document.getElementById('cancelProductForm');
     const addProductForm = document.getElementById('addProductForm');
@@ -3004,6 +3007,11 @@ function initAdminPage() {
     const fileNameSpan = document.getElementById('fileName');
     const imagePreview = document.getElementById('imagePreview');
     const previewImg = document.getElementById('previewImg');
+
+    const promotionForm = document.getElementById('promotionForm');
+    const promotionModalTitle = document.getElementById('promotionModalTitle');
+    const cancelPromoForm = document.getElementById('cancelPromoForm');
+    const submitPromoBtn = document.getElementById('submitPromoBtn');
 
     // Open modals function
     const openModal = (modal) => {
@@ -3061,6 +3069,15 @@ function initAdminPage() {
         });
     }
 
+    if (createPromotionBtn) {
+        createPromotionBtn.addEventListener('click', () => {
+            promotionModalTitle.textContent = 'Create New Promotion';
+            submitPromoBtn.textContent = 'Create Promotion';
+            promotionForm.reset();
+            openModal(promotionModal);
+        });
+    }
+
     // Close product modal
     if (closeProductModal) {
         closeProductModal.addEventListener('click', closeProductModalFn);
@@ -3081,6 +3098,21 @@ function initAdminPage() {
     if (closeInquiriesModal) {
         closeInquiriesModal.addEventListener('click', () => {
             closeModal(inquiriesModal);
+        });
+    }
+
+    // Close promotion modal
+    if (closePromotionModal) {
+        closePromotionModal.addEventListener('click', () => {
+            closeModal(promotionModal);
+            promotionForm.reset();
+        });
+    }
+
+    if (cancelPromoForm) {
+        cancelPromoForm.addEventListener('click', () => {
+            closeModal(promotionModal);
+            promotionForm.reset();
         });
     }
 
@@ -3105,6 +3137,15 @@ function initAdminPage() {
         inquiriesModal.addEventListener('click', (e) => {
             if (e.target === inquiriesModal) {
                 closeModal(inquiriesModal);
+            }
+        });
+    }
+
+    if (promotionModal) {
+        promotionModal.addEventListener('click', (e) => {
+            if (e.target === promotionModal) {
+                closeModal(promotionModal);
+                promotionForm.reset();
             }
         });
     }
@@ -3178,6 +3219,86 @@ function initAdminPage() {
             console.log('Total products:', products.length);
         });
     }
+
+    // Form submission - Promotion
+    if (promotionForm) {
+        promotionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Get form data
+            const promoName = document.getElementById('promoName').value.trim();
+            const promoType = document.getElementById('promoType').value;
+            const promoCode = document.getElementById('promoCode').value.trim();
+            const promoDiscount = document.getElementById('promoDiscount').value.trim();
+            const promoMinSpend = document.getElementById('promoMinSpend').value;
+            const promoMaxUses = document.getElementById('promoMaxUses').value;
+            const promoStartDate = document.getElementById('promoStartDate').value;
+            const promoEndDate = document.getElementById('promoEndDate').value;
+            const promoProducts = document.getElementById('promoProducts').value.trim();
+            const promoDescription = document.getElementById('promoDescription').value.trim();
+
+            // Validation
+            if (!promoName || !promoType || !promoDiscount || !promoStartDate || !promoProducts) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            // Create promotion object
+            const promoData = {
+                id: Math.random().toString(36).substr(2, 9),
+                name: promoName,
+                type: promoType,
+                code: promoCode,
+                discount: promoDiscount,
+                minSpend: promoMinSpend,
+                maxUses: promoMaxUses,
+                startDate: promoStartDate,
+                endDate: promoEndDate,
+                products: promoProducts,
+                description: promoDescription,
+                status: 'active'
+            };
+
+            // Show success message
+            const isEdit = submitPromoBtn.textContent === 'Update Promotion';
+            alert(`Promotion "${promoName}" has been ${isEdit ? 'updated' : 'created'} successfully!`);
+
+            // Close modal and reset form
+            closeModal(promotionModal);
+            promotionForm.reset();
+
+            // Log the promotion (in a real app, this would be sent to a server)
+            console.log('Promotion saved:', promoData);
+        });
+    }
+
+    // Edit promotion button handlers
+    const editPromoButtons = document.querySelectorAll('.editPromoBtn');
+    editPromoButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            promotionModalTitle.textContent = 'Edit Promotion';
+            submitPromoBtn.textContent = 'Update Promotion';
+            
+            const promoData = {
+                id: btn.getAttribute('data-promo-id'),
+                name: btn.getAttribute('data-promo-name'),
+                type: btn.getAttribute('data-promo-type'),
+                code: btn.getAttribute('data-promo-code') || '',
+                discount: btn.getAttribute('data-promo-discount'),
+                minSpend: btn.getAttribute('data-promo-min-spend') || '',
+                products: btn.getAttribute('data-promo-products')
+            };
+            
+            document.getElementById('promoName').value = promoData.name || '';
+            document.getElementById('promoType').value = promoData.type || '';
+            document.getElementById('promoCode').value = promoData.code || '';
+            document.getElementById('promoDiscount').value = promoData.discount || '';
+            document.getElementById('promoMinSpend').value = promoData.minSpend || '';
+            document.getElementById('promoProducts').value = promoData.products || '';
+            
+            openModal(promotionModal);
+        });
+    });
 }
 
 // Initialize theme toggle on page load

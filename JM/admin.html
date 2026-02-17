@@ -201,92 +201,79 @@
             </div>
         </div>
 
-        <!-- Alerts Modal -->
-        <div id="alertsModal" class="modal hidden">
+        <!-- Promotion Modal -->
+        <div id="promotionModal" class="modal hidden">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>Stock Alerts</h2>
-                    <button class="modal-close" id="closeAlertsModal">&times;</button>
+                    <h2 id="promotionModalTitle">Create New Promotion</h2>
+                    <button class="modal-close" id="closePromotionModal">&times;</button>
                 </div>
-                <div class="modal-body">
-                    <div class="alerts-list">
-                        <div class="alert-detail critical">
-                            <div class="alert-title">⚠️ OUT OF STOCK</div>
-                            <p><strong>Product:</strong> Twilight Bloom</p>
-                            <p><strong>Current Stock:</strong> 0 units</p>
-                            <p><strong>Min. Level:</strong> 15 units</p>
-                            <p><strong>Last Ordered:</strong> Jan 25, 2025</p>
-                            <p><strong>Action:</strong> <button class="btn-small">Reorder Now</button></p>
+                <form id="promotionForm" class="product-form">
+                    <div class="form-grid">
+                        <div class="form-row">
+                            <label for="promoName">Promotion Name *</label>
+                            <input type="text" id="promoName" name="promoName" required placeholder="e.g., Winter Sale 2025">
                         </div>
 
-                        <div class="alert-detail warning">
-                            <div class="alert-title">⚡ LOW STOCK</div>
-                            <p><strong>Product:</strong> Golden Hour</p>
-                            <p><strong>Current Stock:</strong> 5 units</p>
-                            <p><strong>Min. Level:</strong> 10 units</p>
-                            <p><strong>Threshold:</strong> 50% below minimum</p>
-                            <p><strong>Action:</strong> <button class="btn-small">Reorder Now</button></p>
+                        <div class="form-row">
+                            <label for="promoType">Promotion Type *</label>
+                            <select id="promoType" name="promoType" required>
+                                <option value="">Select promotion type</option>
+                                <option value="seasonal">Seasonal Sale</option>
+                                <option value="coupon">Coupon Code</option>
+                                <option value="bundle">Bundle Offer</option>
+                                <option value="flash">Flash Sale</option>
+                                <option value="percent">Percentage Discount</option>
+                                <option value="fixed">Fixed Amount Off</option>
+                            </select>
                         </div>
 
-                        <div class="alert-detail warning">
-                            <div class="alert-title">⚡ LOW STOCK</div>
-                            <p><strong>Product:</strong> Velvet Nights</p>
-                            <p><strong>Current Stock:</strong> 8 units</p>
-                            <p><strong>Min. Level:</strong> 15 units</p>
-                            <p><strong>Threshold:</strong> 47% below minimum</p>
-                            <p><strong>Action:</strong> <button class="btn-small">Reorder Now</button></p>
+                        <div class="form-row">
+                            <label for="promoCode">Coupon Code (if applicable)</label>
+                            <input type="text" id="promoCode" name="promoCode" placeholder="e.g., LUXURY25">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="promoDiscount">Discount Value *</label>
+                            <input type="text" id="promoDiscount" name="promoDiscount" required placeholder="e.g., 20% off or £10 off">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="promoMinSpend">Minimum Spend (£)</label>
+                            <input type="number" id="promoMinSpend" name="promoMinSpend" step="0.01" placeholder="50.00">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="promoMaxUses">Max Uses (leave blank for unlimited)</label>
+                            <input type="number" id="promoMaxUses" name="promoMaxUses" step="1" placeholder="100">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="promoStartDate">Start Date *</label>
+                            <input type="date" id="promoStartDate" name="promoStartDate" required>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="promoEndDate">End Date</label>
+                            <input type="date" id="promoEndDate" name="promoEndDate">
+                        </div>
+
+                        <div class="form-row full-width">
+                            <label for="promoProducts">Applicable Products *</label>
+                            <input type="text" id="promoProducts" name="promoProducts" required placeholder="e.g., All Fragrances or specific product names">
+                        </div>
+
+                        <div class="form-row full-width">
+                            <label for="promoDescription">Description</label>
+                            <textarea id="promoDescription" name="promoDescription" rows="3" placeholder="Additional details about this promotion..."></textarea>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Customer Inquiries Modal -->
-        <div id="inquiriesModal" class="modal hidden">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Customer Inquiries</h2>
-                    <button class="modal-close" id="closeInquiriesModal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="inquiries-list">
-                        <div class="inquiry-detail">
-                            <div class="inquiry-header">
-                                <h4>Inquiry #1</h4>
-                                <span class="inquiry-status unread">Unread</span>
-                            </div>
-                            <div class="inquiry-content">
-                                <p><strong>From:</strong> sarah.j@example.com</p>
-                                <p><strong>Date:</strong> Feb 16, 2025 - 2:34 PM</p>
-                                <p><strong>Subject:</strong> Do you have fragrance recommendations for sensitive skin?</p>
-                                <p><strong>Message:</strong> I have very sensitive skin and am looking for hypoallergenic fragrances. Could you recommend something from your collection that would be gentle on my skin?</p>
-                                <div class="inquiry-actions">
-                                    <button class="btn-small">Reply</button>
-                                    <button class="btn-small neutral">Assign</button>
-                                    <button class="btn-small dangerous">Archive</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="inquiry-detail">
-                            <div class="inquiry-header">
-                                <h4>Inquiry #2</h4>
-                                <span class="inquiry-status unread">Unread</span>
-                            </div>
-                            <div class="inquiry-content">
-                                <p><strong>From:</strong> michael.p@example.com</p>
-                                <p><strong>Date:</strong> Feb 15, 2025 - 10:15 AM</p>
-                                <p><strong>Subject:</strong> Bulk Order for Corporate Gifts</p>
-                                <p><strong>Message:</strong> Hello, I'm interested in purchasing 50 units of your Midnight Elegance fragrance for our company's corporate gifts. Can you provide a bulk discount quote and information about customization options?</p>
-                                <div class="inquiry-actions">
-                                    <button class="btn-small">Reply</button>
-                                    <button class="btn-small neutral">Assign</button>
-                                    <button class="btn-small dangerous">Archive</button>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary" id="submitPromoBtn">Create Promotion</button>
+                        <button type="button" class="btn-secondary" id="cancelPromoForm">Cancel</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
 
@@ -605,7 +592,7 @@
         <section class="admin-box">
             <div class="box-header">
                 <h3>Discounts & Promotions</h3>
-                <button class="btn-primary">+ Create Promotion</button>
+                <button class="btn-primary" id="createPromotionBtn">+ Create Promotion</button>
             </div>
             <div class="promotions-grid">
                 <div class="promotion-item">
@@ -620,7 +607,7 @@
                         <p><strong>Status:</strong> <span class="status-badge active">Active</span></p>
                     </div>
                     <div class="promotion-actions">
-                        <button class="btn-small">Edit</button>
+                        <button class="btn-small editPromoBtn" data-promo-id="1" data-promo-name="Winter Sale 2025" data-promo-type="seasonal" data-promo-discount="20% off" data-promo-products="All Fragrances">Edit</button>
                         <button class="btn-small dangerous">Deactivate</button>
                     </div>
                 </div>
@@ -637,7 +624,7 @@
                         <p><strong>Status:</strong> <span class="status-badge active">Active</span></p>
                     </div>
                     <div class="promotion-actions">
-                        <button class="btn-small">Edit</button>
+                        <button class="btn-small editPromoBtn" data-promo-id="2" data-promo-name="LUXURY25" data-promo-type="coupon" data-promo-code="LUXURY25" data-promo-discount="£10 off" data-promo-min-spend="50" data-promo-products="All Products">Edit</button>
                         <button class="btn-small dangerous">Deactivate</button>
                     </div>
                 </div>
@@ -654,7 +641,7 @@
                         <p><strong>Status:</strong> <span class="status-badge active">Active</span></p>
                     </div>
                     <div class="promotion-actions">
-                        <button class="btn-small">Edit</button>
+                        <button class="btn-small editPromoBtn" data-promo-id="3" data-promo-name="Bundle Offer" data-promo-type="bundle" data-promo-discount="Buy 2, Get 10% Off" data-promo-products="Select items">Edit</button>
                         <button class="btn-small dangerous">Deactivate</button>
                     </div>
                 </div>
@@ -671,7 +658,7 @@
                         <p><strong>Status:</strong> <span class="status-badge active">Active</span></p>
                     </div>
                     <div class="promotion-actions">
-                        <button class="btn-small">Edit</button>
+                        <button class="btn-small editPromoBtn" data-promo-id="4" data-promo-name="Flash Sale" data-promo-type="flash" data-promo-discount="35% off Selected" data-promo-products="Twilight Bloom">Edit</button>
                         <button class="btn-small dangerous">End Sale</button>
                     </div>
                 </div>
