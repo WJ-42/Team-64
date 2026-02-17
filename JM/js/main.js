@@ -2985,9 +2985,19 @@ function initAdminPage() {
 
     // Modal elements
     const addProductModal = document.getElementById('addProductModal');
+    const alertsModal = document.getElementById('alertsModal');
+    const inquiriesModal = document.getElementById('inquiriesModal');
+    
     const openAddProductBtn = document.getElementById('openAddProductBtn');
     const addProductBtn2 = document.getElementById('addProductBtn2');
+    const processPendingBtn = document.getElementById('processPendingBtn');
+    const viewInquiriesBtn = document.getElementById('viewInquiriesBtn');
+    const viewAlertsBtn = document.getElementById('viewAlertsBtn');
+    
     const closeProductModal = document.getElementById('closeProductModal');
+    const closeAlertsModal = document.getElementById('closeAlertsModal');
+    const closeInquiriesModal = document.getElementById('closeInquiriesModal');
+    
     const cancelProductForm = document.getElementById('cancelProductForm');
     const addProductForm = document.getElementById('addProductForm');
     const productImageInput = document.getElementById('productImage');
@@ -2995,45 +3005,106 @@ function initAdminPage() {
     const imagePreview = document.getElementById('imagePreview');
     const previewImg = document.getElementById('previewImg');
 
-    // Open modal function
-    const openModal = () => {
-        addProductModal.classList.remove('hidden');
+    // Open modals function
+    const openModal = (modal) => {
+        if (modal) {
+            modal.classList.remove('hidden');
+        }
+    };
+
+    // Close modal function
+    const closeModal = (modal) => {
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+    };
+
+    // Product modal handlers
+    const openProductModal = () => {
+        openModal(addProductModal);
         addProductForm.reset();
         fileNameSpan.textContent = 'No file chosen';
         imagePreview.classList.add('hidden');
     };
 
-    // Open modal from quick actions
-    if (openAddProductBtn) {
-        openAddProductBtn.addEventListener('click', openModal);
-    }
-
-    // Open modal from product management section
-    if (addProductBtn2) {
-        addProductBtn2.addEventListener('click', openModal);
-    }
-
-    // Close modal
-    function closeModal() {
-        addProductModal.classList.add('hidden');
+    const closeProductModalFn = () => {
+        closeModal(addProductModal);
         addProductForm.reset();
         fileNameSpan.textContent = 'No file chosen';
         imagePreview.classList.add('hidden');
+    };
+
+    // Quick action button handlers
+    if (openAddProductBtn) {
+        openAddProductBtn.addEventListener('click', openProductModal);
     }
 
+    if (addProductBtn2) {
+        addProductBtn2.addEventListener('click', openProductModal);
+    }
+
+    if (processPendingBtn) {
+        processPendingBtn.addEventListener('click', () => {
+            alert('Pending Orders section - Coming soon! This will allow you to review, approve, and ship pending orders.');
+        });
+    }
+
+    if (viewInquiriesBtn) {
+        viewInquiriesBtn.addEventListener('click', () => {
+            openModal(inquiriesModal);
+        });
+    }
+
+    if (viewAlertsBtn) {
+        viewAlertsBtn.addEventListener('click', () => {
+            openModal(alertsModal);
+        });
+    }
+
+    // Close product modal
     if (closeProductModal) {
-        closeProductModal.addEventListener('click', closeModal);
+        closeProductModal.addEventListener('click', closeProductModalFn);
     }
 
     if (cancelProductForm) {
-        cancelProductForm.addEventListener('click', closeModal);
+        cancelProductForm.addEventListener('click', closeProductModalFn);
     }
 
-    // Close modal when clicking outside
+    // Close alerts modal
+    if (closeAlertsModal) {
+        closeAlertsModal.addEventListener('click', () => {
+            closeModal(alertsModal);
+        });
+    }
+
+    // Close inquiries modal
+    if (closeInquiriesModal) {
+        closeInquiriesModal.addEventListener('click', () => {
+            closeModal(inquiriesModal);
+        });
+    }
+
+    // Close modals when clicking outside
     if (addProductModal) {
         addProductModal.addEventListener('click', (e) => {
             if (e.target === addProductModal) {
-                closeModal();
+                closeProductModalFn();
+            }
+        });
+    }
+
+    if (alertsModal) {
+        alertsModal.addEventListener('click', (e) => {
+            if (e.target === alertsModal) {
+                closeModal(alertsModal);
+            }
+        });
+    }
+
+    if (inquiriesModal) {
+        inquiriesModal.addEventListener('click', (e) => {
+            if (e.target === inquiriesModal) {
+                closeModal(inquiriesModal);
             }
         });
     }
@@ -3095,7 +3166,7 @@ function initAdminPage() {
             alert(`Product "${name}" has been added successfully!`);
 
             // Close modal and reset form
-            closeModal();
+            closeProductModalFn();
 
             // If on products page, refresh the display
             if (document.body.getAttribute("data-page") === "products") {
