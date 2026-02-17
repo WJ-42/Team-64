@@ -1097,7 +1097,7 @@ function setupAdminAuth() {
 
     // Demo credentials (client-side only). Change as needed.
     const DEMO_ADMIN_EMAIL = 'admin@luminous.com';
-    const DEMO_ADMIN_PASSWORD = 'AdminPass123';
+    const DEMO_ADMIN_PASSWORD = 'fragrance123';
 
     adminForm.addEventListener('submit', (e) => {
         e.preventDefault();
