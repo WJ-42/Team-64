@@ -1164,16 +1164,6 @@ function updateHeaderAdminLink() {
         // Add admin logout button if not present
         let logoutBtn = nav.querySelector('button.admin-logout');
         if (!logoutBtn) {
-            logoutBtn = document.createElement('button');
-            logoutBtn.type = 'button';
-            logoutBtn.className = 'admin-logout';
-            logoutBtn.textContent = 'Sign out';
-            // style like link
-            logoutBtn.style.marginLeft = '8px';
-            const themeBtn = nav.querySelector('.theme-toggle');
-            if (themeBtn) nav.insertBefore(logoutBtn, themeBtn);
-            else nav.appendChild(logoutBtn);
-
             logoutBtn.addEventListener('click', () => {
                 clearAdminSession();
                 updateHeaderAdminLink();
