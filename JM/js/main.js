@@ -1155,7 +1155,6 @@ function updateHeaderAdminLink() {
             a.href = 'admin.html';
             a.className = 'admin-link';
             a.textContent = 'Admin';
-            // insert before theme-toggle button
             const themeBtn = nav.querySelector('.theme-toggle');
             if (themeBtn) nav.insertBefore(a, themeBtn);
             else nav.appendChild(a);
@@ -1167,7 +1166,6 @@ function updateHeaderAdminLink() {
             logoutBtn.addEventListener('click', () => {
                 clearAdminSession();
                 updateHeaderAdminLink();
-                // If currently on admin page, redirect away
                 if (document.body && document.body.getAttribute && document.body.getAttribute('data-page') === 'admin') {
                     window.location.href = 'account.html';
                 }
