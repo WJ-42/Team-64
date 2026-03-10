@@ -364,6 +364,103 @@ products.forEach(p => {
         p.stock = 0;
     }
 });
+
+// ----- stock persistence helpers -----
+const STOCK_STORAGE_KEY = "luminousScentsProductStock";
+
+function loadStock() {
+    const data = localStorage.getItem(STOCK_STORAGE_KEY);
+    if (data) {
+        try {
+            const map = JSON.parse(data);
+            products.forEach(p => {
+                if (map.hasOwnProperty(p.id)) {
+                    p.stock = map[p.id];
+                }
+            });
+        } catch (e) {
+            console.error('Failed to load stock from storage', e);
+        }
+    }
+}
+
+function saveStock() {
+    const map = {};
+    products.forEach(p => map[p.id] = p.stock);
+    localStorage.setItem(STOCK_STORAGE_KEY, JSON.stringify(map));
+}
+
+// ----- stock alert rendering -----
+function updateStockAlerts() {
+    // generate list of alerts based on stock/min levels
+    const alerts = [];
+    products.forEach(p => {
+        if (p.stock === 0) {
+            alerts.push({ type: 'critical', product: p.name, stock: 0, min: p.minStock || 0 });
+        } else if (p.minStock && p.stock < p.minStock) {
+            alerts.push({ type: 'warning', product: p.name, stock: p.stock, min: p.minStock });
+        } else if (!p.minStock && p.stock > 0 && p.stock <= 5) {
+            // fallback low-stock threshold
+            alerts.push({ type: 'warning', product: p.name, stock: p.stock, min: '' });
+        }
+    });
+
+    // page alerts container
+    const container = document.querySelector('.alerts-container');
+    if (container) {
+        container.innerHTML = alerts.map(a => {
+            const icon = a.type === 'critical' ? '⚠️' : '⚡';
+            const desc = a.type === 'critical'
+                ? `${a.product} - Out of Stock`
+                : `${a.product} - Low Stock (${a.stock} units remaining)`;
+            const meta = a.min ? `<p class="alert-meta">Min. Level: ${a.min}</p>` : '';
+            return `
+                <div class="alert-item ${a.type}">
+                    <span class="alert-icon">${icon}</span>
+                    <div class="alert-content">
+                        <p><strong>${a.product}</strong> - ${a.type === 'critical' ? 'Out of Stock' : `Low Stock (${a.stock} units remaining)`}</p>
+                        ${meta}
+                    </div>
+                </div>`;
+        }).join('');
+    }
+
+    // modal list
+    const modalList = document.querySelector('#alertsModal .alerts-list');
+    if (modalList) {
+        modalList.innerHTML = alerts.map(a => {
+            const title = a.type === 'critical' ? '⚠️ OUT OF STOCK' : '⚡ LOW STOCK';
+            const thresholdInfo = a.min ? `<p><strong>Min. Level:</strong> ${a.min} units</p>` : '';
+            const extra = a.type === 'warning' && a.min ? `<p><strong>Threshold:</strong> ${((a.min - a.stock)/a.min*100).toFixed(0)}% below minimum</p>` : '';
+            return `
+                <div class="alert-detail ${a.type}">
+                    <div class="alert-title">${title}</div>
+                    <p><strong>Product:</strong> ${a.product}</p>
+                    <p><strong>Current Stock:</strong> ${a.stock} units</p>
+                    ${thresholdInfo}
+                    ${extra}
+                    <p><strong>Action:</strong> <button class="btn-small">Reorder Now</button></p>
+                </div>`;
+        }).join('');
+    }
+}
+
+// ----- collapsible boxes -----
+function initCollapsibles() {
+    document.querySelectorAll('section.admin-box[data-collapsible]').forEach(sec => {
+        const header = sec.querySelector('.box-header');
+        if (!header) return;
+        const btn = document.createElement('button');
+        btn.className = 'more-toggle';
+        btn.textContent = 'Show more';
+        header.appendChild(btn);
+        btn.addEventListener('click', () => {
+            sec.classList.toggle('expanded');
+            btn.textContent = sec.classList.contains('expanded') ? 'Show less' : 'Show more';
+        });
+    });
+}
+
 function customAlert(message) {
     const overlay = document.createElement('div');
     overlay.className = 'custom-alert-overlay';
@@ -491,6 +588,8 @@ function addToBasket(productId) {
     }
     saveBasket(basket);
     customAlert("Added to basket");
+    saveStock();
+    updateStockAlerts();
     renderAdminTables();
 }
 
@@ -512,6 +611,8 @@ function updateQuantity(productId, change) {
         basket.splice(index, 1);
     }
     saveBasket(basket);
+    saveStock();
+    updateStockAlerts();
     renderBasketPage();
     renderAdminTables();
 }
@@ -3747,8 +3848,12 @@ function renderAdminTables() {
 
 // Initialize theme toggle on page load
 document.addEventListener('DOMContentLoaded', () => {
+    // restore persisted stock before anything else
+    loadStock();
     initThemeToggle();
     initAdminPage();
+    updateStockAlerts(); // refresh alert panel
+    initCollapsibles();
     // Ensure header reflects admin login state across pages
     updateHeaderAdminLink();
 });
