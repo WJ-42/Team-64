@@ -397,60 +397,14 @@
                             <th>Product Name</th>
                             <th>Category</th>
                             <th>Price</th>
+                            <th>Stock</th>
                             <th>Status</th>
                             <th>Rating</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Midnight Elegance</td>
-                            <td>Evening Wear</td>
-                            <td>£45.00</td>
-                            <td><span class="status-badge active">Active</span></td>
-                            <td>★★★★★ (127 reviews)</td>
-                            <td>
-                                <button class="btn-small">Edit</button>
-                                <button class="btn-small neutral">Reviews</button>
-                                <button class="btn-small dangerous">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Golden Hour</td>
-                            <td>Day Fragrance</td>
-                            <td>£52.00</td>
-                            <td><span class="status-badge active">Active</span></td>
-                            <td>★★★★☆ (89 reviews)</td>
-                            <td>
-                                <button class="btn-small">Edit</button>
-                                <button class="btn-small neutral">Reviews</button>
-                                <button class="btn-small dangerous">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Twilight Bloom</td>
-                            <td>Floral</td>
-                            <td>£48.00</td>
-                            <td><span class="status-badge inactive">Inactive</span></td>
-                            <td>★★★★☆ (56 reviews)</td>
-                            <td>
-                                <button class="btn-small">Edit</button>
-                                <button class="btn-small neutral">Reviews</button>
-                                <button class="btn-small dangerous">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Velvet Nights</td>
-                            <td>Luxury</td>
-                            <td>£65.00</td>
-                            <td><span class="status-badge active">Active</span></td>
-                            <td>★★★★★ (203 reviews)</td>
-                            <td>
-                                <button class="btn-small">Edit</button>
-                                <button class="btn-small neutral">Reviews</button>
-                                <button class="btn-small dangerous">Delete</button>
-                            </td>
-                        </tr>
+                    <tbody id="productManagementBody">
+                        <!-- rows will be generated dynamically by JS using the products array -->
                     </tbody>
                 </table>
             </div>
@@ -475,51 +429,8 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Midnight Elegance</td>
-                                <td>18</td>
-                                <td>10</td>
-                                <td>50</td>
-                                <td>Global Fragrances Ltd</td>
-                                <td>
-                                    <button class="btn-small">Update</button>
-                                    <button class="btn-small neutral">Reorder</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Golden Hour</td>
-                                <td>5</td>
-                                <td>10</td>
-                                <td>50</td>
-                                <td>Essence Imports</td>
-                                <td>
-                                    <button class="btn-small">Update</button>
-                                    <button class="btn-small">Reorder</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Twilight Bloom</td>
-                                <td>0</td>
-                                <td>15</td>
-                                <td>75</td>
-                                <td>Perfume Premium</td>
-                                <td>
-                                    <button class="btn-small">Update</button>
-                                    <button class="btn-small">Reorder</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Velvet Nights</td>
-                                <td>32</td>
-                                <td>15</td>
-                                <td>40</td>
-                                <td>Global Fragrances Ltd</td>
-                                <td>
-                                    <button class="btn-small">Update</button>
-                                    <button class="btn-small neutral">Reorder</button>
-                                </td>
-                            </tr>
+                        <tbody id="inventoryBody">
+                            <!-- inventory rows generated dynamically -->
                         </tbody>
                     </table>
                 </div>

@@ -1,5 +1,50 @@
 // Complete product data organized by category
 const products = [
+    // custom admin examples (also used in static admin tables)
+    {
+        id: 101,
+        name: "Midnight Elegance",
+        brand: "Luminous Scents",
+        price: 45.00,
+        notes: "Mystic evening blend",
+        description: "Our signature evening fragrance.",
+        image: "midnight-elegance.png",
+        category: "perfume",
+        stock: 18
+    },
+    {
+        id: 102,
+        name: "Golden Hour",
+        brand: "Luminous Scents",
+        price: 52.00,
+        notes: "Warm day aroma",
+        description: "Bright and uplifting day scent.",
+        image: "golden-hour.png",
+        category: "perfume",
+        stock: 5
+    },
+    {
+        id: 103,
+        name: "Twilight Bloom",
+        brand: "Luminous Scents",
+        price: 48.00,
+        notes: "Soft floral",
+        description: "A floral scent perfect for evenings.",
+        image: "twilight-bloom.png",
+        category: "perfume",
+        stock: 0
+    },
+    {
+        id: 104,
+        name: "Velvet Nights",
+        brand: "Luminous Scents",
+        price: 65.00,
+        notes: "Rich and luxurious",
+        description: "A luxurious fragrance for special occasions.",
+        image: "velvet-nights.png",
+        category: "perfume",
+        stock: 32
+    },
     // === SIGNATURE PERFUMES ===
     {
         id: 1,
@@ -9,7 +54,8 @@ const products = [
         notes: "Oud, amber, vanilla",
         description: "Warm and deep evening scent with a rich oud base.",
         image: "aurora-oud.png",
-        category: "perfume"
+        category: "perfume",
+        stock: 0
     },
     {
         id: 2,
@@ -19,7 +65,8 @@ const products = [
         notes: "Bergamot, lemon, neroli",
         description: "Fresh daytime fragrance that is bright and uplifting.",
         image: "citrus-dawn.png",
-        category: "perfume"
+        category: "perfume",
+        stock: 0
     },
     {
         id: 3,
@@ -310,6 +357,13 @@ const products = [
         category: "gift"
     }
 ];
+
+// make sure every product object has a stock field so quantity can be tracked
+products.forEach(p => {
+    if (typeof p.stock === 'undefined') {
+        p.stock = 0;
+    }
+});
 function customAlert(message) {
     const overlay = document.createElement('div');
     overlay.className = 'custom-alert-overlay';
@@ -419,6 +473,15 @@ function saveBasket(basket) {
 }
 
 function addToBasket(productId) {
+    const product = products.find(p => p.id === productId);
+    if (product) {
+        if (product.stock > 0) {
+            product.stock -= 1; // decrement inventory
+        } else {
+            customAlert("Sorry, this product is out of stock.");
+            return;
+        }
+    }
     const basket = loadBasket();
     const existing = basket.find(item => item.productId === productId);
     if (existing) {
@@ -428,6 +491,7 @@ function addToBasket(productId) {
     }
     saveBasket(basket);
     customAlert("Added to basket");
+    renderAdminTables();
 }
 
 function updateQuantity(productId, change) {
@@ -436,6 +500,12 @@ function updateQuantity(productId, change) {
     if (!item) {
         return;
     }
+    // adjust stock based on change
+    const product = products.find(p => p.id === productId);
+    if (product) {
+        product.stock -= change;
+        if (product.stock < 0) product.stock = 0;
+    }
     item.quantity += change;
     if (item.quantity <= 0) {
         const index = basket.indexOf(item);
@@ -443,6 +513,7 @@ function updateQuantity(productId, change) {
     }
     saveBasket(basket);
     renderBasketPage();
+    renderAdminTables();
 }
 
 // Rendering functions
@@ -3361,7 +3432,8 @@ function initAdminPage() {
             // Close modal and reset form
             closeProductModalFn();
 
-            // If on products page, refresh the display
+            // Update admin tables and products page if visible
+            renderAdminTables();
             if (document.body.getAttribute("data-page") === "products") {
                 renderProductsPage();
             }
@@ -3498,6 +3570,25 @@ function initAdminPage() {
         });
     });
 
+    // render tables when admin page loads
+    renderAdminTables();
+
+    // delegate click events for inventory updates
+    document.addEventListener('click', function(e) {
+        if (e.target.matches('.update-stock-btn')) {
+            const id = Number(e.target.dataset.id);
+            const product = products.find(p => p.id === id);
+            if (product) {
+                const newQtyStr = prompt(`Update stock for ${product.name}:`, product.stock || 0);
+                const newQty = parseInt(newQtyStr, 10);
+                if (!isNaN(newQty)) {
+                    product.stock = newQty;
+                    renderAdminTables();
+                }
+            }
+        }
+    });
+
     // --- Report generation handlers ---
     const reportModal = document.getElementById('reportModal');
     const reportContent = document.getElementById('reportContent');
@@ -3597,6 +3688,60 @@ function initAdminPage() {
     }
     if (reportModal) {
         reportModal.addEventListener('click', (e) => { if (e.target === reportModal) closeModal(reportModal); });
+    }
+}
+
+// render dynamic rows for admin product and inventory tables
+function renderAdminTables() {
+    // Product management table
+    const pmBody = document.getElementById('productManagementBody');
+    if (pmBody) {
+        pmBody.innerHTML = '';
+        products.forEach(p => {
+            const status = p.stock > 0 ? 'Active' : 'Inactive';
+            const statusClass = p.stock > 0 ? 'active' : 'inactive';
+            // rating placeholder (products may not have ratings yet)
+            const rating = p.rating ? `${'★'.repeat(p.rating)}${'☆'.repeat(5 - p.rating)}` : 'N/A';
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${p.name}</td>
+                <td>${p.category}</td>
+                <td>£${p.price.toFixed(2)}</td>
+                <td>${p.stock || 0}</td>
+                <td><span class="status-badge ${statusClass}">${status}</span></td>
+                <td>${rating}</td>
+                <td>
+                    <button class="btn-small edit-product-btn" data-id="${p.id}">Edit</button>
+                    <button class="btn-small neutral reviews-btn" data-id="${p.id}">Reviews</button>
+                    <button class="btn-small dangerous delete-product-btn" data-id="${p.id}">Delete</button>
+                </td>
+            `;
+            pmBody.appendChild(tr);
+        });
+    }
+
+    // Inventory table
+    const invBody = document.getElementById('inventoryBody');
+    if (invBody) {
+        invBody.innerHTML = '';
+        products.forEach(p => {
+            const minStock = p.minStock || '';
+            const reorderQty = p.reorderQty || '';
+            const supplier = p.supplier || '';
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${p.name}</td>
+                <td class="stock-cell" data-id="${p.id}">${p.stock || 0}</td>
+                <td>${minStock}</td>
+                <td>${reorderQty}</td>
+                <td>${supplier}</td>
+                <td>
+                    <button class="btn-small update-stock-btn" data-id="${p.id}">Update</button>
+                    <button class="btn-small neutral reorder-btn" data-id="${p.id}">Reorder</button>
+                </td>
+            `;
+            invBody.appendChild(tr);
+        });
     }
 }
 
