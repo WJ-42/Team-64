@@ -2766,6 +2766,10 @@ function initStarfield() {
 // Page initialiser
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Restore persisted products + stock before page-specific rendering
+    loadProducts();
+    loadStock();
+
     // Auto-resize textarea (vertical)
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => {
