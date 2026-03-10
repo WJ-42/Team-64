@@ -3311,17 +3311,20 @@ function initAdminPage() {
     const addProductModal = document.getElementById('addProductModal');
     const alertsModal = document.getElementById('alertsModal');
     const inquiriesModal = document.getElementById('inquiriesModal');
+    const bulkUpdateModal = document.getElementById('bulkUpdateModal');
     
     const openAddProductBtn = document.getElementById('openAddProductBtn');
     const addProductBtn2 = document.getElementById('addProductBtn2');
     const processPendingBtn = document.getElementById('processPendingBtn');
     const viewInquiriesBtn = document.getElementById('viewInquiriesBtn');
     const viewAlertsBtn = document.getElementById('viewAlertsBtn');
+    const bulkUpdateBtn = document.getElementById('bulkUpdateBtn');
     const createPromotionBtn = document.getElementById('createPromotionBtn');
     
     const closeProductModal = document.getElementById('closeProductModal');
     const closeAlertsModal = document.getElementById('closeAlertsModal');
     const closeInquiriesModal = document.getElementById('closeInquiriesModal');
+    const closeBulkModal = document.getElementById('closeBulkModal');
     const promotionModal = document.getElementById('promotionModal');
     const closePromotionModal = document.getElementById('closePromotionModal');
     
@@ -3331,6 +3334,10 @@ function initAdminPage() {
     const fileNameSpan = document.getElementById('fileName');
     const imagePreview = document.getElementById('imagePreview');
     const previewImg = document.getElementById('previewImg');
+
+    const bulkUpdateForm = document.getElementById('bulkUpdateForm');
+    const bulkUpdateBody = document.getElementById('bulkUpdateBody');
+    const cancelBulkForm = document.getElementById('cancelBulkForm');
 
     const promotionForm = document.getElementById('promotionForm');
     const promotionModalTitle = document.getElementById('promotionModalTitle');
@@ -3392,6 +3399,23 @@ function initAdminPage() {
             openModal(alertsModal);
         });
     }
+    if (bulkUpdateBtn) {
+        bulkUpdateBtn.addEventListener('click', () => {
+            // populate rows
+            if (bulkUpdateBody) {
+                bulkUpdateBody.innerHTML = '';
+                products.forEach(p => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${p.name}</td>
+                        <td><input type="number" min="0" data-id="${p.id}" value="${p.stock||0}" /></td>
+                    `;
+                    bulkUpdateBody.appendChild(tr);
+                });
+            }
+            openModal(bulkUpdateModal);
+        });
+    }
 
     if (createPromotionBtn) {
         createPromotionBtn.addEventListener('click', () => {
@@ -3422,6 +3446,21 @@ function initAdminPage() {
     if (closeInquiriesModal) {
         closeInquiriesModal.addEventListener('click', () => {
             closeModal(inquiriesModal);
+        });
+    }
+
+    // Close bulk update modal
+    if (closeBulkModal) {
+        closeBulkModal.addEventListener('click', () => {
+            closeModal(bulkUpdateModal);
+            if (bulkUpdateForm) bulkUpdateForm.reset();
+        });
+    }
+
+    if (cancelBulkForm) {
+        cancelBulkForm.addEventListener('click', () => {
+            closeModal(bulkUpdateModal);
+            if (bulkUpdateForm) bulkUpdateForm.reset();
         });
     }
 
@@ -3470,6 +3509,15 @@ function initAdminPage() {
             if (e.target === promotionModal) {
                 closeModal(promotionModal);
                 promotionForm.reset();
+            }
+        });
+    }
+
+    if (bulkUpdateModal) {
+        bulkUpdateModal.addEventListener('click', (e) => {
+            if (e.target === bulkUpdateModal) {
+                closeModal(bulkUpdateModal);
+                if (bulkUpdateForm) bulkUpdateForm.reset();
             }
         });
     }
@@ -3641,6 +3689,29 @@ function initAdminPage() {
             promotionModalTitle.textContent = 'Create New Promotion';
             submitPromoBtn.textContent = 'Create Promotion';
             promotionForm.reset();
+        });
+    }
+
+    // Bulk update submission
+    if (bulkUpdateForm) {
+        bulkUpdateForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // gather new stock values
+            const inputs = bulkUpdateBody.querySelectorAll('input[type=number]');
+            inputs.forEach(inp => {
+                const id = Number(inp.dataset.id);
+                const value = parseInt(inp.value, 10);
+                if (!isNaN(id) && !isNaN(value)) {
+                    const prod = products.find(p => p.id === id);
+                    if (prod) prod.stock = value;
+                }
+            });
+            saveStock();
+            updateStockAlerts();
+            renderAdminTables();
+            closeModal(bulkUpdateModal);
+            if (bulkUpdateForm) bulkUpdateForm.reset();
+            alert('Stock levels updated.');
         });
     }
 

@@ -400,7 +400,7 @@
         <section class="admin-box" data-collapsible="true">
             <div class="box-header">
                 <h3>Inventory Management</h3>
-                <button class="btn-primary">Bulk Update</button>
+                <button class="btn-primary" id="bulkUpdateBtn">Bulk Update</button>
             </div>
             <div class="box-content">
             <div class="inventory-section">
@@ -442,6 +442,28 @@
                 </div>
             </div>
         </section>
+
+        <!-- Bulk Update Modal -->
+        <div id="bulkUpdateModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Bulk Stock Update</h2>
+                    <button class="modal-close" id="closeBulkModal">&times;</button>
+                </div>
+                <form id="bulkUpdateForm">
+                    <div class="modal-body">
+                        <table class="admin-table">
+                            <thead><tr><th>Product</th><th>Stock</th></tr></thead>
+                            <tbody id="bulkUpdateBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                        <button type="button" class="btn-secondary" id="cancelBulkForm">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <!-- Pending Orders Section -->
         <section class="admin-box" data-collapsible="true">
