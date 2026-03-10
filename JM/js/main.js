@@ -549,6 +549,52 @@ function customAlert(message) {
     });
 }
 
+const TOAST_STORAGE_KEY = 'luminousScentsToastMessage';
+
+function showToast(message, type = 'success', duration = 4500) {
+    const containerId = 'toastContainer';
+    let container = document.getElementById(containerId);
+    if (!container) {
+        container = document.createElement('div');
+        container.id = containerId;
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+
+    // Trigger animation
+    requestAnimationFrame(() => toast.classList.add('visible'));
+
+    setTimeout(() => {
+        toast.classList.remove('visible');
+        toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+    }, duration);
+}
+
+function setNextPageToast(message) {
+    try {
+        localStorage.setItem(TOAST_STORAGE_KEY, message);
+    } catch {
+        // ignore
+    }
+}
+
+function consumeNextPageToast() {
+    try {
+        const message = localStorage.getItem(TOAST_STORAGE_KEY);
+        if (message) {
+            localStorage.removeItem(TOAST_STORAGE_KEY);
+        }
+        return message;
+    } catch {
+        return null;
+    }
+}
+
 function customConfirm(message, onConfirm) {
     const overlay = document.createElement('div');
     overlay.className = 'custom-alert-overlay';
@@ -2805,6 +2851,8 @@ document.addEventListener("DOMContentLoaded", () => {
             setupAuthForm();
         }
     } else if (page === "products") {
+        const toastMessage = consumeNextPageToast();
+        if (toastMessage) showToast(toastMessage, 'success');
         renderProductsPage();
         initEnhancedSearch();
     } else if (page === "basket") {
@@ -3648,8 +3696,10 @@ function initAdminPage() {
                 products.push(product);
             }
 
-            // Show success message
-            alert(`Product "${name}" has been ${isEdit ? 'updated' : 'added'} successfully!`);
+            // Show success toast (also show on next page load)
+            const successText = `Product "${name}" has been ${isEdit ? 'updated' : 'added'} successfully!`;
+            showToast(successText, 'success');
+            setNextPageToast(successText);
 
             // Close modal and reset form
             closeProductModalFn();
