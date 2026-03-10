@@ -365,8 +365,24 @@ products.forEach(p => {
     }
 });
 
-// ----- stock persistence helpers -----
+/**
+ * Return a usable image src from a stored image value.
+ * Supports local image file names (served from /images) and data URLs (uploaded images).
+ */
+function getProductImageSrc(image) {
+    if (!image || typeof image !== 'string') return '';
+    if (image.startsWith('data:') || image.startsWith('http')) {
+        return image;
+    }
+    if (image.startsWith('images/')) {
+        return image;
+    }
+    return `images/${image}`;
+}
+
+// ----- persistence helpers -----
 const STOCK_STORAGE_KEY = "luminousScentsProductStock";
+const PRODUCTS_STORAGE_KEY = "luminousScentsProducts";
 
 function loadStock() {
     const data = localStorage.getItem(STOCK_STORAGE_KEY);
@@ -388,6 +404,29 @@ function saveStock() {
     const map = {};
     products.forEach(p => map[p.id] = p.stock);
     localStorage.setItem(STOCK_STORAGE_KEY, JSON.stringify(map));
+    saveProducts();
+}
+
+function loadProducts() {
+    const data = localStorage.getItem(PRODUCTS_STORAGE_KEY);
+    if (!data) return;
+
+    try {
+        const saved = JSON.parse(data);
+        if (!Array.isArray(saved)) return;
+        products.length = 0; // keep same reference
+        saved.forEach(p => products.push(p));
+    } catch (e) {
+        console.error('Failed to load products from storage', e);
+    }
+}
+
+function saveProducts() {
+    try {
+        localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(products));
+    } catch (e) {
+        console.error('Failed to save products to storage', e);
+    }
 }
 
 // ----- stock alert rendering -----
@@ -649,7 +688,7 @@ function renderProductsPage() {
 
         card.innerHTML = `
             <div class="product-image-container ${product.id === 1 ? 'aurora-oud-image' : ''}">
-                <img src="images/${product.image}" alt="${product.name}" class="product-image">
+                <img src="${getProductImageSrc(product.image)}" alt="${product.name}" class="product-image">
             </div>
             <h3>${product.name}</h3>
             <p>${product.brand}</p>
@@ -1628,7 +1667,7 @@ function renderWishlist(userEmail, container) {
         
         wishlistCard.innerHTML = `
             <div class="wishlist-item-image">
-                <img src="images/${product.image}" alt="${product.name}" class="wishlist-image">
+                <img src="${getProductImageSrc(product.image)}" alt="${product.name}" class="wishlist-image">
             </div>
             <div class="wishlist-item-details">
                 <h4 class="wishlist-item-name">${product.name}</h4>
@@ -3344,6 +3383,13 @@ function initAdminPage() {
     const cancelPromoForm = document.getElementById('cancelPromoForm');
     const submitPromoBtn = document.getElementById('submitPromoBtn');
 
+    const reviewsModal = document.getElementById('reviewsModal');
+    const closeReviewsModal = document.getElementById('closeReviewsModal');
+    const reviewsContent = document.getElementById('reviewsContent');
+
+    let editingProductId = null;
+    let selectedProductImageValue = null;
+
     // Open modals function
     const openModal = (modal) => {
         if (modal) {
@@ -3363,6 +3409,8 @@ function initAdminPage() {
         openModal(addProductModal);
         addProductForm.reset();
         fileNameSpan.textContent = 'No file chosen';
+        selectedProductImageValue = null;
+        previewImg.src = '';
         imagePreview.classList.add('hidden');
     };
 
@@ -3370,6 +3418,8 @@ function initAdminPage() {
         closeModal(addProductModal);
         addProductForm.reset();
         fileNameSpan.textContent = 'No file chosen';
+        selectedProductImageValue = null;
+        previewImg.src = '';
         imagePreview.classList.add('hidden');
     };
 
@@ -3522,7 +3572,7 @@ function initAdminPage() {
         });
     }
 
-    // Image preview
+    // Image preview / store uploaded image data
     if (productImageInput) {
         productImageInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -3530,7 +3580,9 @@ function initAdminPage() {
                 fileNameSpan.textContent = file.name;
                 const reader = new FileReader();
                 reader.onload = (event) => {
-                    previewImg.src = event.target.result;
+                    const dataUrl = event.target.result;
+                    selectedProductImageValue = dataUrl;
+                    previewImg.src = dataUrl;
                     imagePreview.classList.remove('hidden');
                 };
                 reader.readAsDataURL(file);
@@ -3550,33 +3602,50 @@ function initAdminPage() {
             const stock = parseInt(document.getElementById('productStock').value);
             const notes = document.getElementById('productNotes').value.trim();
             const description = document.getElementById('productDescription').value.trim();
-            const imageFile = productImageInput.files[0];
+            const imageValue = selectedProductImageValue;
 
             // Validation
-            if (!name || !category || !price || !stock || !notes || !description || !imageFile) {
+            const isEdit = editingProductId !== null;
+            if (!name || !category || !price || !stock || !notes || !description || (!imageValue && !isEdit)) {
                 alert('Please fill in all fields');
                 return;
             }
 
-            // Create new product object
-            const newProductId = Math.max(...products.map(p => p.id), 0) + 1;
-            const newProduct = {
-                id: newProductId,
-                name: name,
-                brand: "Luminous Scents",
-                price: price,
-                notes: notes,
-                description: description,
-                image: imageFile.name,
-                category: category,
-                stock: stock
-            };
+            let product;
 
-            // Add to products array
-            products.push(newProduct);
+            if (isEdit) {
+                product = products.find(p => p.id === editingProductId);
+                if (product) {
+                    product.name = name;
+                    product.category = category;
+                    product.price = price;
+                    product.stock = stock;
+                    product.notes = notes;
+                    product.description = description;
+                    if (imageValue) {
+                        product.image = imageValue;
+                    }
+                }
+            } else {
+                // Create new product object
+                const newProductId = Math.max(...products.map(p => p.id), 0) + 1;
+                product = {
+                    id: newProductId,
+                    name: name,
+                    brand: "Luminous Scents",
+                    price: price,
+                    notes: notes,
+                    description: description,
+                    image: imageValue,
+                    category: category,
+                    stock: stock
+                };
+                // Add to products array
+                products.push(product);
+            }
 
             // Show success message
-            alert(`Product "${name}" has been added successfully!`);
+            alert(`Product "${name}" has been ${isEdit ? 'updated' : 'added'} successfully!`);
 
             // Close modal and reset form
             closeProductModalFn();
@@ -3589,8 +3658,13 @@ function initAdminPage() {
                 renderProductsPage();
             }
 
-            // Log the new product (in a real app, this would be sent to a server)
-            console.log('New product added:', newProduct);
+            // Reset edit mode
+            editingProductId = null;
+            if (document.querySelector('#addProductModal h2')) document.querySelector('#addProductModal h2').textContent = 'Add New Product';
+            if (document.querySelector('#addProductForm button[type="submit"]')) document.querySelector('#addProductForm button[type="submit"]').textContent = 'Add Product';
+
+            // Log the update
+            console.log('Product saved:', product);
             console.log('Total products:', products.length);
         });
     }
@@ -3747,7 +3821,7 @@ function initAdminPage() {
     // render tables when admin page loads
     renderAdminTables();
 
-    // delegate click events for inventory updates
+    // delegate click events for inventory updates and product actions
     document.addEventListener('click', function(e) {
         if (e.target.matches('.update-stock-btn')) {
             const id = Number(e.target.dataset.id);
@@ -3755,13 +3829,85 @@ function initAdminPage() {
             if (product) {
                 const newQtyStr = prompt(`Update stock for ${product.name}:`, product.stock || 0);
                 const newQty = parseInt(newQtyStr, 10);
-                if (!isNaN(newQty)) {
+                if (!isNaN(newQty) && newQty >= 0) {
                     product.stock = newQty;
                     saveStock();
                     updateStockAlerts();
                     renderAdminTables();
                 }
             }
+        } else if (e.target.matches('.edit-product-btn')) {
+            const id = Number(e.target.dataset.id);
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+            editingProductId = id;
+            if (addProductModal) openModal(addProductModal);
+            if (document.getElementById('productName')) document.getElementById('productName').value = product.name;
+            if (document.getElementById('productCategory')) document.getElementById('productCategory').value = product.category;
+            if (document.getElementById('productPrice')) document.getElementById('productPrice').value = product.price;
+            if (document.getElementById('productStock')) document.getElementById('productStock').value = product.stock;
+            if (document.getElementById('productNotes')) document.getElementById('productNotes').value = product.notes;
+            if (document.getElementById('productDescription')) document.getElementById('productDescription').value = product.description;
+
+            // Show existing image preview for editing (uploaded images stored as data URLs or file names)
+            selectedProductImageValue = product.image || null;
+            if (document.getElementById('productImage')) document.getElementById('productImage').value = '';
+            if (fileNameSpan) fileNameSpan.textContent = selectedProductImageValue ? (typeof product.image === 'string' && !product.image.startsWith('data:') ? product.image : 'Current image') : 'No file chosen';
+            const previewSrc = getProductImageSrc(selectedProductImageValue);
+            if (previewSrc) {
+                previewImg.src = previewSrc;
+                imagePreview.classList.remove('hidden');
+            } else {
+                previewImg.src = '';
+                imagePreview.classList.add('hidden');
+            }
+            if (document.querySelector('#addProductModal h2')) document.querySelector('#addProductModal h2').textContent = 'Edit Product';
+            if (document.querySelector('#addProductForm button[type="submit"]')) document.querySelector('#addProductForm button[type="submit"]').textContent = 'Update Product';
+        } else if (e.target.matches('.delete-product-btn')) {
+            const id = Number(e.target.dataset.id);
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+            customConfirm(`Delete ${product.name}? This cannot be undone.`, () => {
+                const index = products.indexOf(product);
+                if (index !== -1) {
+                    products.splice(index, 1);
+                    saveStock();
+                    updateStockAlerts();
+                    renderAdminTables();
+                }
+            });
+        } else if (e.target.matches('.reviews-btn')) {
+            const id = Number(e.target.dataset.id);
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+            // ensure reviews exist
+            if (!Array.isArray(product.reviews)) product.reviews = [];
+            if (!product.reviews.length) {
+                // generate dummy reviews
+                const sample = [
+                    { user: 'alex.t@example.com', date: '2026-02-10', rating: 5, text: 'Excellent fragrance!' },
+                    { user: 'jess.k@example.com', date: '2026-02-07', rating: 4, text: 'Nice scent, lasts a long time.' },
+                    { user: 'sam.w@example.com', date: '2026-02-05', rating: 4, text: 'Very good, will buy again.' }
+                ];
+                product.reviews = sample.map(r => ({ ...r }));
+                product.rating = Math.round(product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length);
+            }
+            if (reviewsContent) {
+                reviewsContent.innerHTML = `<h3>${product.name} (${product.rating} ★)</h3>` +
+                    product.reviews.map(r => `
+                        <div class="review-item">
+                            <div class="review-header">
+                                <h4>${r.user}</h4>
+                                <span class="review-rating">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                            </div>
+                            <div class="review-content">
+                                <p><strong>${r.date}</strong></p>
+                                <p>${r.text}</p>
+                            </div>
+                        </div>
+                    `).join('');
+            }
+            if (reviewsModal) openModal(reviewsModal);
         }
     });
 
@@ -3867,6 +4013,21 @@ function initAdminPage() {
     }
 }
 
+// ensures each product has rating/review metadata
+function ensureProductFeedback(p) {
+    if (!Array.isArray(p.reviews)) {
+        p.reviews = [];
+    }
+    if (typeof p.rating !== 'number' || p.rating < 1 || p.rating > 5) {
+        if (p.reviews.length) {
+            const avg = p.reviews.reduce((sum, r) => sum + (r.rating || 0), 0) / p.reviews.length;
+            p.rating = Math.round(avg) || 4;
+        } else {
+            p.rating = Math.floor(Math.random() * 3) + 3; // 3-5 stars
+        }
+    }
+}
+
 // render dynamic rows for admin product and inventory tables
 function renderAdminTables() {
     // Product management table
@@ -3874,10 +4035,10 @@ function renderAdminTables() {
     if (pmBody) {
         pmBody.innerHTML = '';
         products.forEach(p => {
+            ensureProductFeedback(p);
             const status = p.stock > 0 ? 'Active' : 'Inactive';
             const statusClass = p.stock > 0 ? 'active' : 'inactive';
-            // rating placeholder (products may not have ratings yet)
-            const rating = p.rating ? `${'★'.repeat(p.rating)}${'☆'.repeat(5 - p.rating)}` : 'N/A';
+            const rating = `${'★'.repeat(p.rating)}${'☆'.repeat(5 - p.rating)}`;
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${p.name}</td>
@@ -3885,7 +4046,7 @@ function renderAdminTables() {
                 <td>£${p.price.toFixed(2)}</td>
                 <td>${p.stock || 0}</td>
                 <td><span class="status-badge ${statusClass}">${status}</span></td>
-                <td>${rating}</td>
+                <td>${rating} (${p.reviews.length})</td>
                 <td>
                     <button class="btn-small edit-product-btn" data-id="${p.id}">Edit</button>
                     <button class="btn-small neutral reviews-btn" data-id="${p.id}">Reviews</button>
@@ -3923,7 +4084,8 @@ function renderAdminTables() {
 
 // Initialize theme toggle on page load
 document.addEventListener('DOMContentLoaded', () => {
-    // restore persisted stock before anything else
+    // restore persisted product list and stock before anything else
+    loadProducts();
     loadStock();
     initThemeToggle();
     initAdminPage();

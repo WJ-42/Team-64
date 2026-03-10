@@ -4652,7 +4652,11 @@ html body .site-footer {
 
 .file-input-wrapper input[type="file"] {
     position: absolute;
-    left: -9999px;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
 }
 
 .file-input-wrapper span {

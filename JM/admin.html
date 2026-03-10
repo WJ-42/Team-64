@@ -94,7 +94,7 @@
                         <div class="form-row full-width">
                             <label for="productImage">Product Image *</label>
                             <div class="file-input-wrapper">
-                                <input type="file" id="productImage" name="productImage" accept="image/*" required>
+                                <input type="file" id="productImage" name="productImage" accept="image/*">
                                 <span id="fileName">No file chosen</span>
                             </div>
                             <div id="imagePreview" class="image-preview hidden">
@@ -195,6 +195,21 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews Modal -->
+        <div id="reviewsModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Product Reviews</h2>
+                    <button class="modal-close" id="closeReviewsModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="reviewsContent" class="reviews-list">
+                        <!-- reviews injected here -->
                     </div>
                 </div>
             </div>
