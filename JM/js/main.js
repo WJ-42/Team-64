@@ -3533,7 +3533,9 @@ function initAdminPage() {
             // Close modal and reset form
             closeProductModalFn();
 
-            // Update admin tables and products page if visible
+            // Persist stock and refresh UI
+            saveStock();
+            updateStockAlerts();
             renderAdminTables();
             if (document.body.getAttribute("data-page") === "products") {
                 renderProductsPage();
@@ -3684,6 +3686,8 @@ function initAdminPage() {
                 const newQty = parseInt(newQtyStr, 10);
                 if (!isNaN(newQty)) {
                     product.stock = newQty;
+                    saveStock();
+                    updateStockAlerts();
                     renderAdminTables();
                 }
             }
