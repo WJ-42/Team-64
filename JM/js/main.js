@@ -365,6 +365,9 @@ products.forEach(p => {
     }
 });
 
+// Promotions state (persisted)
+let promotions = [];
+
 /**
  * Return a usable image src from a stored image value.
  * Supports local image file names (served from /images) and data URLs (uploaded images).
@@ -442,11 +445,75 @@ function saveProducts() {
 // ----- inquiry persistence helpers -----
 const INQUIRIES_STORAGE_KEY = "luminousScentsInquiries";
 const ORDERS_STORAGE_KEY = "luminousScentsPendingOrders";
-const PROMOS_STORAGE_KEY = "luminousScentsPromotions";
+const PROMOTIONS_STORAGE_KEY = "luminousScentsPromotions";
+const DEACTIVATED_PROMOS_STORAGE_KEY = "luminousScentsDeactivatedPromotions";
+
+function loadPromotions() {
+    const data = localStorage.getItem(PROMOTIONS_STORAGE_KEY);
+
+    let saved = null;
+    if (data) {
+        try {
+            saved = JSON.parse(data);
+        } catch (e) {
+            console.warn('Invalid promotions data in storage - resetting to defaults.', e);
+        }
+    }
+
+    if (!Array.isArray(saved)) {
+        // default promotions
+        promotions = [
+            {
+                id: 'promo-1',
+                name: 'Winter Sale 2025',
+                type: 'seasonal',
+                discount: '20% off',
+                products: 'All Fragrances',
+                startDate: '2025-02-17',
+                endDate: '2025-03-31'
+            },
+            {
+                id: 'promo-2',
+                name: 'LUXURY25',
+                type: 'coupon',
+                code: 'LUXURY25',
+                discount: '£10 off',
+                minSpend: '50',
+                products: 'All Products'
+            },
+            {
+                id: 'promo-3',
+                name: 'Bundle Offer',
+                type: 'bundle',
+                discount: 'Buy 2, Get 10% Off',
+                products: 'Select items'
+            },
+            {
+                id: 'promo-4',
+                name: 'Flash Sale',
+                type: 'flash',
+                discount: '35% off Selected',
+                products: 'Twilight Bloom'
+            }
+        ];
+        savePromotions();
+        return;
+    }
+
+    promotions = saved;
+}
+
+function savePromotions() {
+    try {
+        localStorage.setItem(PROMOTIONS_STORAGE_KEY, JSON.stringify(promotions));
+    } catch (e) {
+        console.error('Failed to save promotions to storage', e);
+    }
+}
 
 function getSavedDeactivatedPromoIds() {
     try {
-        const raw = localStorage.getItem(PROMOS_STORAGE_KEY);
+        const raw = localStorage.getItem(DEACTIVATED_PROMOS_STORAGE_KEY);
         if (!raw) return [];
         const data = JSON.parse(raw);
         return Array.isArray(data) ? data : [];
@@ -457,7 +524,7 @@ function getSavedDeactivatedPromoIds() {
 
 function saveDeactivatedPromoIds(ids) {
     try {
-        localStorage.setItem(PROMOS_STORAGE_KEY, JSON.stringify(Array.from(new Set(ids))));
+        localStorage.setItem(DEACTIVATED_PROMOS_STORAGE_KEY, JSON.stringify(Array.from(new Set(ids))));
     } catch {
         // ignore
     }
@@ -508,6 +575,46 @@ function applyPromotionState() {
         const bDeact = b.classList.contains('deactivated');
         return (aDeact === bDeact) ? 0 : (aDeact ? 1 : -1);
     }).forEach(item => grid.appendChild(item));
+}
+
+function renderPromotions() {
+    const grid = document.querySelector('.promotions-grid');
+    if (!grid) return;
+
+    grid.innerHTML = promotions.map(p => {
+        const typeLabel = p.type ? p.type.charAt(0).toUpperCase() + p.type.slice(1) : 'Promotion';
+        const details = [];
+        if (p.discount) details.push(`<p><strong>Discount:</strong> ${p.discount}</p>`);
+        if (p.code) details.push(`<p><strong>Code:</strong> ${p.code}</p>`);
+        if (p.minSpend) details.push(`<p><strong>Min. Spend:</strong> £${p.minSpend}</p>`);
+        if (p.maxUses) details.push(`<p><strong>Max Uses:</strong> ${p.maxUses}</p>`);
+        if (p.startDate || p.endDate) {
+            const start = p.startDate ? p.startDate : 'Now';
+            const end = p.endDate ? p.endDate : 'Ongoing';
+            details.push(`<p><strong>Valid:</strong> ${start} – ${end}</p>`);
+        }
+        if (p.products) details.push(`<p><strong>Products:</strong> ${p.products}</p>`);
+        details.push(`<p><strong>Status:</strong> <span class="status-badge active">Active</span></p>`);
+
+        return `
+            <div class="promotion-item" data-promo-id="${p.id}">
+                <div class="promotion-header">
+                    <h4>${p.name}</h4>
+                    <span class="promo-type">${typeLabel}</span>
+                </div>
+                <div class="promotion-details">
+                    ${details.join('')}
+                </div>
+                <div class="promotion-actions">
+                    <button class="btn-small editPromoBtn" data-promo-id="${p.id}">Edit</button>
+                    <button class="btn-small dangerous deactivate-promo-btn">Deactivate</button>
+                    <button class="btn-small dangerous delete-promo-btn">Delete</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    applyPromotionState();
 }
 
 // ----- pending order helpers -----
@@ -3884,6 +3991,7 @@ function initAdminPage() {
 
     if (createPromotionBtn) {
         createPromotionBtn.addEventListener('click', () => {
+            editingPromoId = null;
             promotionModalTitle.textContent = 'Create New Promotion';
             submitPromoBtn.textContent = 'Create Promotion';
             promotionForm.reset();
@@ -4126,18 +4234,20 @@ function initAdminPage() {
     }
 
     // Close promotion modal
+    const resetPromotionModalForm = () => {
+        closeModal(promotionModal);
+        promotionForm.reset();
+        editingPromoId = null;
+        if (promotionModalTitle) promotionModalTitle.textContent = 'Create New Promotion';
+        if (submitPromoBtn) submitPromoBtn.textContent = 'Create Promotion';
+    };
+
     if (closePromotionModal) {
-        closePromotionModal.addEventListener('click', () => {
-            closeModal(promotionModal);
-            promotionForm.reset();
-        });
+        closePromotionModal.addEventListener('click', resetPromotionModalForm);
     }
 
     if (cancelPromoForm) {
-        cancelPromoForm.addEventListener('click', () => {
-            closeModal(promotionModal);
-            promotionForm.reset();
-        });
+        cancelPromoForm.addEventListener('click', resetPromotionModalForm);
     }
 
     // Close reviews modal
@@ -4168,8 +4278,7 @@ function initAdminPage() {
     if (promotionModal) {
         promotionModal.addEventListener('click', (e) => {
             if (e.target === promotionModal) {
-                closeModal(promotionModal);
-                promotionForm.reset();
+                resetPromotionModalForm();
             }
         });
     }
@@ -4325,52 +4434,27 @@ function initAdminPage() {
                 return;
             }
 
-            // Check if we're editing or creating
-            const isEdit = submitPromoBtn.textContent === 'Update Promotion';
-            
-            if (isEdit && editingPromoId) {
-                // Update existing promotion on the page
-                const editButton = document.querySelector(`.editPromoBtn[data-promo-id="${editingPromoId}"]`);
-                if (editButton) {
-                    const promoItem = editButton.closest('.promotion-item');
-                    
-                    // Update the HTML content
-                    promoItem.querySelector('.promotion-header h4').textContent = promoName;
-                    promoItem.querySelector('.promo-type').textContent = promoType.charAt(0).toUpperCase() + promoType.slice(1);
-                    
-                    // Update details based on type
-                    const detailsDiv = promoItem.querySelector('.promotion-details');
-                    let detailsHTML = `<p><strong>Discount:</strong> ${promoDiscount}</p>`;
-                    
-                    if (promoMinSpend) {
-                        detailsHTML += `<p><strong>Min. Spend:</strong> £${promoMinSpend}</p>`;
-                    }
-                    if (promoMaxUses) {
-                        detailsHTML += `<p><strong>Max Uses:</strong> ${promoMaxUses}</p>`;
-                    }
-                    if (promoCode) {
-                        detailsHTML += `<p><strong>Code:</strong> ${promoCode}</p>`;
-                    }
-                    detailsHTML += `<p><strong>Products:</strong> ${promoProducts}</p>`;
-                    detailsHTML += `<p><strong>Status:</strong> <span class="status-badge active">Active</span></p>`;
-                    
-                    detailsDiv.innerHTML = detailsHTML;
-                    
-                    // Update the edit button data attributes
-                    editButton.setAttribute('data-promo-name', promoName);
-                    editButton.setAttribute('data-promo-type', promoType);
-                    editButton.setAttribute('data-promo-code', promoCode);
-                    editButton.setAttribute('data-promo-discount', promoDiscount);
-                    editButton.setAttribute('data-promo-min-spend', promoMinSpend);
-                    editButton.setAttribute('data-promo-products', promoProducts);
-                    
-                    alert(`Promotion "${promoName}" has been updated successfully!`);
+            // Determine if we're editing an existing promotion
+            const isEdit = Boolean(editingPromoId);
+            if (isEdit) {
+                const existingPromo = promotions.find((p) => p.id === editingPromoId);
+                if (existingPromo) {
+                    existingPromo.name = promoName;
+                    existingPromo.type = promoType;
+                    existingPromo.code = promoCode;
+                    existingPromo.discount = promoDiscount;
+                    existingPromo.minSpend = promoMinSpend;
+                    existingPromo.maxUses = promoMaxUses;
+                    existingPromo.startDate = promoStartDate;
+                    existingPromo.endDate = promoEndDate;
+                    existingPromo.products = promoProducts;
+                    existingPromo.description = promoDescription;
+
+                    showToast(`Promotion "${promoName}" has been updated.`, 'success');
                 }
-                editingPromoId = null;
             } else {
-                // Create new promotion object
-                const promoData = {
-                    id: Math.random().toString(36).substr(2, 9),
+                const newPromo = {
+                    id: `promo-${Date.now()}`,
                     name: promoName,
                     type: promoType,
                     code: promoCode,
@@ -4380,19 +4464,21 @@ function initAdminPage() {
                     startDate: promoStartDate,
                     endDate: promoEndDate,
                     products: promoProducts,
-                    description: promoDescription,
-                    status: 'active'
+                    description: promoDescription
                 };
-
-                alert(`Promotion "${promoName}" has been created successfully!`);
-                console.log('Promotion saved:', promoData);
+                promotions.push(newPromo);
+                showToast(`Promotion "${promoName}" has been added.`, 'success');
             }
+
+            savePromotions();
+            renderPromotions();
 
             // Close modal and reset form
             closeModal(promotionModal);
             promotionModalTitle.textContent = 'Create New Promotion';
             submitPromoBtn.textContent = 'Create Promotion';
             promotionForm.reset();
+            editingPromoId = null;
         });
     }
 
@@ -4419,38 +4505,14 @@ function initAdminPage() {
         });
     }
 
-    // Edit promotion button handlers
-    const editPromoButtons = document.querySelectorAll('.editPromoBtn');
-    editPromoButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            editingPromoId = btn.getAttribute('data-promo-id');
-            promotionModalTitle.textContent = 'Edit Promotion';
-            submitPromoBtn.textContent = 'Update Promotion';
-            
-            const promoData = {
-                id: btn.getAttribute('data-promo-id'),
-                name: btn.getAttribute('data-promo-name'),
-                type: btn.getAttribute('data-promo-type'),
-                code: btn.getAttribute('data-promo-code') || '',
-                discount: btn.getAttribute('data-promo-discount'),
-                minSpend: btn.getAttribute('data-promo-min-spend') || '',
-                products: btn.getAttribute('data-promo-products')
-            };
-            
-            document.getElementById('promoName').value = promoData.name || '';
-            document.getElementById('promoType').value = promoData.type || '';
-            document.getElementById('promoCode').value = promoData.code || '';
-            document.getElementById('promoDiscount').value = promoData.discount || '';
-            document.getElementById('promoMinSpend').value = promoData.minSpend || '';
-            document.getElementById('promoProducts').value = promoData.products || '';
-            
-            openModal(promotionModal);
-        });
-    });
-
-    // render tables and pending orders when admin page loads
+    // render tables, pending orders and promotions when admin page loads
     renderAdminTables();
     renderPendingOrders();
+
+    loadPromotions();
+    renderPromotions();
+
+    // apply state (deactivation + ordering) after promotions render
     applyPromotionState();
 
     // delegate click events for inventory updates and product actions
@@ -4519,7 +4581,7 @@ function initAdminPage() {
             const promoItem = e.target.closest('.promotion-item');
             if (!promoItem) return;
             const promoName = promoItem.querySelector('.promotion-header h4')?.textContent || 'this promotion';
-            const statusBadge = promoItem.querySelector('.status-badge');
+            const promoId = promoItem.dataset.promoId;
             const isDeactivated = promoItem.classList.contains('deactivated');
             const action = isDeactivated ? 'Activate' : 'Deactivate';
 
@@ -4527,29 +4589,55 @@ function initAdminPage() {
                 const deactivatedIds = new Set(getSavedDeactivatedPromoIds().map(String));
 
                 if (isDeactivated) {
-                    deactivatedIds.delete(String(promoItem.dataset.promoId));
+                    deactivatedIds.delete(String(promoId));
                 } else {
-                    deactivatedIds.add(String(promoItem.dataset.promoId));
+                    deactivatedIds.add(String(promoId));
                 }
 
                 saveDeactivatedPromoIds(Array.from(deactivatedIds));
                 applyPromotionState();
-
-                if (isDeactivated) {
-                    showToast(`${promoName} has been reactivated.`, 'success');
-                } else {
-                    showToast(`${promoName} has been deactivated.`, 'success');
-                }
+                showToast(`${promoName} has been ${isDeactivated ? 're' : ''}activated.`, 'success');
             });
         } else if (e.target.matches('.delete-promo-btn')) {
             const promoItem = e.target.closest('.promotion-item');
             if (!promoItem) return;
             const promoName = promoItem.querySelector('.promotion-header h4')?.textContent || 'this promotion';
+            const promoId = promoItem.dataset.promoId;
 
             customConfirm(`Delete ${promoName}? This cannot be undone.`, () => {
-                promoItem.remove();
+                const index = promotions.findIndex(p => p.id === promoId);
+                if (index !== -1) {
+                    promotions.splice(index, 1);
+                    savePromotions();
+                }
+
+                const deactivatedIds = new Set(getSavedDeactivatedPromoIds().map(String));
+                deactivatedIds.delete(String(promoId));
+                saveDeactivatedPromoIds(Array.from(deactivatedIds));
+
+                renderPromotions();
                 showToast(`${promoName} has been deleted.`, 'error');
             });
+        } else if (e.target.matches('.editPromoBtn')) {
+            const promoId = e.target.dataset.promoId;
+            const promo = promotions.find((p) => p.id === promoId);
+            if (!promo) return;
+
+            editingPromoId = promoId;
+            if (promotionModal) openModal(promotionModal);
+            if (promotionModalTitle) promotionModalTitle.textContent = 'Edit Promotion';
+            if (submitPromoBtn) submitPromoBtn.textContent = 'Update Promotion';
+
+            if (document.getElementById('promoName')) document.getElementById('promoName').value = promo.name || '';
+            if (document.getElementById('promoType')) document.getElementById('promoType').value = promo.type || '';
+            if (document.getElementById('promoCode')) document.getElementById('promoCode').value = promo.code || '';
+            if (document.getElementById('promoDiscount')) document.getElementById('promoDiscount').value = promo.discount || '';
+            if (document.getElementById('promoMinSpend')) document.getElementById('promoMinSpend').value = promo.minSpend || '';
+            if (document.getElementById('promoMaxUses')) document.getElementById('promoMaxUses').value = promo.maxUses || '';
+            if (document.getElementById('promoStartDate')) document.getElementById('promoStartDate').value = promo.startDate || '';
+            if (document.getElementById('promoEndDate')) document.getElementById('promoEndDate').value = promo.endDate || '';
+            if (document.getElementById('promoProducts')) document.getElementById('promoProducts').value = promo.products || '';
+            if (document.getElementById('promoDescription')) document.getElementById('promoDescription').value = promo.description || '';
         } else if (e.target.matches('.edit-product-btn')) {
             const id = Number(e.target.dataset.id);
             const product = products.find(p => p.id === id);
