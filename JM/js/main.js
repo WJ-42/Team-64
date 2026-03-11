@@ -407,6 +407,13 @@ function saveStock() {
     saveProducts();
 }
 
+function ensureInventoryFields(product) {
+    // Ensure inventory columns have values for display; supplier defaults blank for real vendors.
+    if (typeof product.minStock !== 'number') product.minStock = 10;
+    if (typeof product.reorderQty !== 'number') product.reorderQty = product.minStock || 10;
+    if (typeof product.supplier !== 'string') product.supplier = '';
+}
+
 function loadProducts() {
     const data = localStorage.getItem(PRODUCTS_STORAGE_KEY);
     if (!data) return;
@@ -415,7 +422,10 @@ function loadProducts() {
         const saved = JSON.parse(data);
         if (!Array.isArray(saved)) return;
         products.length = 0; // keep same reference
-        saved.forEach(p => products.push(p));
+        saved.forEach(p => {
+            ensureInventoryFields(p);
+            products.push(p);
+        });
     } catch (e) {
         console.error('Failed to load products from storage', e);
     }
@@ -3450,6 +3460,9 @@ function initAdminPage() {
     const fileNameSpan = document.getElementById('fileName');
     const imagePreview = document.getElementById('imagePreview');
     const previewImg = document.getElementById('previewImg');
+    const productMinStockInput = document.getElementById('productMinStock');
+    const productReorderQtyInput = document.getElementById('productReorderQty');
+    const productSupplierInput = document.getElementById('productSupplier');
 
     const bulkUpdateForm = document.getElementById('bulkUpdateForm');
     const bulkUpdateBody = document.getElementById('bulkUpdateBody');
@@ -3609,6 +3622,9 @@ function initAdminPage() {
         selectedProductImageValue = null;
         previewImg.src = '';
         imagePreview.classList.add('hidden');
+        if (productMinStockInput) productMinStockInput.value = '';
+        if (productReorderQtyInput) productReorderQtyInput.value = '';
+        if (productSupplierInput) productSupplierInput.value = '';
     };
 
     const closeProductModalFn = () => {
@@ -3963,15 +3979,18 @@ function initAdminPage() {
             const name = document.getElementById('productName').value.trim();
             const category = document.getElementById('productCategory').value;
             const price = parseFloat(document.getElementById('productPrice').value);
-            const stock = parseInt(document.getElementById('productStock').value);
+            const stock = parseInt(document.getElementById('productStock').value, 10);
+            const minStock = parseInt(document.getElementById('productMinStock').value, 10);
+            const reorderQty = parseInt(document.getElementById('productReorderQty').value, 10);
+            const supplier = document.getElementById('productSupplier').value.trim();
             const notes = document.getElementById('productNotes').value.trim();
             const description = document.getElementById('productDescription').value.trim();
             const imageValue = selectedProductImageValue;
 
             // Validation
             const isEdit = editingProductId !== null;
-            if (!name || !category || !price || !stock || !notes || !description || (!imageValue && !isEdit)) {
-                alert('Please fill in all fields');
+            if (!name || !category || !price || isNaN(stock) || !notes || !description || (!imageValue && !isEdit)) {
+                alert('Please fill in all required fields (name, category, price, stock, notes, description)');
                 return;
             }
 
@@ -3984,6 +4003,9 @@ function initAdminPage() {
                     product.category = category;
                     product.price = price;
                     product.stock = stock;
+                    product.minStock = isNaN(minStock) ? product.minStock || 0 : minStock;
+                    product.reorderQty = isNaN(reorderQty) ? product.reorderQty || 0 : reorderQty;
+                    product.supplier = supplier || product.supplier || '';
                     product.notes = notes;
                     product.description = description;
                     if (imageValue) {
@@ -4002,7 +4024,10 @@ function initAdminPage() {
                     description: description,
                     image: imageValue,
                     category: category,
-                    stock: stock
+                    stock: stock,
+                    minStock: isNaN(minStock) ? 0 : minStock,
+                    reorderQty: isNaN(reorderQty) ? 0 : reorderQty,
+                    supplier: supplier || ''
                 };
                 // Add to products array
                 products.push(product);
@@ -4206,11 +4231,17 @@ function initAdminPage() {
             const id = Number(e.target.dataset.id);
             const product = products.find(p => p.id === id);
             if (product) {
-                const qtyStr = prompt(`Reorder quantity for ${product.name}:`, product.minStock || 10);
+                const defaultQty = product.reorderQty || product.minStock || 10;
+                const qtyStr = prompt(`Reorder quantity for ${product.name}:`, defaultQty);
                 const qty = parseInt(qtyStr, 10);
                 if (!isNaN(qty) && qty > 0) {
                     product.stock = (product.stock || 0) + qty;
+                    // If user used the default reorder quantity, keep it; otherwise persist new preference
+                    if (qty !== defaultQty) {
+                        product.reorderQty = qty;
+                    }
                     saveStock();
+                    saveProducts();
                     updateStockAlerts();
                     renderAdminTables();
                     showToast(`Reordered ${qty} units of ${product.name}.`, 'success');
@@ -4226,6 +4257,9 @@ function initAdminPage() {
             if (document.getElementById('productCategory')) document.getElementById('productCategory').value = product.category;
             if (document.getElementById('productPrice')) document.getElementById('productPrice').value = product.price;
             if (document.getElementById('productStock')) document.getElementById('productStock').value = product.stock;
+            if (document.getElementById('productMinStock')) document.getElementById('productMinStock').value = product.minStock ?? '';
+            if (document.getElementById('productReorderQty')) document.getElementById('productReorderQty').value = product.reorderQty ?? '';
+            if (document.getElementById('productSupplier')) document.getElementById('productSupplier').value = product.supplier || '';
             if (document.getElementById('productNotes')) document.getElementById('productNotes').value = product.notes;
             if (document.getElementById('productDescription')) document.getElementById('productDescription').value = product.description;
 
@@ -4413,6 +4447,9 @@ function ensureProductFeedback(p) {
 
 // render dynamic rows for admin product and inventory tables
 function renderAdminTables() {
+    // Ensure all products have basic inventory metadata (min stock, reorder qty, supplier)
+    products.forEach(ensureInventoryFields);
+
     // Product management table
     const pmBody = document.getElementById('productManagementBody');
     if (pmBody) {
@@ -4447,7 +4484,7 @@ function renderAdminTables() {
         products.forEach(p => {
             const minStock = p.minStock || '';
             const reorderQty = p.reorderQty || '';
-            const supplier = p.supplier || '';
+            const supplier = p.supplier || '—';
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${p.name}</td>
