@@ -429,6 +429,31 @@ function saveProducts() {
     }
 }
 
+// ----- inquiry persistence helpers -----
+const INQUIRIES_STORAGE_KEY = "luminousScentsInquiries";
+
+function loadInquiries(inquiries) {
+    const data = localStorage.getItem(INQUIRIES_STORAGE_KEY);
+    if (!data) return;
+
+    try {
+        const saved = JSON.parse(data);
+        if (!Array.isArray(saved)) return;
+        inquiries.length = 0;
+        saved.forEach(i => inquiries.push(i));
+    } catch (e) {
+        console.error('Failed to load inquiries from storage', e);
+    }
+}
+
+function saveInquiries(inquiries) {
+    try {
+        localStorage.setItem(INQUIRIES_STORAGE_KEY, JSON.stringify(inquiries));
+    } catch (e) {
+        console.error('Failed to save inquiries to storage', e);
+    }
+}
+
 // ----- stock alert rendering -----
 function updateStockAlerts() {
     // generate list of alerts based on stock/min levels
@@ -3439,8 +3464,128 @@ function initAdminPage() {
     const closeReviewsModal = document.getElementById('closeReviewsModal');
     const reviewsContent = document.getElementById('reviewsContent');
 
+    const openInquiriesList = document.getElementById('openInquiriesList');
+    const archivedInquiriesListModal = document.getElementById('archivedInquiriesListModal');
+
+    let inquiries = [
+        {
+            id: 1,
+            from: 'sarah.j@example.com',
+            date: 'Feb 16, 2025 - 2:34 PM',
+            subject: 'Do you have fragrance recommendations for sensitive skin?',
+            message: 'I have very sensitive skin and am looking for hypoallergenic fragrances. Could you recommend something from your collection that would be gentle on my skin?',
+            status: 'unread',
+            assignedTo: null,
+            replies: [],
+            archived: false
+        },
+        {
+            id: 2,
+            from: 'michael.p@example.com',
+            date: 'Feb 15, 2025 - 10:15 AM',
+            subject: 'Bulk Order for Corporate Gifts',
+            message: "Hello, I'm interested in purchasing 50 units of your Midnight Elegance fragrance for our company's corporate gifts. Can you provide a bulk discount quote and information about customization options?",
+            status: 'unread',
+            assignedTo: null,
+            replies: [],
+            archived: false
+        }
+    ];
+
+    loadInquiries(inquiries);
+
     let editingProductId = null;
     let selectedProductImageValue = null;
+
+    const updateInquiryCounts = () => {
+        const openCount = inquiries.filter(i => !i.archived).length;
+        const archivedCount = inquiries.filter(i => i.archived).length;
+
+        if (viewInquiriesBtn) {
+            viewInquiriesBtn.textContent = `📧 View Customer Inquiries (${openCount})`;
+        }
+        if (viewArchivedInquiriesBtn) {
+            viewArchivedInquiriesBtn.textContent = `🗄️ View Archived Inquiries (${archivedCount})`;
+        }
+    };
+
+    const renderInquiries = () => {
+        if (!openInquiriesList) return;
+
+        const renderList = (list, includeArchived) => {
+            return list
+                .filter(i => i.archived === includeArchived)
+                .map(i => {
+                    const isRead = i.status === 'read' || i.status === 'replied' || i.status === 'assigned';
+                    const statusLabel = i.status === 'unread' ? 'Unread' : i.status === 'read' ? 'Read' : i.status === 'assigned' ? `Assigned${i.assignedTo ? ` to ${i.assignedTo}` : ''}` : 'Replied';
+                    const statusClass = i.status === 'unread' ? 'unread' : 'active';
+
+                    return `
+                        <div class="inquiry-detail${isRead ? ' read' : ''}" data-inquiry-id="${i.id}">
+                            <div class="inquiry-header">
+                                <h4>Inquiry #${i.id}</h4>
+                                <span class="inquiry-status ${statusClass}">${statusLabel}</span>
+                            </div>
+                            <div class="inquiry-content">
+                                <p><strong>From:</strong> ${i.from}</p>
+                                <p><strong>Date:</strong> ${i.date}</p>
+                                <p><strong>Subject:</strong> ${i.subject}</p>
+                                <p><strong>Message:</strong> ${i.message}</p>
+                                <div class="inquiry-actions">
+                                    <label class="mark-read"> 
+                                        <input type="checkbox" class="mark-read-checkbox" data-id="${i.id}" ${isRead ? 'checked' : ''}> Read
+                                    </label>
+                                    <button class="btn-small reply-inquiry-btn" data-id="${i.id}">Reply</button>
+                                    <button class="btn-small neutral assign-inquiry-btn" data-id="${i.id}">Assign</button>
+                                    ${includeArchived ? '' : `<button class="btn-small dangerous archive-inquiry-btn" data-id="${i.id}">Archive</button>`}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                })
+                .join('');
+        };
+
+        openInquiriesList.innerHTML = renderList(inquiries, false) || '<p>No open inquiries.</p>';
+        updateInquiryCounts();
+    };
+
+    const renderArchivedInquiries = () => {
+        if (!archivedInquiriesListModal) return;
+
+        const archivedHTML = inquiries
+            .filter(i => i.archived)
+            .map(i => {
+                const isRead = i.status === 'read' || i.status === 'replied' || i.status === 'assigned';
+                const statusLabel = i.status === 'unread' ? 'Unread' : i.status === 'read' ? 'Read' : i.status === 'assigned' ? `Assigned${i.assignedTo ? ` to ${i.assignedTo}` : ''}` : 'Replied';
+                const statusClass = i.status === 'unread' ? 'unread' : 'active';
+
+                return `
+                    <div class="inquiry-detail${isRead ? ' read' : ''}" data-inquiry-id="${i.id}">
+                        <div class="inquiry-header">
+                            <h4>Inquiry #${i.id}</h4>
+                            <span class="inquiry-status ${statusClass}">${statusLabel}</span>
+                        </div>
+                        <div class="inquiry-content">
+                            <p><strong>From:</strong> ${i.from}</p>
+                            <p><strong>Date:</strong> ${i.date}</p>
+                            <p><strong>Subject:</strong> ${i.subject}</p>
+                            <p><strong>Message:</strong> ${i.message}</p>
+                            <div class="inquiry-actions">
+                                <label class="mark-read"> 
+                                    <input type="checkbox" class="mark-read-checkbox" data-id="${i.id}" ${isRead ? 'checked' : ''}> Read
+                                </label>
+                                <button class="btn-small unarchive-inquiry-btn" data-id="${i.id}">Unarchive</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            })
+            .join('');
+
+        archivedInquiriesListModal.innerHTML = archivedHTML || '<p>No archived inquiries.</p>';
+        updateInquiryCounts();
+    };
 
     // Open modals function
     const openModal = (modal) => {
@@ -3492,6 +3637,7 @@ function initAdminPage() {
 
     if (viewInquiriesBtn) {
         viewInquiriesBtn.addEventListener('click', () => {
+            renderInquiries();
             openModal(inquiriesModal);
         });
     }
@@ -3594,6 +3740,121 @@ function initAdminPage() {
         });
     }
 
+    // Open archived inquiries modal
+    const viewArchivedInquiriesBtn = document.getElementById('viewArchivedInquiriesBtn');
+    const archivedInquiriesModal = document.getElementById('archivedInquiriesModal');
+    const closeArchivedInquiriesModal = document.getElementById('closeArchivedInquiriesModal');
+
+    if (viewArchivedInquiriesBtn) {
+        viewArchivedInquiriesBtn.addEventListener('click', () => {
+            renderArchivedInquiries();
+            openModal(archivedInquiriesModal);
+        });
+    }
+
+    if (closeArchivedInquiriesModal) {
+        closeArchivedInquiriesModal.addEventListener('click', () => {
+            closeModal(archivedInquiriesModal);
+        });
+    }
+
+    if (inquiriesModal) {
+        inquiriesModal.addEventListener('click', (e) => {
+            if (e.target === inquiriesModal) {
+                closeModal(inquiriesModal);
+                return;
+            }
+
+            const card = e.target.closest('.inquiry-detail');
+            if (!card) return;
+
+            const id = Number(card.dataset.inquiryId);
+            const inquiry = inquiries.find(i => i.id === id);
+            if (!inquiry) return;
+
+            if (e.target.matches('.mark-read-checkbox')) {
+                const checked = e.target.checked;
+                inquiry.status = checked ? 'read' : 'unread';
+                saveInquiries(inquiries);
+                renderInquiries();
+                return;
+            }
+
+            if (e.target.matches('.reply-inquiry-btn')) {
+                const reply = prompt('Type your reply message:');
+                if (reply) {
+                    inquiry.replies.push({ date: new Date().toLocaleString(), message: reply });
+                    inquiry.status = 'replied';
+                    saveInquiries(inquiries);
+                    showToast('Reply sent.', 'success');
+                    renderInquiries();
+                }
+                return;
+            }
+
+            if (e.target.matches('.assign-inquiry-btn')) {
+                const assignee = prompt('Assign to (name or email):');
+                if (assignee) {
+                    inquiry.assignedTo = assignee;
+                    inquiry.status = 'assigned';
+                    saveInquiries(inquiries);
+                    showToast(`Inquiry assigned to ${assignee}.`, 'success');
+                    renderInquiries();
+                }
+                return;
+            }
+
+            if (e.target.matches('.archive-inquiry-btn')) {
+                const archiveBtn = e.target;
+                // Avoid multiple confirmations on fast/double clicks
+                if (archiveBtn.dataset.archiving === '1') return;
+                archiveBtn.dataset.archiving = '1';
+
+                const shouldArchive = confirm('Archive this inquiry?');
+                archiveBtn.dataset.archiving = '0';
+                if (!shouldArchive) return;
+
+                inquiry.archived = true;
+                saveInquiries(inquiries);
+                showToast('Inquiry archived.', 'success');
+                renderInquiries();
+                renderArchivedInquiries();
+                return;
+            }
+        });
+    }
+
+    if (archivedInquiriesModal) {
+        archivedInquiriesModal.addEventListener('click', (e) => {
+            if (e.target === archivedInquiriesModal) {
+                closeModal(archivedInquiriesModal);
+                return;
+            }
+
+            const card = e.target.closest('.inquiry-detail');
+            if (!card) return;
+
+            const id = Number(card.dataset.inquiryId);
+            const inquiry = inquiries.find(i => i.id === id);
+            if (!inquiry) return;
+
+            if (e.target.matches('.unarchive-inquiry-btn')) {
+                inquiry.archived = false;
+                saveInquiries(inquiries);
+                showToast('Inquiry restored.', 'success');
+                renderInquiries();
+                renderArchivedInquiries();
+            }
+
+            if (e.target.matches('.mark-read-checkbox')) {
+                const checked = e.target.checked;
+                inquiry.status = checked ? 'read' : 'unread';
+                saveInquiries(inquiries);
+                renderArchivedInquiries();
+            }
+        });
+    }
+
     // Close bulk update modal
     if (closeBulkModal) {
         closeBulkModal.addEventListener('click', () => {
@@ -3641,13 +3902,6 @@ function initAdminPage() {
         });
     }
 
-    if (inquiriesModal) {
-        inquiriesModal.addEventListener('click', (e) => {
-            if (e.target === inquiriesModal) {
-                closeModal(inquiriesModal);
-            }
-        });
-    }
 
     if (promotionModal) {
         promotionModal.addEventListener('click', (e) => {
@@ -4122,6 +4376,9 @@ function initAdminPage() {
     if (reportModal) {
         reportModal.addEventListener('click', (e) => { if (e.target === reportModal) closeModal(reportModal); });
     }
+
+    // Update inquiry buttons count once everything is set up
+    updateInquiryCounts();
 }
 
 // ensures each product has rating/review metadata

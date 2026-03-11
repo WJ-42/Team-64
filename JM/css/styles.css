@@ -4830,6 +4830,11 @@ html body .site-footer {
     border: 1px solid var(--border-color);
 }
 
+.inquiry-detail.read {
+    background: rgba(50, 180, 120, 0.12);
+    border-color: rgba(50, 180, 120, 0.35);
+}
+
 .inquiry-header {
     display: flex;
     justify-content: space-between;

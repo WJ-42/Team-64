@@ -160,42 +160,9 @@
                     <button class="modal-close" id="closeInquiriesModal">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <div class="inquiries-list">
-                        <div class="inquiry-detail">
-                            <div class="inquiry-header">
-                                <h4>Inquiry #1</h4>
-                                <span class="inquiry-status unread">Unread</span>
-                            </div>
-                            <div class="inquiry-content">
-                                <p><strong>From:</strong> sarah.j@example.com</p>
-                                <p><strong>Date:</strong> Feb 16, 2025 - 2:34 PM</p>
-                                <p><strong>Subject:</strong> Do you have fragrance recommendations for sensitive skin?</p>
-                                <p><strong>Message:</strong> I have very sensitive skin and am looking for hypoallergenic fragrances. Could you recommend something from your collection that would be gentle on my skin?</p>
-                                <div class="inquiry-actions">
-                                    <button class="btn-small">Reply</button>
-                                    <button class="btn-small neutral">Assign</button>
-                                    <button class="btn-small dangerous">Archive</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="inquiry-detail">
-                            <div class="inquiry-header">
-                                <h4>Inquiry #2</h4>
-                                <span class="inquiry-status unread">Unread</span>
-                            </div>
-                            <div class="inquiry-content">
-                                <p><strong>From:</strong> michael.p@example.com</p>
-                                <p><strong>Date:</strong> Feb 15, 2025 - 10:15 AM</p>
-                                <p><strong>Subject:</strong> Bulk Order for Corporate Gifts</p>
-                                <p><strong>Message:</strong> Hello, I'm interested in purchasing 50 units of your Midnight Elegance fragrance for our company's corporate gifts. Can you provide a bulk discount quote and information about customization options?</p>
-                                <div class="inquiry-actions">
-                                    <button class="btn-small">Reply</button>
-                                    <button class="btn-small neutral">Assign</button>
-                                    <button class="btn-small dangerous">Archive</button>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="inquiries-section">
+                        <h3>Open Inquiries</h3>
+                        <div id="openInquiriesList" class="inquiries-list"></div>
                     </div>
                 </div>
             </div>
@@ -212,6 +179,19 @@
                     <div id="reviewsContent" class="reviews-list">
                         <!-- reviews injected here -->
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Archived Inquiries Modal -->
+        <div id="archivedInquiriesModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Archived Inquiries</h2>
+                    <button class="modal-close" id="closeArchivedInquiriesModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="archivedInquiriesListModal" class="inquiries-list"></div>
                 </div>
             </div>
         </div>
@@ -320,7 +300,8 @@
             <div class="quick-actions">
                 <button class="action-btn" id="openAddProductBtn">+ Add New Product</button>
                 <button class="action-btn" id="processPendingBtn">⚠ Process Pending Orders (3)</button>
-                <button class="action-btn" id="viewInquiriesBtn">📧 View Customer Inquiries (2)</button>
+                <button class="action-btn" id="viewInquiriesBtn">📧 View Customer Inquiries</button>
+                <button class="action-btn" id="viewArchivedInquiriesBtn">🗄️ View Archived Inquiries</button>
                 <button class="action-btn" id="viewAlertsBtn">🔔 View Alerts</button>
             </div>
             </div>
