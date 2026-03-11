@@ -3547,24 +3547,43 @@ function initAdminPage() {
     // Reorder from alerts
     if (alertsModal) {
         alertsModal.addEventListener('click', (e) => {
-            const btn = e.target.closest('.reorder-now-btn');
-            if (!btn) return;
+            const reorderButton = e.target.closest('.reorder-now-btn');
+            if (reorderButton) {
+                const id = Number(reorderButton.dataset.id);
+                const prod = products.find(p => p.id === id);
+                if (!prod) return;
 
-            const id = Number(btn.dataset.id);
-            const prod = products.find(p => p.id === id);
-            if (!prod) return;
+                const qtyStr = prompt(`Reorder quantity for ${prod.name}:`, prod.minStock || 10);
+                const qty = parseInt(qtyStr, 10);
+                if (isNaN(qty) || qty <= 0) {
+                    return;
+                }
 
-            const qtyStr = prompt(`Reorder quantity for ${prod.name}:`, prod.minStock || 10);
-            const qty = parseInt(qtyStr, 10);
-            if (isNaN(qty) || qty <= 0) {
+                prod.stock = (prod.stock || 0) + qty;
+                saveStock();
+                updateStockAlerts();
+                renderAdminTables();
+                showToast(`Reordered ${qty} units of ${prod.name}.`, 'success');
                 return;
             }
 
-            prod.stock = (prod.stock || 0) + qty;
-            saveStock();
-            updateStockAlerts();
-            renderAdminTables();
-            showToast(`Reordered ${qty} units of ${prod.name}.`, 'success');
+            const reorderAllButton = e.target.closest('#reorderAllToMinBtn');
+            if (reorderAllButton) {
+                const needsReorder = products.filter(p => p.minStock && (p.stock || 0) < p.minStock);
+                if (!needsReorder.length) {
+                    showToast('All products are already at or above min stock.', 'success');
+                    return;
+                }
+
+                needsReorder.forEach(p => {
+                    p.stock = p.minStock;
+                });
+
+                saveStock();
+                updateStockAlerts();
+                renderAdminTables();
+                showToast('Reordered all low-stock items to their minimum levels.', 'success');
+            }
         });
     }
 
@@ -3912,6 +3931,20 @@ function initAdminPage() {
                     saveStock();
                     updateStockAlerts();
                     renderAdminTables();
+                }
+            }
+        } else if (e.target.matches('.reorder-btn')) {
+            const id = Number(e.target.dataset.id);
+            const product = products.find(p => p.id === id);
+            if (product) {
+                const qtyStr = prompt(`Reorder quantity for ${product.name}:`, product.minStock || 10);
+                const qty = parseInt(qtyStr, 10);
+                if (!isNaN(qty) && qty > 0) {
+                    product.stock = (product.stock || 0) + qty;
+                    saveStock();
+                    updateStockAlerts();
+                    renderAdminTables();
+                    showToast(`Reordered ${qty} units of ${product.name}.`, 'success');
                 }
             }
         } else if (e.target.matches('.edit-product-btn')) {
