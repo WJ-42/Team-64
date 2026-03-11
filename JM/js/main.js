@@ -3885,6 +3885,13 @@ function initAdminPage() {
         });
     }
 
+    // Close reviews modal
+    if (closeReviewsModal) {
+        closeReviewsModal.addEventListener('click', () => {
+            closeModal(reviewsModal);
+        });
+    }
+
     // Close modals when clicking outside
     if (addProductModal) {
         addProductModal.addEventListener('click', (e) => {
@@ -3908,6 +3915,14 @@ function initAdminPage() {
             if (e.target === promotionModal) {
                 closeModal(promotionModal);
                 promotionForm.reset();
+            }
+        });
+    }
+
+    if (reviewsModal) {
+        reviewsModal.addEventListener('click', (e) => {
+            if (e.target === reviewsModal) {
+                closeModal(reviewsModal);
             }
         });
     }
