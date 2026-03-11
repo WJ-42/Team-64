@@ -4370,6 +4370,17 @@ html body .site-footer {
     border: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
+    transition: background 0.25s ease, opacity 0.25s ease;
+}
+
+.promotion-item.deactivated {
+    opacity: 0.55;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.promotion-item.deactivated .status-badge {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--text-secondary);
 }
 
 .promotion-header {

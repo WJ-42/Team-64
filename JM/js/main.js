@@ -442,6 +442,73 @@ function saveProducts() {
 // ----- inquiry persistence helpers -----
 const INQUIRIES_STORAGE_KEY = "luminousScentsInquiries";
 const ORDERS_STORAGE_KEY = "luminousScentsPendingOrders";
+const PROMOS_STORAGE_KEY = "luminousScentsPromotions";
+
+function getSavedDeactivatedPromoIds() {
+    try {
+        const raw = localStorage.getItem(PROMOS_STORAGE_KEY);
+        if (!raw) return [];
+        const data = JSON.parse(raw);
+        return Array.isArray(data) ? data : [];
+    } catch {
+        return [];
+    }
+}
+
+function saveDeactivatedPromoIds(ids) {
+    try {
+        localStorage.setItem(PROMOS_STORAGE_KEY, JSON.stringify(Array.from(new Set(ids))));
+    } catch {
+        // ignore
+    }
+}
+
+function applyPromotionState() {
+    const grid = document.querySelector('.promotions-grid');
+    if (!grid) return;
+
+    const deactivatedIds = new Set(getSavedDeactivatedPromoIds().map(String));
+
+    const items = Array.from(grid.querySelectorAll('.promotion-item'));
+    items.forEach(item => {
+        const promoId = item.dataset.promoId;
+        if (!promoId) return;
+        const isDeactivated = deactivatedIds.has(promoId);
+        const statusBadge = item.querySelector('.status-badge');
+        const button = item.querySelector('.deactivate-promo-btn');
+
+        if (isDeactivated) {
+            item.classList.add('deactivated');
+            if (statusBadge) {
+                statusBadge.textContent = 'Deactivated';
+                statusBadge.classList.remove('active');
+            }
+            if (button) {
+                button.textContent = 'Activate';
+                button.classList.remove('dangerous');
+                button.classList.add('neutral');
+            }
+        } else {
+            item.classList.remove('deactivated');
+            if (statusBadge) {
+                statusBadge.textContent = 'Active';
+                statusBadge.classList.add('active');
+            }
+            if (button) {
+                button.textContent = 'Deactivate';
+                button.classList.remove('neutral');
+                button.classList.add('dangerous');
+            }
+        }
+    });
+
+    // Move deactivated items to the bottom
+    items.sort((a, b) => {
+        const aDeact = a.classList.contains('deactivated');
+        const bDeact = b.classList.contains('deactivated');
+        return (aDeact === bDeact) ? 0 : (aDeact ? 1 : -1);
+    }).forEach(item => grid.appendChild(item));
+}
 
 // ----- pending order helpers -----
 function loadOrders(orders) {
@@ -4384,6 +4451,7 @@ function initAdminPage() {
     // render tables and pending orders when admin page loads
     renderAdminTables();
     renderPendingOrders();
+    applyPromotionState();
 
     // delegate click events for inventory updates and product actions
     document.addEventListener('click', function(e) {
@@ -4451,9 +4519,36 @@ function initAdminPage() {
             const promoItem = e.target.closest('.promotion-item');
             if (!promoItem) return;
             const promoName = promoItem.querySelector('.promotion-header h4')?.textContent || 'this promotion';
-            customConfirm(`Deactivate ${promoName}?`, () => {
+            const statusBadge = promoItem.querySelector('.status-badge');
+            const isDeactivated = promoItem.classList.contains('deactivated');
+            const action = isDeactivated ? 'Activate' : 'Deactivate';
+
+            customConfirm(`${action} ${promoName}?`, () => {
+                const deactivatedIds = new Set(getSavedDeactivatedPromoIds().map(String));
+
+                if (isDeactivated) {
+                    deactivatedIds.delete(String(promoItem.dataset.promoId));
+                } else {
+                    deactivatedIds.add(String(promoItem.dataset.promoId));
+                }
+
+                saveDeactivatedPromoIds(Array.from(deactivatedIds));
+                applyPromotionState();
+
+                if (isDeactivated) {
+                    showToast(`${promoName} has been reactivated.`, 'success');
+                } else {
+                    showToast(`${promoName} has been deactivated.`, 'success');
+                }
+            });
+        } else if (e.target.matches('.delete-promo-btn')) {
+            const promoItem = e.target.closest('.promotion-item');
+            if (!promoItem) return;
+            const promoName = promoItem.querySelector('.promotion-header h4')?.textContent || 'this promotion';
+
+            customConfirm(`Delete ${promoName}? This cannot be undone.`, () => {
                 promoItem.remove();
-                showToast(`${promoName} has been deactivated.`, 'success');
+                showToast(`${promoName} has been deleted.`, 'error');
             });
         } else if (e.target.matches('.edit-product-btn')) {
             const id = Number(e.target.dataset.id);
