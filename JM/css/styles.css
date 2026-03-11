@@ -4532,9 +4532,10 @@ html body .site-footer {
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    z-index: 1000;
+    padding-top: 140px; /* Keep modal content below the header/navbar */
+    z-index: 9999; /* Ensure modals always sit above the header/navbar */
     opacity: 1;
     transition: opacity 0.3s ease;
 }
