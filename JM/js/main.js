@@ -435,12 +435,12 @@ function updateStockAlerts() {
     const alerts = [];
     products.forEach(p => {
         if (p.stock === 0) {
-            alerts.push({ type: 'critical', product: p.name, stock: 0, min: p.minStock || 0 });
+            alerts.push({ id: p.id, type: 'critical', product: p.name, stock: 0, min: p.minStock || 0 });
         } else if (p.minStock && p.stock < p.minStock) {
-            alerts.push({ type: 'warning', product: p.name, stock: p.stock, min: p.minStock });
+            alerts.push({ id: p.id, type: 'warning', product: p.name, stock: p.stock, min: p.minStock });
         } else if (!p.minStock && p.stock > 0 && p.stock <= 5) {
             // fallback low-stock threshold
-            alerts.push({ type: 'warning', product: p.name, stock: p.stock, min: '' });
+            alerts.push({ id: p.id, type: 'warning', product: p.name, stock: p.stock, min: '' });
         }
     });
 
@@ -478,7 +478,7 @@ function updateStockAlerts() {
                     <p><strong>Current Stock:</strong> ${a.stock} units</p>
                     ${thresholdInfo}
                     ${extra}
-                    <p><strong>Action:</strong> <button class="btn-small">Reorder Now</button></p>
+                    <p><strong>Action:</strong> <button class="btn-small reorder-now-btn" data-id="${a.id}">Reorder Now</button></p>
                 </div>`;
         }).join('');
     }
@@ -3541,6 +3541,30 @@ function initAdminPage() {
     if (closeAlertsModal) {
         closeAlertsModal.addEventListener('click', () => {
             closeModal(alertsModal);
+        });
+    }
+
+    // Reorder from alerts
+    if (alertsModal) {
+        alertsModal.addEventListener('click', (e) => {
+            const btn = e.target.closest('.reorder-now-btn');
+            if (!btn) return;
+
+            const id = Number(btn.dataset.id);
+            const prod = products.find(p => p.id === id);
+            if (!prod) return;
+
+            const qtyStr = prompt(`Reorder quantity for ${prod.name}:`, prod.minStock || 10);
+            const qty = parseInt(qtyStr, 10);
+            if (isNaN(qty) || qty <= 0) {
+                return;
+            }
+
+            prod.stock = (prod.stock || 0) + qty;
+            saveStock();
+            updateStockAlerts();
+            renderAdminTables();
+            showToast(`Reordered ${qty} units of ${prod.name}.`, 'success');
         });
     }
 
