@@ -167,6 +167,49 @@
             </div>
         </div>
 
+        <!-- Edit Order Modal -->
+        <div id="editOrderModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Edit Order</h2>
+                    <button class="modal-close" id="closeEditOrderModal">&times;</button>
+                </div>
+                <form id="editOrderForm" class="product-form">
+                    <div class="form-grid">
+                        <div class="form-row">
+                            <label for="editOrderId">Order #</label>
+                            <input type="text" id="editOrderId" name="editOrderId" readonly>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="editOrderCustomer">Customer</label>
+                            <input type="text" id="editOrderCustomer" name="editOrderCustomer" readonly>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="editOrderDate">Date</label>
+                            <input type="text" id="editOrderDate" name="editOrderDate" readonly>
+                        </div>
+
+                        <div class="form-row full-width">
+                            <label for="editOrderItems">Items (format: Name xQty, Name xQty)</label>
+                            <textarea id="editOrderItems" name="editOrderItems" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="editOrderTotal">Total (£)</label>
+                            <input type="number" id="editOrderTotal" name="editOrderTotal" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                        <button type="button" class="btn-secondary" id="cancelEditOrderForm">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- Customer Inquiries Modal -->
         <div id="inquiriesModal" class="modal hidden">
             <div class="modal-content">
@@ -480,64 +523,12 @@
         <!-- Pending Orders Section -->
         <section class="admin-box" data-collapsible="true">
             <div class="box-header">
-                <h3>Pending Orders (3)</h3>
+                <h3>Pending Orders (<span id="pendingOrdersCount">0</span>)</h3>
             </div>
             <div class="box-content">
-            <div class="orders-list">
-                <div class="order-item">
-                    <div class="order-header">
-                        <h4>Order #1082</h4>
-                        <span class="order-status pending">Pending</span>
-                    </div>
-                    <div class="order-details">
-                        <p><strong>Customer:</strong> sarah.j@example.com</p>
-                        <p><strong>Date:</strong> Feb 16, 2025</p>
-                        <p><strong>Items:</strong> Midnight Elegance x1, Golden Hour x2</p>
-                        <p><strong>Total:</strong> £149.00</p>
-                    </div>
-                    <div class="order-actions">
-                        <button class="btn-small">Approve & Ship</button>
-                        <button class="btn-small neutral">Edit Order</button>
-                        <button class="btn-small dangerous">Reject</button>
-                    </div>
+                <div class="orders-list" id="pendingOrdersList">
+                    <!-- Orders injected by JS -->
                 </div>
-
-                <div class="order-item">
-                    <div class="order-header">
-                        <h4>Order #1083</h4>
-                        <span class="order-status pending">Pending</span>
-                    </div>
-                    <div class="order-details">
-                        <p><strong>Customer:</strong> james.m@example.com</p>
-                        <p><strong>Date:</strong> Feb 16, 2025</p>
-                        <p><strong>Items:</strong> Velvet Nights x1</p>
-                        <p><strong>Total:</strong> £65.00</p>
-                    </div>
-                    <div class="order-actions">
-                        <button class="btn-small">Approve & Ship</button>
-                        <button class="btn-small neutral">Edit Order</button>
-                        <button class="btn-small dangerous">Reject</button>
-                    </div>
-                </div>
-
-                <div class="order-item">
-                    <div class="order-header">
-                        <h4>Order #1084</h4>
-                        <span class="order-status pending">Pending</span>
-                    </div>
-                    <div class="order-details">
-                        <p><strong>Customer:</strong> lisa.c@example.com</p>
-                        <p><strong>Date:</strong> Feb 17, 2025</p>
-                        <p><strong>Items:</strong> Golden Hour x3</p>
-                        <p><strong>Total:</strong> £156.00</p>
-                    </div>
-                    <div class="order-actions">
-                        <button class="btn-small">Approve & Ship</button>
-                        <button class="btn-small neutral">Edit Order</button>
-                        <button class="btn-small dangerous">Reject</button>
-                    </div>
-                </div>
-            </div>
             </div>
         </section>
 

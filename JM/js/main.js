@@ -441,6 +441,30 @@ function saveProducts() {
 
 // ----- inquiry persistence helpers -----
 const INQUIRIES_STORAGE_KEY = "luminousScentsInquiries";
+const ORDERS_STORAGE_KEY = "luminousScentsPendingOrders";
+
+// ----- pending order helpers -----
+function loadOrders(orders) {
+    const data = localStorage.getItem(ORDERS_STORAGE_KEY);
+    if (!data) return;
+
+    try {
+        const saved = JSON.parse(data);
+        if (!Array.isArray(saved)) return;
+        orders.length = 0;
+        saved.forEach(o => orders.push(o));
+    } catch (e) {
+        console.error('Failed to load orders from storage', e);
+    }
+}
+
+function saveOrders(orders) {
+    try {
+        localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(orders));
+    } catch (e) {
+        console.error('Failed to save orders to storage', e);
+    }
+}
 
 function loadInquiries(inquiries) {
     const data = localStorage.getItem(INQUIRIES_STORAGE_KEY);
@@ -3438,6 +3462,7 @@ function initAdminPage() {
     const alertsModal = document.getElementById('alertsModal');
     const inquiriesModal = document.getElementById('inquiriesModal');
     const bulkUpdateModal = document.getElementById('bulkUpdateModal');
+    const editOrderModal = document.getElementById('editOrderModal');
     
     const openAddProductBtn = document.getElementById('openAddProductBtn');
     const addProductBtn2 = document.getElementById('addProductBtn2');
@@ -3451,11 +3476,19 @@ function initAdminPage() {
     const closeAlertsModal = document.getElementById('closeAlertsModal');
     const closeInquiriesModal = document.getElementById('closeInquiriesModal');
     const closeBulkModal = document.getElementById('closeBulkModal');
+    const closeEditOrderModal = document.getElementById('closeEditOrderModal');
     const promotionModal = document.getElementById('promotionModal');
     const closePromotionModal = document.getElementById('closePromotionModal');
     
     const cancelProductForm = document.getElementById('cancelProductForm');
+    const cancelEditOrderForm = document.getElementById('cancelEditOrderForm');
     const addProductForm = document.getElementById('addProductForm');
+    const editOrderForm = document.getElementById('editOrderForm');
+    const editOrderIdInput = document.getElementById('editOrderId');
+    const editOrderCustomerInput = document.getElementById('editOrderCustomer');
+    const editOrderDateInput = document.getElementById('editOrderDate');
+    const editOrderItemsInput = document.getElementById('editOrderItems');
+    const editOrderTotalInput = document.getElementById('editOrderTotal');
     const productImageInput = document.getElementById('productImage');
     const fileNameSpan = document.getElementById('fileName');
     const imagePreview = document.getElementById('imagePreview');
@@ -3479,6 +3512,8 @@ function initAdminPage() {
 
     const openInquiriesList = document.getElementById('openInquiriesList');
     const archivedInquiriesListModal = document.getElementById('archivedInquiriesListModal');
+    const pendingOrdersList = document.getElementById('pendingOrdersList');
+    const pendingOrdersCount = document.getElementById('pendingOrdersCount');
 
     let inquiries = [
         {
@@ -3507,7 +3542,44 @@ function initAdminPage() {
 
     loadInquiries(inquiries);
 
+    let pendingOrders = [
+        {
+            id: 1082,
+            customer: 'sarah.j@example.com',
+            date: 'Feb 16, 2025',
+            items: [
+                { name: 'Midnight Elegance', qty: 1 },
+                { name: 'Golden Hour', qty: 2 }
+            ],
+            total: 149.00,
+            status: 'pending'
+        },
+        {
+            id: 1083,
+            customer: 'james.m@example.com',
+            date: 'Feb 16, 2025',
+            items: [
+                { name: 'Velvet Nights', qty: 1 }
+            ],
+            total: 65.00,
+            status: 'pending'
+        },
+        {
+            id: 1084,
+            customer: 'lisa.c@example.com',
+            date: 'Feb 17, 2025',
+            items: [
+                { name: 'Golden Hour', qty: 3 }
+            ],
+            total: 156.00,
+            status: 'pending'
+        }
+    ];
+
+    loadOrders(pendingOrders);
+
     let editingProductId = null;
+    let editingOrderId = null;
     let selectedProductImageValue = null;
 
     const updateInquiryCounts = () => {
@@ -3520,6 +3592,14 @@ function initAdminPage() {
         if (viewArchivedInquiriesBtn) {
             viewArchivedInquiriesBtn.textContent = `🗄️ View Archived Inquiries (${archivedCount})`;
         }
+    };
+
+    const updatePendingOrderCount = () => {
+        const pendingCount = pendingOrders.filter(o => o.status === 'pending').length;
+        const countEl = document.getElementById('pendingOrdersCount');
+        if (countEl) countEl.textContent = pendingCount;
+        const countButton = document.getElementById('processPendingBtn');
+        if (countButton) countButton.textContent = `⚠ Process Pending Orders (${pendingCount})`;
     };
 
     const renderInquiries = () => {
@@ -3561,6 +3641,37 @@ function initAdminPage() {
 
         openInquiriesList.innerHTML = renderList(inquiries, false) || '<p>No open inquiries.</p>';
         updateInquiryCounts();
+    };
+
+    const renderPendingOrders = () => {
+        if (!pendingOrdersList) return;
+
+        const pending = pendingOrders.filter(o => o.status === 'pending');
+
+        pendingOrdersList.innerHTML = pending.map(o => {
+            const itemsText = o.items.map(i => `${i.name} x${i.qty}`).join(', ');
+            return `
+                <div class="order-item" data-order-id="${o.id}">
+                    <div class="order-header">
+                        <h4>Order #${o.id}</h4>
+                        <span class="order-status pending">Pending</span>
+                    </div>
+                    <div class="order-details">
+                        <p><strong>Customer:</strong> ${o.customer}</p>
+                        <p><strong>Date:</strong> ${o.date}</p>
+                        <p><strong>Items:</strong> ${itemsText}</p>
+                        <p><strong>Total:</strong> £${o.total.toFixed(2)}</p>
+                    </div>
+                    <div class="order-actions">
+                        <button class="btn-small approve-order-btn" data-id="${o.id}">Approve & Ship</button>
+                        <button class="btn-small neutral edit-order-btn" data-id="${o.id}">Edit Order</button>
+                        <button class="btn-small dangerous reject-order-btn" data-id="${o.id}">Reject</button>
+                    </div>
+                </div>
+            `;
+        }).join('') || '<p>No pending orders.</p>';
+
+        updatePendingOrderCount();
     };
 
     const renderArchivedInquiries = () => {
@@ -3636,6 +3747,24 @@ function initAdminPage() {
         imagePreview.classList.add('hidden');
     };
 
+    // Order edit modal handlers
+    const openEditOrderModal = (order) => {
+        if (!editOrderModal || !editOrderForm) return;
+        editingOrderId = order?.id ?? null;
+        if (editOrderIdInput) editOrderIdInput.value = order?.id ?? '';
+        if (editOrderCustomerInput) editOrderCustomerInput.value = order?.customer ?? '';
+        if (editOrderDateInput) editOrderDateInput.value = order?.date ?? '';
+        if (editOrderItemsInput) editOrderItemsInput.value = order?.items?.map(i => `${i.name} x${i.qty}`).join(', ') || '';
+        if (editOrderTotalInput) editOrderTotalInput.value = order?.total != null ? order.total : '';
+        openModal(editOrderModal);
+    };
+
+    const closeEditOrderModalFn = () => {
+        closeModal(editOrderModal);
+        if (editOrderForm) editOrderForm.reset();
+        editingOrderId = null;
+    };
+
     // Quick action button handlers
     if (openAddProductBtn) {
         openAddProductBtn.addEventListener('click', openProductModal);
@@ -3647,7 +3776,11 @@ function initAdminPage() {
 
     if (processPendingBtn) {
         processPendingBtn.addEventListener('click', () => {
-            alert('Pending Orders section - Coming soon! This will allow you to review, approve, and ship pending orders.');
+            renderPendingOrders();
+            const pendingSection = document.getElementById('pendingOrdersList');
+            if (pendingSection) {
+                pendingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         });
     }
 
@@ -3663,6 +3796,7 @@ function initAdminPage() {
             openModal(alertsModal);
         });
     }
+
     if (bulkUpdateBtn) {
         bulkUpdateBtn.addEventListener('click', () => {
             // populate rows
@@ -3697,6 +3831,44 @@ function initAdminPage() {
 
     if (cancelProductForm) {
         cancelProductForm.addEventListener('click', closeProductModalFn);
+    }
+
+    // Close edit order modal
+    if (closeEditOrderModal) {
+        closeEditOrderModal.addEventListener('click', closeEditOrderModalFn);
+    }
+
+    if (cancelEditOrderForm) {
+        cancelEditOrderForm.addEventListener('click', closeEditOrderModalFn);
+    }
+
+    if (editOrderForm) {
+        editOrderForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!editingOrderId) return;
+            const order = pendingOrders.find(o => o.id === editingOrderId);
+            if (!order) return;
+
+            const totalValue = parseFloat(editOrderTotalInput?.value);
+            if (!isNaN(totalValue)) {
+                order.total = totalValue;
+            }
+
+            const itemsText = editOrderItemsInput?.value || '';
+            const parsedItems = itemsText.split(',').map(i => i.trim()).filter(Boolean).map(itemStr => {
+                const match = itemStr.match(/(.+) x(\d+)$/);
+                if (!match) return null;
+                return { name: match[1].trim(), qty: parseInt(match[2], 10) };
+            }).filter(Boolean);
+            if (parsedItems.length) {
+                order.items = parsedItems;
+            }
+
+            saveOrders(pendingOrders);
+            renderPendingOrders();
+            showToast(`Order #${order.id} updated.`, 'success');
+            closeEditOrderModalFn();
+        });
     }
 
     // Close alerts modal
@@ -4209,8 +4381,9 @@ function initAdminPage() {
         });
     });
 
-    // render tables when admin page loads
+    // render tables and pending orders when admin page loads
     renderAdminTables();
+    renderPendingOrders();
 
     // delegate click events for inventory updates and product actions
     document.addEventListener('click', function(e) {
@@ -4247,6 +4420,33 @@ function initAdminPage() {
                     showToast(`Reordered ${qty} units of ${product.name}.`, 'success');
                 }
             }
+        } else if (e.target.matches('.approve-order-btn')) {
+            const id = Number(e.target.dataset.id);
+            const order = pendingOrders.find(o => o.id === id);
+            if (!order) return;
+
+            customConfirm(`Approve & ship order #${order.id}?`, () => {
+                order.status = 'shipped';
+                saveOrders(pendingOrders);
+                renderPendingOrders();
+                showToast(`Order #${order.id} marked as shipped.`, 'success');
+            });
+        } else if (e.target.matches('.reject-order-btn')) {
+            const id = Number(e.target.dataset.id);
+            const order = pendingOrders.find(o => o.id === id);
+            if (!order) return;
+
+            customConfirm(`Reject order #${order.id}?`, () => {
+                order.status = 'rejected';
+                saveOrders(pendingOrders);
+                renderPendingOrders();
+                showToast(`Order #${order.id} has been rejected.`, 'error');
+            });
+        } else if (e.target.matches('.edit-order-btn')) {
+            const id = Number(e.target.dataset.id);
+            const order = pendingOrders.find(o => o.id === id);
+            if (!order) return;
+            openEditOrderModal(order);
         } else if (e.target.matches('.edit-product-btn')) {
             const id = Number(e.target.dataset.id);
             const product = products.find(p => p.id === id);
