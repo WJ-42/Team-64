@@ -4447,6 +4447,14 @@ function initAdminPage() {
             const order = pendingOrders.find(o => o.id === id);
             if (!order) return;
             openEditOrderModal(order);
+        } else if (e.target.matches('.deactivate-promo-btn')) {
+            const promoItem = e.target.closest('.promotion-item');
+            if (!promoItem) return;
+            const promoName = promoItem.querySelector('.promotion-header h4')?.textContent || 'this promotion';
+            customConfirm(`Deactivate ${promoName}?`, () => {
+                promoItem.remove();
+                showToast(`${promoName} has been deactivated.`, 'success');
+            });
         } else if (e.target.matches('.edit-product-btn')) {
             const id = Number(e.target.dataset.id);
             const product = products.find(p => p.id === id);
