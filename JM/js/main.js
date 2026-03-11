@@ -4713,6 +4713,22 @@ function initAdminPage() {
                     `).join('');
             }
             if (reviewsModal) openModal(reviewsModal);
+        } else if (e.target.matches('.publish-review-btn')) {
+            const reviewItem = e.target.closest('.review-item');
+            if (!reviewItem) return;
+            customConfirm('Mark this review as published?', () => {
+                e.target.textContent = 'Published';
+                e.target.disabled = true;
+                reviewItem.classList.add('published');
+                showToast('Review marked as published.', 'success');
+            });
+        } else if (e.target.matches('.remove-review-btn')) {
+            const reviewItem = e.target.closest('.review-item');
+            if (!reviewItem) return;
+            customConfirm('Remove this review?', () => {
+                reviewItem.remove();
+                showToast('Review removed.', 'error');
+            });
         }
     });
 
