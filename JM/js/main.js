@@ -966,6 +966,10 @@ function renderProductsPage() {
         card.className = "card";
         card.setAttribute("data-category", product.category);
 
+        const stock = typeof product.stock === 'number' ? product.stock : 0;
+        const isOutOfStock = stock === 0;
+        if (isOutOfStock) card.classList.add('unavailable');
+
         const loggedInUser = getLoggedInUser();
         const inWishlist = loggedInUser ? isInWishlist(product.id, loggedInUser) : false;
         const wishlistButtonText = inWishlist ? "In Wishlist" : "Add to Wishlist";
@@ -979,10 +983,11 @@ function renderProductsPage() {
             <p>${product.brand}</p>
             <p><strong>Notes:</strong> ${product.notes}</p>
             <p class="price">£${product.price.toFixed(2)}</p>
+            <p class="stock ${isOutOfStock ? 'out-of-stock' : ''}">${isOutOfStock ? 'Unavailable' : `Stock: ${stock}`}</p>
             <p>${product.description}</p>
             <div class="product-actions">
-                <button class="btn-primary" data-product-id="${product.id}" data-action="basket">
-                    Add to basket
+                <button class="btn-primary" data-product-id="${product.id}" data-action="basket" ${isOutOfStock ? 'disabled aria-disabled="true"' : ''}>
+                    ${isOutOfStock ? 'Unavailable' : 'Add to basket'}
                 </button>
                 <button class="${wishlistButtonClass}" data-product-id="${product.id}" data-action="wishlist">
                     ${wishlistButtonText}
