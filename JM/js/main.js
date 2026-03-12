@@ -4515,6 +4515,60 @@ function initAdminPage() {
     // apply state (deactivation + ordering) after promotions render
     applyPromotionState();
 
+    // Render the sales trend chart (demo data)
+    const renderSalesTrendChart = () => {
+        const canvas = document.getElementById('salesTrendChart');
+        if (!canvas || typeof Chart === 'undefined') return;
+
+        const labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const data = [420, 510, 480, 560, 600, 540, 620];
+
+        const ctx = canvas.getContext('2d');
+
+        // Destroy previous instance if re-rendering
+        if (canvas._chartInstance) {
+            canvas._chartInstance.destroy();
+        }
+
+        canvas._chartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Sales (£)',
+                    data,
+                    backgroundColor: 'rgba(99, 102, 241, 0.65)',
+                    borderColor: 'rgba(99, 102, 241, 1)',
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    maxBarThickness: 40
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: (value) => `£${value}`
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => `£${context.parsed.y.toFixed(2)}`
+                        }
+                    }
+                }
+            }
+        });
+    };
+
+    renderSalesTrendChart();
+
     // delegate click events for inventory updates and product actions
     document.addEventListener('click', function(e) {
         if (e.target.matches('.update-stock-btn')) {
@@ -4743,6 +4797,7 @@ function initAdminPage() {
     const btnMonthlyReport = document.getElementById('btnMonthlyReport');
     const btnInventoryReport = document.getElementById('btnInventoryReport');
     const btnCustomerReport = document.getElementById('btnCustomerReport');
+    const generateReportBtn = document.getElementById('generateReportBtn');
 
     const downloadCSV = (filename, csv) => {
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -4750,6 +4805,77 @@ function initAdminPage() {
         const a = document.createElement('a');
         a.href = url;
         a.setAttribute('download', filename);
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
+    const downloadExcelReport = () => {
+        if (typeof XLSX === 'undefined') {
+            alert('Unable to generate Excel report: SheetJS library not loaded.');
+            return;
+        }
+
+        // Build workbook and sheets
+        const workbook = XLSX.utils.book_new();
+
+        // 1) Sales data (using recent pending orders as demo data)
+        const salesSheet = XLSX.utils.json_to_sheet(
+            pendingOrders.map(order => ({
+                'Order ID': order.id,
+                Date: order.date,
+                Customer: order.customer,
+                'Total (£)': order.total.toFixed(2)
+            }))
+        );
+        XLSX.utils.book_append_sheet(workbook, salesSheet, 'Sales');
+
+        // 2) Top products (computed from pending orders)
+        const productTotals = {};
+        pendingOrders.forEach(o => {
+            (o.items || []).forEach(item => {
+                productTotals[item.name] = (productTotals[item.name] || 0) + (item.qty || 0);
+            });
+        });
+        const topProducts = Object.entries(productTotals)
+            .map(([name, qty]) => ({ Product: name, 'Units Sold': qty }))
+            .sort((a, b) => b['Units Sold'] - a['Units Sold']);
+        const topProductsSheet = XLSX.utils.json_to_sheet(topProducts);
+        XLSX.utils.book_append_sheet(workbook, topProductsSheet, 'Top Products');
+
+        // 3) Customer metrics (from pending orders)
+        const uniqueCustomers = new Set(pendingOrders.map(o => o.customer));
+        const totalOrders = pendingOrders.length;
+        const totalRevenue = pendingOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+        const averageOrder = totalOrders ? totalRevenue / totalOrders : 0;
+        const customerMetricsSheet = XLSX.utils.json_to_sheet([
+            { Metric: 'Total Orders', Value: totalOrders },
+            { Metric: 'Unique Customers', Value: uniqueCustomers.size },
+            { Metric: 'Total Revenue (£)', Value: totalRevenue.toFixed(2) },
+            { Metric: 'Average Order (£)', Value: averageOrder.toFixed(2) }
+        ]);
+        XLSX.utils.book_append_sheet(workbook, customerMetricsSheet, 'Customer Metrics');
+
+        // 4) Inventory
+        const inventorySheet = XLSX.utils.json_to_sheet(
+            products.map(p => ({
+                Product: p.name,
+                Category: p.category || '',
+                Stock: p.stock || 0,
+                'Min Stock': p.minStock || '',
+                'Reorder Qty': p.reorderQty || ''
+            }))
+        );
+        XLSX.utils.book_append_sheet(workbook, inventorySheet, 'Inventory');
+
+        const fileName = `luminous-report-${new Date().toISOString().slice(0, 10)}.xlsx`;
+        const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([wbout], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -4822,6 +4948,7 @@ function initAdminPage() {
     if (btnMonthlyReport) btnMonthlyReport.addEventListener('click', () => openReport('monthly'));
     if (btnInventoryReport) btnInventoryReport.addEventListener('click', () => openReport('inventory'));
     if (btnCustomerReport) btnCustomerReport.addEventListener('click', () => openReport('customers'));
+    if (generateReportBtn) generateReportBtn.addEventListener('click', downloadExcelReport);
 
     if (closeReportModal) {
         closeReportModal.addEventListener('click', () => closeModal(reportModal));

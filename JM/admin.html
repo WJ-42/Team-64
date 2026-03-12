@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
     <script src="js/main.js" defer></script>
 </head>
 <body data-page="admin">
@@ -604,14 +606,16 @@
         <section class="admin-box" data-collapsible="true">
             <div class="box-header">
                 <h3>Analytics & Reports</h3>
-                <button class="btn-primary">Generate Report</button>
+                <button id="generateReportBtn" class="btn-primary">Download Full Report</button>
             </div>
             <div class="box-content">
             <div class="analytics-section">
                 <div class="analytics-row">
                     <div class="analytics-card">
                         <h4>Sales Trend</h4>
-                        <div class="chart-placeholder">📊 Sales Chart (7-day trend)</div>
+                        <div class="chart-container">
+                            <canvas id="salesTrendChart" width="400" height="220"></canvas>
+                        </div>
                         <p class="chart-caption">Weekly sales: ↑ 12.5% increase</p>
                     </div>
                     <div class="analytics-card">
