@@ -677,6 +677,12 @@ function updateStockAlerts() {
         }
     });
 
+    // Update dashboard low-stock counter
+    const lowStockCounter = document.getElementById('lowStockCount');
+    if (lowStockCounter) {
+        lowStockCounter.textContent = alerts.length;
+    }
+
     // page alerts container
     const container = document.querySelector('.alerts-container');
     if (container) {
