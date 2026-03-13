@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luminous Scents - Admin Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+    <script src="js/main.js" defer></script>
+</head>
+<body data-page="admin">
+    <div class="parallax-stars">
+        <canvas id="starfield"></canvas>
+        <canvas id="trailCanvas"></canvas>
+    </div>
+    <header class="main-header">
+        <div class="logo">
+            <img src="images/luminous-logo.png" alt="Luminous Scents logo" class="logo-image">
+            <div class="logo-text">
+                <h1>Luminous Scents</h1>
+                <p>Illuminating the story behind every fragrance</p>
+            </div>
+        </div>
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            <a href="products.html">Fragrances</a>
+            <a href="basket.html">Basket</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="account.html">Account</a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"/>
+                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <h2>Admin Panel</h2>
+            <p>Manage inventory, and view comprehensive analytics.</p>
+        </section>
+
+        <!-- Add Product Modal -->
+        <div id="addProductModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Add New Product</h2>
+                    <button class="modal-close" id="closeProductModal">&times;</button>
+                </div>
+                <form id="addProductForm" class="product-form">
+                    <div class="form-grid">
+                        <div class="form-row">
+                            <label for="productName">Product Name *</label>
+                            <input type="text" id="productName" name="productName" required placeholder="e.g., Midnight Elegance">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="productCategory">Category *</label>
+                            <select id="productCategory" name="productCategory" required>
+                                <option value="">Select a category</option>
+                                <option value="perfume">Signature Perfumes</option>
+                                <option value="solaris">The Solaris Duo</option>
+                                <option value="home">Home Fragrances</option>
+                                <option value="wellness">Wellness Collection</option>
+                                <option value="gift">Gift Sets</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="productPrice">Price (£) *</label>
+                            <input type="number" id="productPrice" name="productPrice" required step="0.01" placeholder="45.00">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="productStock">Stock Quantity *</label>
+                            <input type="number" id="productStock" name="productStock" required step="1" placeholder="50">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="productMinStock">Min Stock Level</label>
+                            <input type="number" id="productMinStock" name="productMinStock" step="1" placeholder="10">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="productReorderQty">Reorder Quantity</label>
+                            <input type="number" id="productReorderQty" name="productReorderQty" step="1" placeholder="10">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="productSupplier">Supplier</label>
+                            <input type="text" id="productSupplier" name="productSupplier" placeholder="e.g., Luminous Imports">
+                        </div>
+
+                        <div class="form-row full-width">
+                            <label for="productNotes">Fragrance Notes *</label>
+                            <input type="text" id="productNotes" name="productNotes" required placeholder="e.g., Oud, amber, vanilla">
+                        </div>
+
+                        <div class="form-row full-width">
+                            <label for="productDescription">Description *</label>
+                            <textarea id="productDescription" name="productDescription" required rows="4" placeholder="Describe the fragrance, its character, and best use cases..."></textarea>
+                        </div>
+
+                        <div class="form-row full-width">
+                            <label for="productImage">Product Image *</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="productImage" name="productImage" accept="image/*">
+                                <span id="fileName">No file chosen</span>
+                            </div>
+                            <div id="imagePreview" class="image-preview hidden">
+                                <img id="previewImg" alt="Preview">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Add Product</button>
+                        <button type="button" class="btn-secondary" id="cancelProductForm">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Alerts Modal -->
+        <div id="alertsModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Stock Alerts</h2>
+                    <button class="btn-small" id="reorderAllToMinBtn">Reorder All to Min Level</button>
+                    <button class="modal-close" id="closeAlertsModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="alerts-list">
+                        <div class="alert-detail critical">
+                            <div class="alert-title">⚠️ OUT OF STOCK</div>
+                            <p><strong>Product:</strong> Twilight Bloom</p>
+                            <p><strong>Current Stock:</strong> 0 units</p>
+                            <p><strong>Min. Level:</strong> 15 units</p>
+                            <p><strong>Last Ordered:</strong> Jan 25, 2025</p>
+                            <p><strong>Action:</strong> <button class="btn-small">Reorder Now</button></p>
+                        </div>
+
+                        <div class="alert-detail warning">
+                            <div class="alert-title">⚡ LOW STOCK</div>
+                            <p><strong>Product:</strong> Golden Hour</p>
+                            <p><strong>Current Stock:</strong> 5 units</p>
+                            <p><strong>Min. Level:</strong> 10 units</p>
+                            <p><strong>Threshold:</strong> 50% below minimum</p>
+                            <p><strong>Action:</strong> <button class="btn-small">Reorder Now</button></p>
+                        </div>
+
+                        <div class="alert-detail warning">
+                            <div class="alert-title">⚡ LOW STOCK</div>
+                            <p><strong>Product:</strong> Velvet Nights</p>
+                            <p><strong>Current Stock:</strong> 8 units</p>
+                            <p><strong>Min. Level:</strong> 15 units</p>
+                            <p><strong>Threshold:</strong> 47% below minimum</p>
+                            <p><strong>Action:</strong> <button class="btn-small">Reorder Now</button></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Order Modal -->
+        <div id="editOrderModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Edit Order</h2>
+                    <button class="modal-close" id="closeEditOrderModal">&times;</button>
+                </div>
+                <form id="editOrderForm" class="product-form">
+                    <div class="form-grid">
+                        <div class="form-row">
+                            <label for="editOrderId">Order #</label>
+                            <input type="text" id="editOrderId" name="editOrderId" readonly>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="editOrderCustomer">Customer</label>
+                            <input type="text" id="editOrderCustomer" name="editOrderCustomer" readonly>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="editOrderDate">Date</label>
+                            <input type="text" id="editOrderDate" name="editOrderDate" readonly>
+                        </div>
+
+                        <div class="form-row full-width">
+                            <label for="editOrderItems">Items (format: Name xQty, Name xQty)</label>
+                            <textarea id="editOrderItems" name="editOrderItems" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="editOrderTotal">Total (£)</label>
+                            <input type="number" id="editOrderTotal" name="editOrderTotal" step="0.01">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                        <button type="button" class="btn-secondary" id="cancelEditOrderForm">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Customer Inquiries Modal -->
+        <div id="inquiriesModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Customer Inquiries</h2>
+                    <button class="modal-close" id="closeInquiriesModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="inquiries-section">
+                        <h3>Open Inquiries</h3>
+                        <div id="openInquiriesList" class="inquiries-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews Modal -->
+        <div id="reviewsModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Product Reviews</h2>
+                    <button class="modal-close" id="closeReviewsModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="reviewsContent" class="reviews-list">
+                        <!-- reviews injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Archived Inquiries Modal -->
+        <div id="archivedInquiriesModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Archived Inquiries</h2>
+                    <button class="modal-close" id="closeArchivedInquiriesModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="archivedInquiriesListModal" class="inquiries-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promotion Modal -->
+        <div id="promotionModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="promotionModalTitle">Create New Promotion</h2>
+                    <button class="modal-close" id="closePromotionModal">&times;</button>
+                </div>
+                <form id="promotionForm" class="product-form">
+                    <div class="form-grid">
+                        <div class="form-row">
+                            <label for="promoName">Promotion Name *</label>
+                            <input type="text" id="promoName" name="promoName" required placeholder="e.g., Winter Sale 2025">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="promoType">Promotion Type *</label>
+                            <select id="promoType" name="promoType" required>
+                                <option value="">Select promotion type</option>
+                                <option value="seasonal">Seasonal Sale</option>
+                                <option value="coupon">Coupon Code</option>
+                                <option value="bundle">Bundle Offer</option>
+                                <option value="flash">Flash Sale</option>
+                                <option value="percent">Percentage Discount</option>
+                                <option value="fixed">Fixed Amount Off</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="promoCode">Coupon Code (if applicable)</label>
+                            <input type="text" id="promoCode" name="promoCode" placeholder="e.g., LUXURY25">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="promoDiscount">Discount Value *</label>
+                            <input type="text" id="promoDiscount" name="promoDiscount" required placeholder="e.g., 20% off or £10 off">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="promoMinSpend">Minimum Spend (£)</label>
+                            <input type="number" id="promoMinSpend" name="promoMinSpend" step="0.01" placeholder="50.00">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="promoMaxUses">Max Uses (leave blank for unlimited)</label>
+                            <input type="number" id="promoMaxUses" name="promoMaxUses" step="1" placeholder="100">
+                        </div>
+
+                        <div class="form-row">
+                            <label for="promoStartDate">Start Date *</label>
+                            <input type="date" id="promoStartDate" name="promoStartDate" required>
+                        </div>
+
+                        <div class="form-row">
+                            <label for="promoEndDate">End Date</label>
+                            <input type="date" id="promoEndDate" name="promoEndDate">
+                        </div>
+
+                        <div class="form-row full-width">
+                            <label for="promoProducts">Applicable Products *</label>
+                            <input type="text" id="promoProducts" name="promoProducts" required placeholder="e.g., All Fragrances or specific product names">
+                        </div>
+
+                        <div class="form-row full-width">
+                            <label for="promoDescription">Description</label>
+                            <textarea id="promoDescription" name="promoDescription" rows="3" placeholder="Additional details about this promotion..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary" id="submitPromoBtn">Create Promotion</button>
+                        <button type="button" class="btn-secondary" id="cancelPromoForm">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Report Modal -->
+        <div id="reportModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Generated Report</h2>
+                    <button class="modal-close" id="closeReportModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="reportContent" class="report-content">
+                        <!-- Report HTML will be injected here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-primary" id="downloadReportBtn">Download CSV</button>
+                    <button class="btn-secondary" id="closeReportFooter">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Section -->
+        <section class="admin-box" data-collapsible="true">
+            <div class="box-header">
+                <h3>Quick Actions</h3>
+            </div>
+            <div class="box-content">
+            <div class="quick-actions">
+                <button class="action-btn" id="openAddProductBtn">+ Add New Product</button>
+                <button class="action-btn" id="processPendingBtn">⚠ Process Pending Orders (3)</button>
+                <button class="action-btn" id="viewInquiriesBtn">📧 View Customer Inquiries</button>
+                <button class="action-btn" id="viewArchivedInquiriesBtn">🗄️ View Archived Inquiries</button>
+                <button class="action-btn" id="viewAlertsBtn">🔔 View Alerts</button>
+            </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Overview Section -->
+        <section class="admin-box" data-collapsible="true">
+            <div class="box-header">
+                <h3>Dashboard</h3>
+            </div>
+            <div class="box-content">
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h4>Daily Sales</h4>
+                    <p class="stat-number">£1,245</p>
+                    <p class="stat-label">Today</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h4>Weekly Sales</h4>
+                    <p class="stat-number">£8,920</p>
+                    <p class="stat-label">This week</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h4>Monthly Sales</h4>
+                    <p class="stat-number">£34,580</p>
+                    <p class="stat-label">This month</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h4>Total Orders</h4>
+                    <p class="stat-number">147</p>
+                    <p class="stat-label">All time</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h4>Low Stock Items</h4>
+                    <p class="stat-number" id="lowStockCount">0</p>
+                    <p class="stat-label">Needs reordering</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h4>Top Selling Product</h4>
+                    <p class="stat-text">Midnight Elegance</p>
+                    <p class="stat-label">489 units sold</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <h4>New Customers</h4>
+                    <p class="stat-number">12</p>
+                    <p class="stat-label">This month</p>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- Stock Alerts Section -->
+        <section class="admin-box" data-collapsible="true">
+            <div class="box-header">
+                <h3>Stock Alerts</h3>
+            </div>
+            <div class="box-content">
+            <div class="alerts-container">
+                <!-- dynamically filled -->
+            </div>
+            </div>
+        </section>
+
+        <!-- Product Management Section -->
+        <section class="admin-box" data-collapsible="true">
+            <div class="box-header">
+                <h3>Product Management</h3>
+                <button class="btn-primary" id="addProductBtn2">+ Add Product</button>
+            </div>
+            <div class="box-content">
+            <div class="products-table-wrapper">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Rating</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productManagementBody">
+                        <!-- rows will be generated dynamically by JS using the products array -->
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </section>
+
+        <!-- Inventory Management Section -->
+        <section class="admin-box" data-collapsible="true">
+            <div class="box-header">
+                <h3>Inventory Management</h3>
+                <button class="btn-primary" id="bulkUpdateBtn">Bulk Update</button>
+            </div>
+            <div class="box-content">
+            <div class="inventory-section">
+                <div class="inventory-table-wrapper">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Current Stock</th>
+                                <th>Min. Stock Level</th>
+                                <th>Reorder Qty</th>
+                                <th>Supplier</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryBody">
+                            <!-- inventory rows generated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+
+            <div class="supplier-section">
+                <h4>Supplier Management</h4>
+                <div class="supplier-list">
+                    <div class="supplier-item">
+                        <p><strong>Global Fragrances Ltd</strong></p>
+                        <p>Contact: +44 123 456 7890 | Email: orders@globalfrag.com | Lead time: 5-7 days</p>
+                    </div>
+                    <div class="supplier-item">
+                        <p><strong>Essence Imports</strong></p>
+                        <p>Contact: +44 987 654 3210 | Email: supply@essenceimports.com | Lead time: 3-4 days</p>
+                    </div>
+                    <div class="supplier-item">
+                        <p><strong>Perfume Premium</strong></p>
+                        <p>Contact: +44 555 666 7777 | Email: orders@perfumepremium.com | Lead time: 7-10 days</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bulk Update Modal -->
+        <div id="bulkUpdateModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Bulk Stock Update</h2>
+                    <button class="modal-close" id="closeBulkModal">&times;</button>
+                </div>
+                <form id="bulkUpdateForm">
+                    <div class="modal-body">
+                        <table class="admin-table">
+                            <thead><tr><th>Product</th><th>Stock</th></tr></thead>
+                            <tbody id="bulkUpdateBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                        <button type="button" class="btn-secondary" id="cancelBulkForm">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Pending Orders Section -->
+        <section class="admin-box" data-collapsible="true">
+            <div class="box-header">
+                <h3>Pending Orders (<span id="pendingOrdersCount">0</span>)</h3>
+            </div>
+            <div class="box-content">
+                <div class="orders-list" id="pendingOrdersList">
+                    <!-- Orders injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Discounts and Promotions Section -->
+        <section class="admin-box" data-collapsible="true">
+            <div class="box-header">
+                <h3>Discounts & Promotions</h3>
+                <button class="btn-primary" id="createPromotionBtn">+ Create Promotion</button>
+            </div>
+            <div class="box-content">
+                <div class="promotions-grid">
+                    <!-- Promotions will be rendered here by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews and Feedback Section -->
+        <section class="admin-box" data-collapsible="true">
+            <div class="box-header">
+                <h3>Reviews & Feedback</h3>
+            </div>
+            <div class="box-content">
+            <div class="reviews-list">
+                <div class="review-item">
+                    <div class="review-header">
+                        <h4>Midnight Elegance</h4>
+                        <span class="review-rating">★★★★★</span>
+                    </div>
+                    <div class="review-content">
+                        <p><strong>sarah.j@example.com</strong> - Feb 15, 2025</p>
+                        <p>"Absolutely stunning fragrance! Perfect for evening events. Long-lasting and elegant."</p>
+                    </div>
+                    <div class="review-actions">
+                        <button class="btn-small neutral publish-review-btn">Publish</button>
+                        <button class="btn-small dangerous remove-review-btn">Remove</button>
+                    </div>
+                </div>
+
+                <div class="review-item">
+                    <div class="review-header">
+                        <h4>Golden Hour</h4>
+                        <span class="review-rating">★★★☆☆</span>
+                    </div>
+                    <div class="review-content">
+                        <p><strong>michael.p@example.com</strong> - Feb 14, 2025</p>
+                        <p>"Nice fragrance, but fades too quickly. Expected better longevity for the price."</p>
+                    </div>
+                    <div class="review-actions">
+                        <button class="btn-small neutral publish-review-btn">Publish</button>
+                        <button class="btn-small dangerous remove-review-btn">Remove</button>
+                    </div>
+                </div>
+
+                <div class="review-item">
+                    <div class="review-header">
+                        <h4>Velvet Nights</h4>
+                        <span class="review-rating">★★★★★</span>
+                    </div>
+                    <div class="review-content">
+                        <p><strong>emma.r@example.com</strong> - Feb 13, 2025</p>
+                        <p>"Love it! Best purchase I've made. Sophisticated and captivating scent. Highly recommend!"</p>
+                    </div>
+                    <div class="review-actions">
+                        <button class="btn-small neutral publish-review-btn">Publish</button>
+                        <button class="btn-small dangerous remove-review-btn">Remove</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- Analytics and Reports Section -->
+        <section class="admin-box" data-collapsible="true">
+            <div class="box-header">
+                <h3>Analytics & Reports</h3>
+                <button id="generateReportBtn" class="btn-primary">Download Full Report</button>
+            </div>
+            <div class="box-content">
+            <div class="analytics-section">
+                <div class="analytics-row">
+                    <div class="analytics-card">
+                        <h4>Sales Trend</h4>
+                        <div class="chart-container">
+                            <canvas id="salesTrendChart" width="400" height="220"></canvas>
+                        </div>
+                        <p class="chart-caption">Weekly sales: ↑ 12.5% increase</p>
+                    </div>
+                    <div class="analytics-card">
+                        <h4>Top Products</h4>
+                        <ol class="top-products">
+                            <li>Midnight Elegance - 489 units (35%)</li>
+                            <li>Velvet Nights - 312 units (23%)</li>
+                            <li>Golden Hour - 278 units (20%)</li>
+                            <li>Twilight Bloom - 187 units (13%)</li>
+                            <li>Other - 113 units (9%)</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="analytics-row">
+                    <div class="analytics-card">
+                        <h4>Customer Metrics</h4>
+                        <p>Total Customers: 89</p>
+                        <p>New Customers (Feb): 12</p>
+                        <p>Returning Customers: 77</p>
+                        <p>Avg. Order Value: £32.85</p>
+                    </div>
+                    <div class="analytics-card">
+                        <h4>Report Options</h4>
+                        <button id="btnDailyReport" class="btn-small block" data-report-type="daily">Daily Sales Report</button>
+                        <button id="btnMonthlyReport" class="btn-small block" data-report-type="monthly">Monthly Summary</button>
+                        <button id="btnInventoryReport" class="btn-small block" data-report-type="inventory">Inventory Report</button>
+                        <button id="btnCustomerReport" class="btn-small block" data-report-type="customers">Customer Analytics</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>&copy; 2025 Luminous Scents. CS2TP Team 64.</p>
+    </footer>
+</body>
+</html>

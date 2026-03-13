@@ -53,7 +53,8 @@
                     For the MVP this form only validates input on the front end. There is no real backend yet.
                 </p>
 
-                <form id="authForm" class="auth-form" novalidate>
+                <div class="auth-grid">
+                    <form id="authForm" class="auth-form" novalidate>
                     <div class="form-row">
                         <label for="authEmail">Email address</label>
                         <input type="email" id="authEmail" name="authEmail" placeholder="you@example.com">
@@ -88,6 +89,27 @@
                 <div id="successToast" class="success-toast">
                     <span class="toast-icon"></span>
                     <span class="toast-message" id="toastMessage"></span>
+                </div>
+                
+                    <!-- Admin login panel -->
+                    <div class="admin-login-card">
+                        <h4>Admin Login</h4>
+                        <p class="small-text">Restricted access — admin credentials required to view admin pages.</p>
+                        <form id="adminAuthForm" class="admin-form" novalidate>
+                            <div class="form-row">
+                                <label for="adminEmail">Admin Email</label>
+                                <input type="email" id="adminEmail" name="adminEmail" placeholder="admin@luminous.com">
+                            </div>
+                            <div class="form-row">
+                                <label for="adminPassword">Password</label>
+                                <input type="password" id="adminPassword" name="adminPassword" placeholder="Enter admin password">
+                            </div>
+                            <div class="form-row">
+                                <button type="submit" class="btn-primary">Admin Login</button>
+                            </div>
+                            <p id="adminLoginMessage" class="form-message"></p>
+                        </form>
+                    </div>
                 </div>
             </section>
         </div>
