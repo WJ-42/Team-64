@@ -2,37 +2,34 @@
 const products = [
     // custom admin examples (also used in static admin tables)
     {
-        id: 101,
-        name: "Midnight Elegance",
+        id: 11,
+        name: "Lavender Dream",
         brand: "Luminous Scents",
-        price: 45.00,
-        notes: "Mystic evening blend",
-        description: "Our signature evening fragrance.",
-        image: "midnight-elegance.png",
-        category: "perfume",
-        stock: 18
+        price: 54.99,
+        notes: "Lavender, vanilla, honey",
+        description: "Soothing lavender with a sweet, dreamy finish.",
+        image: "lavender-dream.png",
+        category: "perfume"
     },
     {
-        id: 102,
-        name: "Golden Hour",
+        id: 12,
+        name: "Midnight Rose",
         brand: "Luminous Scents",
-        price: 52.00,
-        notes: "Warm day aroma",
-        description: "Bright and uplifting day scent.",
-        image: "golden-hour.png",
-        category: "perfume",
-        stock: 5
+        price: 82.99,
+        notes: "Rose, patchouli, blackcurrant",
+        description: "Dark and romantic rose for evening allure.",
+        image: "midnight-rose.png",
+        category: "perfume"
     },
     {
-        id: 103,
-        name: "Twilight Bloom",
+        id: 13,
+        name: "Ocean Whisper",
         brand: "Luminous Scents",
-        price: 48.00,
-        notes: "Soft floral",
-        description: "A floral scent perfect for evenings.",
-        image: "twilight-bloom.png",
-        category: "perfume",
-        stock: 0
+        price: 64.99,
+        notes: "Marine accord, driftwood, white tea",
+        description: "Captures the serenity of waves on shore.",
+        image: "ocean-whisper.png",
+        category: "perfume"
     },
     {
         id: 104,
@@ -129,34 +126,37 @@ const products = [
         category: "perfume"
     },
     {
-        id: 11,
-        name: "Lavender Dream",
+        id: 101,
+        name: "Midnight Elegance",
         brand: "Luminous Scents",
-        price: 54.99,
-        notes: "Lavender, vanilla, honey",
-        description: "Soothing lavender with a sweet, dreamy finish.",
-        image: "lavender-dream.png",
-        category: "perfume"
+        price: 45.00,
+        notes: "Mystic evening blend",
+        description: "Our signature evening fragrance.",
+        image: "midnight-elegance.png",
+        category: "perfume",
+        stock: 18
     },
     {
-        id: 12,
-        name: "Midnight Rose",
+        id: 102,
+        name: "Golden Hour",
         brand: "Luminous Scents",
-        price: 82.99,
-        notes: "Rose, patchouli, blackcurrant",
-        description: "Dark and romantic rose for evening allure.",
-        image: "midnight-rose.png",
-        category: "perfume"
+        price: 52.00,
+        notes: "Warm day aroma",
+        description: "Bright and uplifting day scent.",
+        image: "golden-hour.png",
+        category: "perfume",
+        stock: 5
     },
     {
-        id: 13,
-        name: "Ocean Whisper",
+        id: 103,
+        name: "Twilight Bloom",
         brand: "Luminous Scents",
-        price: 64.99,
-        notes: "Marine accord, driftwood, white tea",
-        description: "Captures the serenity of waves on shore.",
-        image: "ocean-whisper.png",
-        category: "perfume"
+        price: 48.00,
+        notes: "Soft floral",
+        description: "A floral scent perfect for evenings.",
+        image: "twilight-bloom.png",
+        category: "perfume",
+        stock: 0
     },
     {
         id: 14,
@@ -440,6 +440,43 @@ function saveProducts() {
     } catch (e) {
         console.error('Failed to save products to storage', e);
     }
+}
+
+const REVIEWS_SEEDED_KEY = "luminousScentsReviewsSeeded";
+
+function seedDummyReviews() {
+    if (localStorage.getItem(REVIEWS_SEEDED_KEY)) return;
+
+    const dummyPool = [
+        { user: 'sarah.j@example.com', date: '2025-02-15', rating: 5, text: 'Absolutely stunning fragrance! Perfect for evening events. Long-lasting and elegant.', published: true },
+        { user: 'michael.p@example.com', date: '2025-02-14', rating: 3, text: 'Nice fragrance, but fades too quickly. Expected better longevity for the price.', published: true },
+        { user: 'emma.r@example.com', date: '2025-02-13', rating: 5, text: 'Love it! Best purchase I have made. Sophisticated and captivating scent.', published: true },
+        { user: 'alex.t@example.com', date: '2025-02-10', rating: 5, text: 'Excellent fragrance! Gets compliments every time I wear it.', published: true },
+        { user: 'jess.k@example.com', date: '2025-02-07', rating: 4, text: 'Nice scent, lasts a long time. Would definitely buy again.', published: true },
+        { user: 'sam.w@example.com', date: '2025-02-05', rating: 4, text: 'Very good, will buy again. Great value for the quality.', published: true },
+        { user: 'olivia.m@example.com', date: '2025-01-28', rating: 5, text: 'This is my go-to fragrance now. The scent is divine and lasts all day.', published: true },
+        { user: 'daniel.h@example.com', date: '2025-01-25', rating: 4, text: 'Really pleasant scent. Packaging is beautiful too.', published: true },
+        { user: 'lucy.c@example.com', date: '2025-01-20', rating: 3, text: 'Decent fragrance but not quite what I expected from the description.', published: true },
+        { user: 'james.b@example.com', date: '2025-01-15', rating: 5, text: 'Bought this as a gift and they absolutely loved it!', published: true },
+        { user: 'nina.f@example.com', date: '2025-01-12', rating: 4, text: 'Beautiful notes, very well blended. Projection could be stronger.', published: true },
+        { user: 'ryan.d@example.com', date: '2025-01-08', rating: 5, text: 'Premium quality. Worth every penny. The bottle design is stunning.', published: true },
+    ];
+
+    let poolIdx = 0;
+    products.forEach(p => {
+        if (!Array.isArray(p.reviews) || p.reviews.length === 0) {
+            const count = 2 + (p.id % 3);
+            p.reviews = [];
+            for (let i = 0; i < count; i++) {
+                p.reviews.push({ ...dummyPool[poolIdx % dummyPool.length] });
+                poolIdx++;
+            }
+            p.rating = Math.round(p.reviews.reduce((s, r) => s + r.rating, 0) / p.reviews.length);
+        }
+    });
+
+    saveProducts();
+    localStorage.setItem(REVIEWS_SEEDED_KEY, "true");
 }
 
 // ----- inquiry persistence helpers -----
@@ -941,6 +978,62 @@ function updateQuantity(productId, change) {
     renderAdminTables();
 }
 
+// --- Product Reviews Modal (products page) ---
+
+function openProductReviewsModal(productId) {
+    const modal = document.getElementById('productReviewsModal');
+    const titleEl = document.getElementById('productReviewsTitle');
+    const listEl = document.getElementById('productReviewsList');
+    if (!modal || !listEl) return;
+
+    const product = products.find(p => p.id === productId);
+    if (!product) return;
+
+    const publishedReviews = (product.reviews || []).filter(r => r.published);
+
+    if (titleEl) {
+        const avgRating = publishedReviews.length
+            ? Math.round(publishedReviews.reduce((sum, r) => sum + r.rating, 0) / publishedReviews.length)
+            : 0;
+        const stars = avgRating > 0
+            ? ` (${'★'.repeat(avgRating)}${'☆'.repeat(5 - avgRating)})`
+            : '';
+        titleEl.textContent = `${product.name}${stars}`;
+    }
+
+    if (publishedReviews.length === 0) {
+        listEl.innerHTML = '<p class="no-reviews-msg">No reviews yet for this product.</p>';
+    } else {
+        listEl.innerHTML = publishedReviews.map(r => `
+            <div class="review-item">
+                <div class="review-header">
+                    <h4>${r.user}</h4>
+                    <span class="review-rating">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                </div>
+                <div class="review-content">
+                    <p><strong>${r.date}</strong></p>
+                    <p>${r.text}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    modal.classList.remove('hidden');
+}
+
+function initProductReviewsModal() {
+    const modal = document.getElementById('productReviewsModal');
+    const closeBtn = document.getElementById('closeProductReviewsModal');
+    if (!modal) return;
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+    }
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.add('hidden');
+    });
+}
+
 // Rendering functions
 
 function renderProductsPage() {
@@ -992,6 +1085,9 @@ function renderProductsPage() {
                 <button class="${wishlistButtonClass}" data-product-id="${product.id}" data-action="wishlist">
                     ${wishlistButtonText}
                 </button>
+                <button class="btn-view-reviews" data-product-id="${product.id}" data-action="reviews">
+                    View Reviews
+                </button>
             </div>
         `;
 
@@ -1042,14 +1138,12 @@ function renderProductsPage() {
                         if (wasInWishlist) {
                             removeFromWishlist(id, loggedInUser);
                             customAlert("Removed from wishlist");
-                            // Update button state
                             button.textContent = "Add to Wishlist";
                             button.className = "btn-wishlist";
                         } else {
                             const added = addToWishlist(id, loggedInUser);
                             if (added) {
                                 customAlert("Added to wishlist");
-                                // Update button state
                                 button.textContent = "In Wishlist";
                                 button.className = "btn-wishlist-active";
                             }
@@ -1057,12 +1151,16 @@ function renderProductsPage() {
                     } else {
                         customAlert("Please log in to add items to your wishlist.");
                     }
+                } else if (action === "reviews") {
+                    openProductReviewsModal(id);
                 }
             });
         });
         
         window.productClickHandlersAttached = true;
     }
+
+    initProductReviewsModal();
 
     // Initialize scroll functionality for scrollable sections
     initScrollableSections();
@@ -1595,7 +1693,6 @@ function setupAdminAuth() {
     if (!adminForm) return;
     const adminEmailInput = document.getElementById('adminEmail');
     const adminPasswordInput = document.getElementById('adminPassword');
-    const adminMessage = document.getElementById('adminLoginMessage');
 
     // Demo credentials (client-side only). Change as needed.
     const DEMO_ADMIN_EMAIL = 'admin@luminous.com';
@@ -1607,21 +1704,17 @@ function setupAdminAuth() {
         const pwd = adminPasswordInput.value || '';
 
         if (!email || !pwd) {
-            adminMessage.textContent = 'Please enter admin credentials.';
-            adminMessage.classList.add('error');
+            customAlert('Please enter admin credentials.');
             return;
         }
 
         if (email === DEMO_ADMIN_EMAIL && pwd === DEMO_ADMIN_PASSWORD) {
             setAdminSession(email);
-            adminMessage.textContent = 'Admin logged in.';
-            adminMessage.classList.remove('error');
             updateHeaderAdminLink();
-            // Redirect to admin page
-            window.location.href = 'admin.html';
+            customAlert('Admin logged in successfully.');
+            setTimeout(() => { window.location.href = 'admin.html'; }, 1500);
         } else {
-            adminMessage.textContent = 'Invalid admin credentials.';
-            adminMessage.classList.add('error');
+            customAlert('Invalid admin credentials.');
         }
     });
 }
@@ -1661,17 +1754,9 @@ function updateHeaderAdminLink() {
             else nav.appendChild(a);
         }
 
-        // Add admin logout button if not present
-        let logoutBtn = nav.querySelector('button.admin-logout');
-        if (!logoutBtn) {
-            logoutBtn.addEventListener('click', () => {
-                clearAdminSession();
-                updateHeaderAdminLink();
-                if (document.body && document.body.getAttribute && document.body.getAttribute('data-page') === 'admin') {
-                    window.location.href = 'account.html';
-                }
-            });
-        }
+        // Remove any stale nav logout button (logout is handled on the account page)
+        const logoutBtn = nav.querySelector('button.admin-logout');
+        if (logoutBtn) logoutBtn.remove();
     } else {
         // Remove admin link and logout button when not logged in
         if (existing) existing.remove();
@@ -1757,6 +1842,13 @@ function showAdminProfileView() {
                 customAlert('Admin signed out successfully.');
             });
         }
+
+        const ordersSection = document.querySelector('.orders-section');
+        const messagesSection = document.querySelector('.messages-section');
+        const wishlistSection = document.querySelector('.wishlist-section');
+        if (ordersSection) ordersSection.style.display = 'none';
+        if (messagesSection) messagesSection.style.display = 'none';
+        if (wishlistSection) wishlistSection.style.display = 'none';
     }
 }
 
@@ -3059,6 +3151,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Restore persisted products + stock before page-specific rendering
     loadProducts();
     loadStock();
+    seedDummyReviews();
 
     // Auto-resize textarea (vertical)
     const textareas = document.querySelectorAll('textarea');
@@ -4782,15 +4875,67 @@ function initAdminPage() {
             const reviewItem = e.target.closest('.review-item');
             if (!reviewItem) return;
             customConfirm('Mark this review as published?', () => {
+                const productName = reviewItem.querySelector('.review-header h4')?.textContent.trim();
+                const ratingEl = reviewItem.querySelector('.review-rating');
+                const rating = ratingEl ? (ratingEl.textContent.match(/★/g) || []).length : 4;
+                const contentPs = reviewItem.querySelectorAll('.review-content p');
+                let user = 'anonymous', date = new Date().toISOString().split('T')[0], text = '';
+                if (contentPs[0]) {
+                    const strong = contentPs[0].querySelector('strong');
+                    if (strong) user = strong.textContent.trim();
+                    const dateMatch = contentPs[0].textContent.match(/-\s*(.+)$/);
+                    if (dateMatch) date = dateMatch[1].trim();
+                }
+                if (contentPs[1]) {
+                    text = contentPs[1].textContent.replace(/^"|"$/g, '').trim();
+                }
+
+                const product = products.find(p => p.name === productName);
+                if (product) {
+                    if (!Array.isArray(product.reviews)) product.reviews = [];
+                    const alreadyExists = product.reviews.some(r => r.user === user && r.text === text);
+                    if (!alreadyExists) {
+                        product.reviews.push({ user, date, rating, text, published: true });
+                        product.rating = Math.round(product.reviews.reduce((s, r) => s + r.rating, 0) / product.reviews.length);
+                    } else {
+                        const existing = product.reviews.find(r => r.user === user && r.text === text);
+                        if (existing) existing.published = true;
+                    }
+                    saveProducts();
+                }
+
                 e.target.textContent = 'Published';
                 e.target.disabled = true;
                 reviewItem.classList.add('published');
-                showToast('Review marked as published.', 'success');
+                showToast('Review published and saved.', 'success');
             });
         } else if (e.target.matches('.remove-review-btn')) {
             const reviewItem = e.target.closest('.review-item');
             if (!reviewItem) return;
             customConfirm('Remove this review?', () => {
+                const productName = reviewItem.querySelector('.review-header h4')?.textContent.trim();
+                const contentPs = reviewItem.querySelectorAll('.review-content p');
+                let user = '', text = '';
+                if (contentPs[0]) {
+                    const strong = contentPs[0].querySelector('strong');
+                    if (strong) user = strong.textContent.trim();
+                }
+                if (contentPs[1]) {
+                    text = contentPs[1].textContent.replace(/^"|"$/g, '').trim();
+                }
+
+                const product = products.find(p => p.name === productName);
+                if (product && Array.isArray(product.reviews)) {
+                    const idx = product.reviews.findIndex(r => r.user === user && r.text === text);
+                    if (idx !== -1) {
+                        product.reviews.splice(idx, 1);
+                        if (product.reviews.length) {
+                            product.rating = Math.round(product.reviews.reduce((s, r) => s + r.rating, 0) / product.reviews.length);
+                        }
+                        saveProducts();
+                    }
+                }
+
                 reviewItem.remove();
                 showToast('Review removed.', 'error');
             });
@@ -5052,6 +5197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // restore persisted product list and stock before anything else
     loadProducts();
     loadStock();
+    seedDummyReviews();
     initThemeToggle();
     initAdminPage();
     updateStockAlerts(); // refresh alert panel
