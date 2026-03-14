@@ -442,25 +442,29 @@ function saveProducts() {
     }
 }
 
-const REVIEWS_SEEDED_KEY = "luminousScentsReviewsSeeded";
+const REVIEWS_SEEDED_KEY = "luminousScentsReviewsSeeded_v2";
 
 function seedDummyReviews() {
     if (localStorage.getItem(REVIEWS_SEEDED_KEY)) return;
 
     const dummyPool = [
-        { user: 'sarah.j@example.com', date: '2025-02-15', rating: 5, text: 'Absolutely stunning fragrance! Perfect for evening events. Long-lasting and elegant.', published: true },
-        { user: 'michael.p@example.com', date: '2025-02-14', rating: 3, text: 'Nice fragrance, but fades too quickly. Expected better longevity for the price.', published: true },
-        { user: 'emma.r@example.com', date: '2025-02-13', rating: 5, text: 'Love it! Best purchase I have made. Sophisticated and captivating scent.', published: true },
-        { user: 'alex.t@example.com', date: '2025-02-10', rating: 5, text: 'Excellent fragrance! Gets compliments every time I wear it.', published: true },
-        { user: 'jess.k@example.com', date: '2025-02-07', rating: 4, text: 'Nice scent, lasts a long time. Would definitely buy again.', published: true },
-        { user: 'sam.w@example.com', date: '2025-02-05', rating: 4, text: 'Very good, will buy again. Great value for the quality.', published: true },
-        { user: 'olivia.m@example.com', date: '2025-01-28', rating: 5, text: 'This is my go-to fragrance now. The scent is divine and lasts all day.', published: true },
-        { user: 'daniel.h@example.com', date: '2025-01-25', rating: 4, text: 'Really pleasant scent. Packaging is beautiful too.', published: true },
-        { user: 'lucy.c@example.com', date: '2025-01-20', rating: 3, text: 'Decent fragrance but not quite what I expected from the description.', published: true },
-        { user: 'james.b@example.com', date: '2025-01-15', rating: 5, text: 'Bought this as a gift and they absolutely loved it!', published: true },
-        { user: 'nina.f@example.com', date: '2025-01-12', rating: 4, text: 'Beautiful notes, very well blended. Projection could be stronger.', published: true },
-        { user: 'ryan.d@example.com', date: '2025-01-08', rating: 5, text: 'Premium quality. Worth every penny. The bottle design is stunning.', published: true },
+        { user: 'sarah.j@example.com', displayName: 'Sarah J', date: '2025-02-15', rating: 5, text: 'Absolutely stunning fragrance! Perfect for evening events. Long-lasting and elegant.', published: true },
+        { user: 'michael.p@example.com', displayName: 'Michael P', date: '2025-02-14', rating: 3, text: 'Nice fragrance, but fades too quickly. Expected better longevity for the price.', published: true },
+        { user: 'emma.r@example.com', displayName: 'Emma R', date: '2025-02-13', rating: 5, text: 'Love it! Best purchase I have made. Sophisticated and captivating scent.', published: true },
+        { user: 'alex.t@example.com', displayName: 'Alex T', date: '2025-02-10', rating: 5, text: 'Excellent fragrance! Gets compliments every time I wear it.', published: true },
+        { user: 'jess.k@example.com', displayName: 'Jess K', date: '2025-02-07', rating: 4, text: 'Nice scent, lasts a long time. Would definitely buy again.', published: true },
+        { user: 'sam.w@example.com', displayName: 'Sam W', date: '2025-02-05', rating: 4, text: 'Very good, will buy again. Great value for the quality.', published: true },
+        { user: 'olivia.m@example.com', displayName: 'Olivia M', date: '2025-01-28', rating: 5, text: 'This is my go-to fragrance now. The scent is divine and lasts all day.', published: true },
+        { user: 'daniel.h@example.com', displayName: 'Daniel H', date: '2025-01-25', rating: 4, text: 'Really pleasant scent. Packaging is beautiful too.', published: true },
+        { user: 'lucy.c@example.com', displayName: 'Lucy C', date: '2025-01-20', rating: 3, text: 'Decent fragrance but not quite what I expected from the description.', published: true },
+        { user: 'james.b@example.com', displayName: 'James B', date: '2025-01-15', rating: 5, text: 'Bought this as a gift and they absolutely loved it!', published: true },
+        { user: 'nina.f@example.com', displayName: 'Nina F', date: '2025-01-12', rating: 4, text: 'Beautiful notes, very well blended. Projection could be stronger.', published: true },
+        { user: 'ryan.d@example.com', displayName: 'Ryan D', date: '2025-01-08', rating: 5, text: 'Premium quality. Worth every penny. The bottle design is stunning.', published: true },
     ];
+
+    const dummyEmails = new Set(dummyPool.map(d => d.user));
+    const dummyMap = {};
+    dummyPool.forEach(d => { dummyMap[d.user] = d.displayName; });
 
     let poolIdx = 0;
     products.forEach(p => {
@@ -472,6 +476,12 @@ function seedDummyReviews() {
                 poolIdx++;
             }
             p.rating = Math.round(p.reviews.reduce((s, r) => s + r.rating, 0) / p.reviews.length);
+        } else {
+            p.reviews.forEach(r => {
+                if (!r.displayName && dummyEmails.has(r.user)) {
+                    r.displayName = dummyMap[r.user];
+                }
+            });
         }
     });
 
@@ -482,6 +492,7 @@ function seedDummyReviews() {
 // ----- inquiry persistence helpers -----
 const INQUIRIES_STORAGE_KEY = "luminousScentsInquiries";
 const ORDERS_STORAGE_KEY = "luminousScentsPendingOrders";
+const REFUNDS_STORAGE_KEY = "luminousScentsRefundRequests";
 const PROMOTIONS_STORAGE_KEY = "luminousScentsPromotions";
 const DEACTIVATED_PROMOS_STORAGE_KEY = "luminousScentsDeactivatedPromotions";
 
@@ -637,7 +648,7 @@ function renderPromotions() {
             <div class="promotion-item" data-promo-id="${p.id}">
                 <div class="promotion-header">
                     <h4>${p.name}</h4>
-                    <span class="promo-type">${typeLabel}</span>
+                    <span class="promo-type ${p.type || ''}">${typeLabel}</span>
                 </div>
                 <div class="promotion-details">
                     ${details.join('')}
@@ -674,6 +685,26 @@ function saveOrders(orders) {
         localStorage.setItem(ORDERS_STORAGE_KEY, JSON.stringify(orders));
     } catch (e) {
         console.error('Failed to save orders to storage', e);
+    }
+}
+
+function loadRefunds(refunds) {
+    const data = localStorage.getItem(REFUNDS_STORAGE_KEY);
+    if (!data) return;
+    try {
+        const saved = JSON.parse(data);
+        refunds.length = 0;
+        saved.forEach(r => refunds.push(r));
+    } catch (e) {
+        console.error('Failed to load refunds from storage', e);
+    }
+}
+
+function saveRefunds(refunds) {
+    try {
+        localStorage.setItem(REFUNDS_STORAGE_KEY, JSON.stringify(refunds));
+    } catch (e) {
+        console.error('Failed to save refunds to storage', e);
     }
 }
 
@@ -905,11 +936,130 @@ function customConfirm(message, onConfirm) {
     overlay.addEventListener('click', closeDialog);
 }
 
+function customPrompt(message, defaultValue, onSubmit) {
+    const overlay = document.createElement('div');
+    overlay.className = 'custom-alert-overlay';
+
+    const alertBox = document.createElement('div');
+    alertBox.className = 'custom-alert';
+    alertBox.innerHTML = `
+        <p>${message}</p>
+        <input type="text" class="custom-prompt-input" value="${defaultValue !== undefined && defaultValue !== null ? defaultValue : ''}" />
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
+            <button id="promptOk" class="btn-primary">OK</button>
+            <button id="promptCancel" class="btn-secondary">Cancel</button>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(alertBox);
+
+    alertBox.classList.remove('scroll-reveal', 'revealed');
+    overlay.classList.remove('scroll-reveal', 'revealed');
+
+    const input = alertBox.querySelector('.custom-prompt-input');
+    input.focus();
+    input.select();
+
+    const closeDialog = () => {
+        overlay.remove();
+        alertBox.remove();
+    };
+
+    document.getElementById('promptOk').addEventListener('click', () => {
+        const value = input.value;
+        closeDialog();
+        if (onSubmit) onSubmit(value);
+    });
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const value = input.value;
+            closeDialog();
+            if (onSubmit) onSubmit(value);
+        }
+    });
+
+    document.getElementById('promptCancel').addEventListener('click', closeDialog);
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeDialog();
+    });
+}
+
 const BASKET_STORAGE_KEY = "luminousScentsBasket";
 const USER_SESSION_KEY = "luminousScentsUserEmail";
 const USER_SESSION_DATE_KEY = "luminousScentsUserSessionDate";
 const ADMIN_SESSION_KEY = "luminousScentsAdmin"; // stores admin email when logged in
 const ADMIN_SESSION_DATE_KEY = "luminousScentsAdminSessionDate";
+const USER_PROFILES_KEY = "luminousScentsUserProfiles";
+
+// User profile helpers
+
+function loadUserProfiles() {
+    try {
+        const data = localStorage.getItem(USER_PROFILES_KEY);
+        return data ? JSON.parse(data) : {};
+    } catch { return {}; }
+}
+
+function saveUserProfiles(profiles) {
+    try {
+        localStorage.setItem(USER_PROFILES_KEY, JSON.stringify(profiles));
+    } catch (e) {
+        console.error('Failed to save user profiles', e);
+    }
+}
+
+function getUserProfile(email) {
+    if (!email) return null;
+    const profiles = loadUserProfiles();
+    return profiles[email] || null;
+}
+
+function saveUserProfile(email, profileData) {
+    const profiles = loadUserProfiles();
+    profiles[email] = profileData;
+    saveUserProfiles(profiles);
+}
+
+function deleteUserProfile(email) {
+    const profiles = loadUserProfiles();
+    delete profiles[email];
+    saveUserProfiles(profiles);
+}
+
+function getReviewDisplayName(review) {
+    const profile = getUserProfile(review.user);
+    if (profile && profile.username) return profile.username;
+    if (review.displayName) return review.displayName;
+    return review.user;
+}
+
+function migrateUserData(oldEmail, newEmail) {
+    if (oldEmail === newEmail) return;
+    const keySuffixes = [
+        'luminousScentsOrders_',
+        'luminousScentsMessages_',
+        'luminousScentsWishlist_'
+    ];
+    keySuffixes.forEach(prefix => {
+        const oldKey = prefix + oldEmail;
+        const newKey = prefix + newEmail;
+        const data = localStorage.getItem(oldKey);
+        if (data) {
+            localStorage.setItem(newKey, data);
+            localStorage.removeItem(oldKey);
+        }
+    });
+    const oldProfile = getUserProfile(oldEmail);
+    if (oldProfile) {
+        oldProfile.email = newEmail;
+        deleteUserProfile(oldEmail);
+        saveUserProfile(newEmail, oldProfile);
+    }
+    localStorage.setItem(USER_SESSION_KEY, newEmail);
+}
 
 // Basket helpers
 
@@ -984,11 +1134,13 @@ function openProductReviewsModal(productId) {
     const modal = document.getElementById('productReviewsModal');
     const titleEl = document.getElementById('productReviewsTitle');
     const listEl = document.getElementById('productReviewsList');
+    const formArea = document.getElementById('productReviewFormArea');
     if (!modal || !listEl) return;
 
     const product = products.find(p => p.id === productId);
     if (!product) return;
 
+    const loggedInUser = getLoggedInUser();
     const publishedReviews = (product.reviews || []).filter(r => r.published);
 
     if (titleEl) {
@@ -1004,21 +1156,125 @@ function openProductReviewsModal(productId) {
     if (publishedReviews.length === 0) {
         listEl.innerHTML = '<p class="no-reviews-msg">No reviews yet for this product.</p>';
     } else {
-        listEl.innerHTML = publishedReviews.map(r => `
-            <div class="review-item">
+        listEl.innerHTML = publishedReviews.map((r, idx) => {
+            const isOwn = loggedInUser && r.user === loggedInUser;
+            const name = getReviewDisplayName(r);
+            return `
+            <div class="review-item${isOwn ? ' own-review' : ''}">
                 <div class="review-header">
-                    <h4>${r.user}</h4>
+                    <h4>${name}${isOwn ? ' <span class="review-you-badge">You</span>' : ''}</h4>
                     <span class="review-rating">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
                 </div>
                 <div class="review-content">
                     <p><strong>${r.date}</strong></p>
                     <p>${r.text}</p>
                 </div>
-            </div>
-        `).join('');
+                ${isOwn ? `<div class="review-actions"><button class="btn-small dangerous delete-own-review-btn" data-product-id="${productId}" data-review-idx="${idx}">Delete My Review</button></div>` : ''}
+            </div>`;
+        }).join('');
+    }
+
+    if (formArea) {
+        const alreadyReviewed = loggedInUser && publishedReviews.some(r => r.user === loggedInUser);
+
+        if (!loggedInUser) {
+            formArea.innerHTML = '<p class="review-login-prompt">Please <a href="account.html">sign in</a> to leave a review.</p>';
+        } else if (alreadyReviewed) {
+            formArea.innerHTML = '<p class="review-login-prompt">You have already reviewed this product.</p>';
+        } else {
+            formArea.innerHTML = `
+                <form id="reviewForm" class="review-form">
+                    <h4>Leave a Review</h4>
+                    <div class="star-picker" id="starPicker">
+                        <span class="pick-star" data-value="1">☆</span>
+                        <span class="pick-star" data-value="2">☆</span>
+                        <span class="pick-star" data-value="3">☆</span>
+                        <span class="pick-star" data-value="4">☆</span>
+                        <span class="pick-star" data-value="5">☆</span>
+                    </div>
+                    <input type="hidden" id="reviewRatingValue" value="0" />
+                    <textarea id="reviewText" placeholder="Write your review..." rows="3" required></textarea>
+                    <button type="submit" class="btn-primary">Submit Review</button>
+                </form>`;
+            initStarPicker();
+            initReviewForm(productId);
+        }
     }
 
     modal.classList.remove('hidden');
+}
+
+function initStarPicker() {
+    const picker = document.getElementById('starPicker');
+    const hiddenInput = document.getElementById('reviewRatingValue');
+    if (!picker || !hiddenInput) return;
+
+    picker.addEventListener('click', (e) => {
+        const star = e.target.closest('.pick-star');
+        if (!star) return;
+        const val = Number(star.dataset.value);
+        hiddenInput.value = val;
+        picker.querySelectorAll('.pick-star').forEach(s => {
+            s.textContent = Number(s.dataset.value) <= val ? '★' : '☆';
+            s.classList.toggle('active', Number(s.dataset.value) <= val);
+        });
+    });
+
+    picker.addEventListener('mouseover', (e) => {
+        const star = e.target.closest('.pick-star');
+        if (!star) return;
+        const val = Number(star.dataset.value);
+        picker.querySelectorAll('.pick-star').forEach(s => {
+            s.textContent = Number(s.dataset.value) <= val ? '★' : '☆';
+        });
+    });
+
+    picker.addEventListener('mouseleave', () => {
+        const current = Number(hiddenInput.value);
+        picker.querySelectorAll('.pick-star').forEach(s => {
+            s.textContent = Number(s.dataset.value) <= current ? '★' : '☆';
+        });
+    });
+}
+
+function initReviewForm(productId) {
+    const form = document.getElementById('reviewForm');
+    if (!form) return;
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const rating = Number(document.getElementById('reviewRatingValue').value);
+        const text = document.getElementById('reviewText').value.trim();
+        const user = getLoggedInUser();
+
+        if (!user) { customAlert('Please sign in to leave a review.'); return; }
+        if (rating < 1 || rating > 5) { customAlert('Please select a star rating.'); return; }
+        if (!text) { customAlert('Please write your review.'); return; }
+
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+
+        if (!Array.isArray(product.reviews)) product.reviews = [];
+
+        const profile = getUserProfile(user);
+        product.reviews.push({
+            user: user,
+            displayName: (profile && profile.username) ? profile.username : '',
+            date: new Date().toISOString().split('T')[0],
+            rating: rating,
+            text: text,
+            published: true
+        });
+
+        product.rating = Math.round(
+            product.reviews.filter(r => r.published).reduce((s, r) => s + r.rating, 0) /
+            product.reviews.filter(r => r.published).length
+        );
+
+        saveProducts();
+        customAlert('Your review has been submitted!');
+        openProductReviewsModal(productId);
+    });
 }
 
 function initProductReviewsModal() {
@@ -1031,6 +1287,37 @@ function initProductReviewsModal() {
     }
     modal.addEventListener('click', (e) => {
         if (e.target === modal) modal.classList.add('hidden');
+    });
+
+    modal.addEventListener('click', (e) => {
+        const deleteBtn = e.target.closest('.delete-own-review-btn');
+        if (!deleteBtn) return;
+
+        const productId = Number(deleteBtn.dataset.productId);
+        const reviewIdx = Number(deleteBtn.dataset.reviewIdx);
+        const user = getLoggedInUser();
+        if (!user) return;
+
+        const product = products.find(p => p.id === productId);
+        if (!product || !product.reviews) return;
+
+        const publishedReviews = product.reviews.filter(r => r.published);
+        const target = publishedReviews[reviewIdx];
+        if (!target || target.user !== user) return;
+
+        customConfirm('Delete your review?', () => {
+            const realIdx = product.reviews.indexOf(target);
+            if (realIdx !== -1) product.reviews.splice(realIdx, 1);
+
+            const remaining = product.reviews.filter(r => r.published);
+            product.rating = remaining.length
+                ? Math.round(remaining.reduce((s, r) => s + r.rating, 0) / remaining.length)
+                : 0;
+
+            saveProducts();
+            customAlert('Your review has been deleted.');
+            openProductReviewsModal(productId);
+        });
     });
 }
 
@@ -1076,7 +1363,7 @@ function renderProductsPage() {
             <p>${product.brand}</p>
             <p><strong>Notes:</strong> ${product.notes}</p>
             <p class="price">£${product.price.toFixed(2)}</p>
-            <p class="stock ${isOutOfStock ? 'out-of-stock' : ''}">${isOutOfStock ? 'Unavailable' : `Stock: ${stock}`}</p>
+            <p class="stock ${isOutOfStock ? 'out-of-stock' : ''}">${isOutOfStock ? 'Unavailable' : `<strong>Stock:</strong> ${stock}`}</p>
             <p>${product.description}</p>
             <div class="product-actions">
                 <button class="btn-primary" data-product-id="${product.id}" data-action="basket" ${isOutOfStock ? 'disabled aria-disabled="true"' : ''}>
@@ -1681,6 +1968,16 @@ function setupAuthForm() {
         // Save user session
         localStorage.setItem(USER_SESSION_KEY, email);
         localStorage.setItem(USER_SESSION_DATE_KEY, new Date().toISOString());
+
+        // Create initial profile entry on signup (or ensure one exists on login)
+        if (!getUserProfile(email)) {
+            saveUserProfile(email, {
+                username: '',
+                email: email,
+                password: password,
+                profilePicture: ''
+            });
+        }
         
         // Switch to profile view
         showProfileView(email);
@@ -1843,6 +2140,14 @@ function showAdminProfileView() {
             });
         }
 
+        // Hide edit profile button and avatar for admin
+        const editProfileBtn = document.getElementById("editProfileBtn");
+        if (editProfileBtn) editProfileBtn.style.display = 'none';
+        const avatarWrapper = document.querySelector('.profile-avatar-wrapper');
+        if (avatarWrapper) avatarWrapper.style.display = 'none';
+        const usernameEl = document.getElementById("profileUsername");
+        if (usernameEl) usernameEl.style.display = 'none';
+
         const ordersSection = document.querySelector('.orders-section');
         const messagesSection = document.querySelector('.messages-section');
         const wishlistSection = document.querySelector('.wishlist-section');
@@ -1853,6 +2158,34 @@ function showAdminProfileView() {
 }
 
 function renderProfilePage(userEmail) {
+    const profile = getUserProfile(userEmail) || {};
+
+    // Update avatar
+    const avatarImg = document.getElementById("profileAvatar");
+    const avatarPlaceholder = document.getElementById("profileAvatarPlaceholder");
+    if (avatarImg && avatarPlaceholder) {
+        if (profile.profilePicture) {
+            avatarImg.src = profile.profilePicture;
+            avatarImg.style.display = 'block';
+            avatarPlaceholder.style.display = 'none';
+        } else {
+            avatarImg.src = '';
+            avatarImg.style.display = 'none';
+            avatarPlaceholder.style.display = 'block';
+        }
+    }
+
+    // Update username
+    const usernameEl = document.getElementById("profileUsername");
+    if (usernameEl) {
+        if (profile.username) {
+            usernameEl.textContent = profile.username;
+            usernameEl.style.display = 'block';
+        } else {
+            usernameEl.style.display = 'none';
+        }
+    }
+
     // Update profile info
     const profileEmail = document.getElementById("profileEmail");
     const profileMemberSince = document.getElementById("profileMemberSince");
@@ -1899,6 +2232,253 @@ function renderProfilePage(userEmail) {
         const newLogoutBtn = logoutBtn.cloneNode(true);
         logoutBtn.parentNode.replaceChild(newLogoutBtn, logoutBtn);
         newLogoutBtn.addEventListener("click", logout);
+    }
+
+    // Setup edit profile button (user accounts only, not admin)
+    const editProfileBtn = document.getElementById("editProfileBtn");
+    if (editProfileBtn && !isAdminLoggedIn()) {
+        const newBtn = editProfileBtn.cloneNode(true);
+        editProfileBtn.parentNode.replaceChild(newBtn, editProfileBtn);
+        newBtn.addEventListener("click", () => openEditProfileModal(userEmail));
+    } else if (editProfileBtn && isAdminLoggedIn()) {
+        editProfileBtn.style.display = 'none';
+    }
+}
+
+function openEditProfileModal(userEmail) {
+    const modal = document.getElementById("editProfileModal");
+    if (!modal) return;
+    modal.classList.remove("hidden");
+
+    const profile = getUserProfile(userEmail) || {};
+    const usernameInput = document.getElementById("editProfileUsername");
+    const emailInput = document.getElementById("editProfileEmail");
+    const passwordInput = document.getElementById("editProfilePassword");
+    const confirmInput = document.getElementById("editProfilePasswordConfirm");
+    const avatarPreview = document.getElementById("editProfileAvatarPreview");
+    const avatarPlaceholder = document.getElementById("editProfileAvatarPlaceholder");
+    const fileInput = document.getElementById("editProfilePicture");
+    const fileNameSpan = document.getElementById("editProfileFileName");
+
+    if (usernameInput) usernameInput.value = profile.username || '';
+    if (emailInput) emailInput.value = userEmail;
+    if (passwordInput) passwordInput.value = '';
+    if (confirmInput) confirmInput.value = '';
+    if (fileInput) fileInput.value = '';
+    if (fileNameSpan) fileNameSpan.textContent = 'No file chosen';
+
+    // Clear errors
+    ['editEmailError', 'editPasswordError', 'editPasswordConfirmError'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.textContent = ''; el.classList.remove('show'); }
+    });
+    const editPwReqs = document.getElementById('editPasswordRequirements');
+    if (editPwReqs) editPwReqs.classList.remove('show');
+    [emailInput, passwordInput, confirmInput].forEach(inp => {
+        if (inp) { inp.classList.remove('input-error', 'input-success'); }
+    });
+
+    if (profile.profilePicture) {
+        avatarPreview.src = profile.profilePicture;
+        avatarPreview.style.display = 'block';
+        if (avatarPlaceholder) avatarPlaceholder.style.display = 'none';
+    } else {
+        avatarPreview.src = '';
+        avatarPreview.style.display = 'none';
+        if (avatarPlaceholder) avatarPlaceholder.style.display = 'block';
+    }
+
+    modal.dataset.currentEmail = userEmail;
+}
+
+function setupEditProfileModal() {
+    const modal = document.getElementById("editProfileModal");
+    if (!modal) return;
+
+    const closeBtn = document.getElementById("closeEditProfileModal");
+    const cancelBtn = document.getElementById("cancelEditProfile");
+    const form = document.getElementById("editProfileForm");
+    const fileInput = document.getElementById("editProfilePicture");
+    const fileNameSpan = document.getElementById("editProfileFileName");
+    const avatarPreview = document.getElementById("editProfileAvatarPreview");
+    const avatarPlaceholder = document.getElementById("editProfileAvatarPlaceholder");
+    const removeBtn = document.getElementById("removeProfilePicture");
+    const passwordInput = document.getElementById("editProfilePassword");
+    const confirmInput = document.getElementById("editProfilePasswordConfirm");
+    const emailInput = document.getElementById("editProfileEmail");
+    const emailError = document.getElementById("editEmailError");
+    const passwordError = document.getElementById("editPasswordError");
+    const confirmError = document.getElementById("editPasswordConfirmError");
+    const pwReqs = document.getElementById("editPasswordRequirements");
+    const reqLength = document.getElementById("editReqLength");
+    const reqUpper = document.getElementById("editReqUpper");
+    const reqLower = document.getElementById("editReqLower");
+    const reqNumber = document.getElementById("editReqNumber");
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let pendingPictureData = null;
+    let removePicture = false;
+
+    function closeModal() {
+        modal.classList.add("hidden");
+        pendingPictureData = null;
+        removePicture = false;
+    }
+
+    if (closeBtn) closeBtn.addEventListener("click", closeModal);
+    if (cancelBtn) cancelBtn.addEventListener("click", closeModal);
+    modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+
+    // File input handling
+    if (fileInput) {
+        fileInput.addEventListener("change", () => {
+            const file = fileInput.files[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) {
+                customAlert("Image must be under 2MB.");
+                fileInput.value = '';
+                return;
+            }
+            fileNameSpan.textContent = file.name;
+            removePicture = false;
+            const reader = new FileReader();
+            reader.onload = e => {
+                pendingPictureData = e.target.result;
+                avatarPreview.src = pendingPictureData;
+                avatarPreview.style.display = 'block';
+                if (avatarPlaceholder) avatarPlaceholder.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    if (removeBtn) {
+        removeBtn.addEventListener("click", () => {
+            pendingPictureData = null;
+            removePicture = true;
+            avatarPreview.src = '';
+            avatarPreview.style.display = 'none';
+            if (avatarPlaceholder) avatarPlaceholder.style.display = 'block';
+            if (fileInput) fileInput.value = '';
+            if (fileNameSpan) fileNameSpan.textContent = 'No file chosen';
+        });
+    }
+
+    // Real-time password validation
+    function validatePwReqs(password) {
+        const hasLen = password.length >= 8;
+        const hasUp = /[A-Z]/.test(password);
+        const hasLo = /[a-z]/.test(password);
+        const hasNum = /[0-9]/.test(password);
+        if (reqLength) { reqLength.textContent = (hasLen ? '\u2713' : '\u2717') + ' At least 8 characters'; reqLength.classList.toggle('valid', hasLen); }
+        if (reqUpper) { reqUpper.textContent = (hasUp ? '\u2713' : '\u2717') + ' One uppercase letter'; reqUpper.classList.toggle('valid', hasUp); }
+        if (reqLower) { reqLower.textContent = (hasLo ? '\u2713' : '\u2717') + ' One lowercase letter'; reqLower.classList.toggle('valid', hasLo); }
+        if (reqNumber) { reqNumber.textContent = (hasNum ? '\u2713' : '\u2717') + ' One number'; reqNumber.classList.toggle('valid', hasNum); }
+        return hasLen && hasUp && hasLo && hasNum;
+    }
+
+    if (passwordInput) {
+        passwordInput.addEventListener("focus", () => { if (pwReqs) pwReqs.classList.add('show'); });
+        passwordInput.addEventListener("input", () => {
+            const pw = passwordInput.value;
+            if (pw === '') {
+                if (pwReqs) pwReqs.classList.remove('show');
+                passwordInput.classList.remove('input-error', 'input-success');
+                if (passwordError) { passwordError.textContent = ''; passwordError.classList.remove('show'); }
+                return;
+            }
+            if (pwReqs) pwReqs.classList.add('show');
+            const valid = validatePwReqs(pw);
+            passwordInput.classList.toggle('input-error', !valid);
+            passwordInput.classList.toggle('input-success', valid);
+        });
+    }
+
+    if (emailInput) {
+        emailInput.addEventListener("input", () => {
+            const val = emailInput.value.trim();
+            if (val === '') {
+                emailInput.classList.remove('input-error', 'input-success');
+                if (emailError) { emailError.textContent = ''; emailError.classList.remove('show'); }
+            } else if (!emailRegex.test(val)) {
+                emailInput.classList.add('input-error');
+                emailInput.classList.remove('input-success');
+                if (emailError) { emailError.textContent = 'Please enter a valid email address'; emailError.classList.add('show'); }
+            } else {
+                emailInput.classList.remove('input-error');
+                emailInput.classList.add('input-success');
+                if (emailError) { emailError.textContent = ''; emailError.classList.remove('show'); }
+            }
+        });
+    }
+
+    // Form submission
+    if (form) {
+        form.addEventListener("submit", e => {
+            e.preventDefault();
+            const currentEmail = modal.dataset.currentEmail;
+            const newEmail = emailInput ? emailInput.value.trim() : currentEmail;
+            const newUsername = document.getElementById("editProfileUsername") ? document.getElementById("editProfileUsername").value.trim() : '';
+            const newPassword = passwordInput ? passwordInput.value : '';
+            const confirmPassword = confirmInput ? confirmInput.value : '';
+            let hasErrors = false;
+
+            // Validate email
+            if (!newEmail) {
+                if (emailError) { emailError.textContent = 'Email is required'; emailError.classList.add('show'); }
+                if (emailInput) emailInput.classList.add('input-error');
+                hasErrors = true;
+            } else if (!emailRegex.test(newEmail)) {
+                if (emailError) { emailError.textContent = 'Please enter a valid email address'; emailError.classList.add('show'); }
+                if (emailInput) emailInput.classList.add('input-error');
+                hasErrors = true;
+            }
+
+            // Validate password if provided
+            if (newPassword) {
+                const validPw = validatePwReqs(newPassword);
+                if (!validPw) {
+                    if (passwordError) { passwordError.textContent = 'Password does not meet all requirements'; passwordError.classList.add('show'); }
+                    if (passwordInput) passwordInput.classList.add('input-error');
+                    hasErrors = true;
+                }
+                if (newPassword !== confirmPassword) {
+                    if (confirmError) { confirmError.textContent = 'Passwords do not match'; confirmError.classList.add('show'); }
+                    if (confirmInput) confirmInput.classList.add('input-error');
+                    hasErrors = true;
+                }
+            }
+
+            if (hasErrors) return;
+
+            // Build updated profile
+            const existingProfile = getUserProfile(currentEmail) || {};
+            const updatedProfile = {
+                username: newUsername,
+                email: newEmail,
+                password: newPassword || existingProfile.password || '',
+                profilePicture: removePicture ? '' : (pendingPictureData || existingProfile.profilePicture || '')
+            };
+
+            // Handle email change
+            if (newEmail !== currentEmail) {
+                // Check if new email is already taken by another user
+                const existingOther = getUserProfile(newEmail);
+                if (existingOther) {
+                    if (emailError) { emailError.textContent = 'This email is already associated with another account'; emailError.classList.add('show'); }
+                    if (emailInput) emailInput.classList.add('input-error');
+                    return;
+                }
+                migrateUserData(currentEmail, newEmail);
+                saveUserProfile(newEmail, updatedProfile);
+            } else {
+                saveUserProfile(currentEmail, updatedProfile);
+            }
+
+            closeModal();
+            showProfileView(newEmail);
+            customAlert('Profile updated successfully!');
+        });
     }
 }
 
@@ -3171,6 +3751,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // rest of the code...
     if (page === "home" || page === "account") {
         if (page === "account") {
+            setupEditProfileModal();
             // Check if user is logged in
             if (isUserLoggedIn()) {
                 const userEmail = getLoggedInUser();
@@ -3856,6 +4437,56 @@ function initAdminPage() {
 
     loadOrders(pendingOrders);
 
+    let refundRequests = [
+        {
+            id: 'REF-2001',
+            orderId: 1080,
+            date: 'Mar 10, 2025',
+            reason: 'Item arrived damaged',
+            items: [{ name: 'Midnight Elegance', qty: 1 }],
+            total: 65.00,
+            status: 'pending',
+            customer: {
+                name: 'Amira Khan',
+                email: 'amira.k@example.com',
+                phone: '+44 7700 900123',
+                address: '12 Elm Street, Manchester, M1 2AB'
+            }
+        },
+        {
+            id: 'REF-2002',
+            orderId: 1076,
+            date: 'Mar 8, 2025',
+            reason: 'Wrong item received',
+            items: [{ name: 'Golden Hour', qty: 2 }],
+            total: 104.00,
+            status: 'pending',
+            customer: {
+                name: 'Daniel Brooks',
+                email: 'daniel.b@example.com',
+                phone: '+44 7700 900456',
+                address: '45 Oakwood Ave, Birmingham, B15 3DH'
+            }
+        },
+        {
+            id: 'REF-2003',
+            orderId: 1071,
+            date: 'Mar 5, 2025',
+            reason: 'Changed mind',
+            items: [{ name: 'Velvet Nights', qty: 1 }, { name: 'Twilight Bloom', qty: 1 }],
+            total: 130.00,
+            status: 'pending',
+            customer: {
+                name: 'Sophie Turner',
+                email: 'sophie.t@example.com',
+                phone: '+44 7700 900789',
+                address: '8 Rose Lane, Leeds, LS1 4AP'
+            }
+        }
+    ];
+
+    loadRefunds(refundRequests);
+
     let editingProductId = null;
     let editingOrderId = null;
     let selectedProductImageValue = null;
@@ -3950,6 +4581,49 @@ function initAdminPage() {
         }).join('') || '<p>No pending orders.</p>';
 
         updatePendingOrderCount();
+    };
+
+    const renderRefundRequests = () => {
+        const refundList = document.getElementById('refundRequestsList');
+        const refundCount = document.getElementById('refundRequestsCount');
+        if (!refundList) return;
+
+        const pending = refundRequests.filter(r => r.status === 'pending');
+        if (refundCount) refundCount.textContent = pending.length;
+
+        refundList.innerHTML = refundRequests.map(r => {
+            const itemsText = r.items.map(i => `${i.name} x${i.qty}`).join(', ');
+            const statusLabel = r.status === 'pending' ? 'Pending Refund'
+                : r.status === 'approved' ? 'Refund Approved'
+                : 'Refund Denied';
+            const statusClass = `refund-${r.status}`;
+            const showActions = r.status === 'pending';
+
+            return `
+                <div class="order-item" data-refund-id="${r.id}">
+                    <div class="order-header">
+                        <h4>${r.id}</h4>
+                        <span class="order-status ${statusClass}">${statusLabel}</span>
+                    </div>
+                    <div class="order-details">
+                        <p><strong>Name:</strong> ${r.customer.name}</p>
+                        <p><strong>Email:</strong> ${r.customer.email}</p>
+                        <p><strong>Phone:</strong> ${r.customer.phone}</p>
+                        <p><strong>Address:</strong> ${r.customer.address}</p>
+                        <p><strong>Order:</strong> #${r.orderId}</p>
+                        <p><strong>Date:</strong> ${r.date}</p>
+                        <p><strong>Items:</strong> ${itemsText}</p>
+                        <p><strong>Total:</strong> £${r.total.toFixed(2)}</p>
+                        <p><strong>Reason:</strong> ${r.reason}</p>
+                    </div>
+                    ${showActions ? `
+                    <div class="order-actions">
+                        <button class="btn-small approve-refund-btn" data-id="${r.id}">Approve Refund</button>
+                        <button class="btn-small dangerous deny-refund-btn" data-id="${r.id}">Deny Refund</button>
+                    </div>` : ''}
+                </div>
+            `;
+        }).join('') || '<p>No refund requests.</p>';
     };
 
     const renderArchivedInquiries = () => {
@@ -4166,17 +4840,16 @@ function initAdminPage() {
                 const prod = products.find(p => p.id === id);
                 if (!prod) return;
 
-                const qtyStr = prompt(`Reorder quantity for ${prod.name}:`, prod.minStock || 10);
-                const qty = parseInt(qtyStr, 10);
-                if (isNaN(qty) || qty <= 0) {
-                    return;
-                }
+                customPrompt(`Reorder quantity for ${prod.name}:`, prod.minStock || 10, (qtyStr) => {
+                    const qty = parseInt(qtyStr, 10);
+                    if (isNaN(qty) || qty <= 0) return;
 
-                prod.stock = (prod.stock || 0) + qty;
-                saveStock();
-                updateStockAlerts();
-                renderAdminTables();
-                showToast(`Reordered ${qty} units of ${prod.name}.`, 'success');
+                    prod.stock = (prod.stock || 0) + qty;
+                    saveStock();
+                    updateStockAlerts();
+                    renderAdminTables();
+                    showToast(`Reordered ${qty} units of ${prod.name}.`, 'success');
+                });
                 return;
             }
 
@@ -4248,44 +4921,44 @@ function initAdminPage() {
             }
 
             if (e.target.matches('.reply-inquiry-btn')) {
-                const reply = prompt('Type your reply message:');
-                if (reply) {
-                    inquiry.replies.push({ date: new Date().toLocaleString(), message: reply });
-                    inquiry.status = 'replied';
-                    saveInquiries(inquiries);
-                    showToast('Reply sent.', 'success');
-                    renderInquiries();
-                }
+                customPrompt('Type your reply message:', '', (reply) => {
+                    if (reply) {
+                        inquiry.replies.push({ date: new Date().toLocaleString(), message: reply });
+                        inquiry.status = 'replied';
+                        saveInquiries(inquiries);
+                        showToast('Reply sent.', 'success');
+                        renderInquiries();
+                    }
+                });
                 return;
             }
 
             if (e.target.matches('.assign-inquiry-btn')) {
-                const assignee = prompt('Assign to (name or email):');
-                if (assignee) {
-                    inquiry.assignedTo = assignee;
-                    inquiry.status = 'assigned';
-                    saveInquiries(inquiries);
-                    showToast(`Inquiry assigned to ${assignee}.`, 'success');
-                    renderInquiries();
-                }
+                customPrompt('Assign to (name or email):', '', (assignee) => {
+                    if (assignee) {
+                        inquiry.assignedTo = assignee;
+                        inquiry.status = 'assigned';
+                        saveInquiries(inquiries);
+                        showToast(`Inquiry assigned to ${assignee}.`, 'success');
+                        renderInquiries();
+                    }
+                });
                 return;
             }
 
             if (e.target.matches('.archive-inquiry-btn')) {
                 const archiveBtn = e.target;
-                // Avoid multiple confirmations on fast/double clicks
                 if (archiveBtn.dataset.archiving === '1') return;
                 archiveBtn.dataset.archiving = '1';
 
-                const shouldArchive = confirm('Archive this inquiry?');
-                archiveBtn.dataset.archiving = '0';
-                if (!shouldArchive) return;
-
-                inquiry.archived = true;
-                saveInquiries(inquiries);
-                showToast('Inquiry archived.', 'success');
-                renderInquiries();
-                renderArchivedInquiries();
+                customConfirm('Archive this inquiry?', () => {
+                    archiveBtn.dataset.archiving = '0';
+                    inquiry.archived = true;
+                    saveInquiries(inquiries);
+                    showToast('Inquiry archived.', 'success');
+                    renderInquiries();
+                    renderArchivedInquiries();
+                });
                 return;
             }
         });
@@ -4442,7 +5115,7 @@ function initAdminPage() {
             // Validation
             const isEdit = editingProductId !== null;
             if (!name || !category || !price || isNaN(stock) || !notes || !description || (!imageValue && !isEdit)) {
-                alert('Please fill in all required fields (name, category, price, stock, notes, description)');
+                customAlert('Please fill in all required fields (name, category, price, stock, notes, description).');
                 return;
             }
 
@@ -4534,7 +5207,7 @@ function initAdminPage() {
 
             // Validation
             if (!promoName || !promoType || !promoDiscount || !promoStartDate || !promoProducts) {
-                alert('Please fill in all required fields');
+                customAlert('Please fill in all required fields.');
                 return;
             }
 
@@ -4605,13 +5278,14 @@ function initAdminPage() {
             renderAdminTables();
             closeModal(bulkUpdateModal);
             if (bulkUpdateForm) bulkUpdateForm.reset();
-            alert('Stock levels updated.');
+            customAlert('Stock levels updated.');
         });
     }
 
-    // render tables, pending orders and promotions when admin page loads
+    // render tables, pending orders, refund requests and promotions when admin page loads
     renderAdminTables();
     renderPendingOrders();
+    renderRefundRequests();
 
     loadPromotions();
     renderPromotions();
@@ -4679,34 +5353,35 @@ function initAdminPage() {
             const id = Number(e.target.dataset.id);
             const product = products.find(p => p.id === id);
             if (product) {
-                const newQtyStr = prompt(`Update stock for ${product.name}:`, product.stock || 0);
-                const newQty = parseInt(newQtyStr, 10);
-                if (!isNaN(newQty) && newQty >= 0) {
-                    product.stock = newQty;
-                    saveStock();
-                    updateStockAlerts();
-                    renderAdminTables();
-                }
+                customPrompt(`Update stock for ${product.name}:`, product.stock || 0, (newQtyStr) => {
+                    const newQty = parseInt(newQtyStr, 10);
+                    if (!isNaN(newQty) && newQty >= 0) {
+                        product.stock = newQty;
+                        saveStock();
+                        updateStockAlerts();
+                        renderAdminTables();
+                    }
+                });
             }
         } else if (e.target.matches('.reorder-btn')) {
             const id = Number(e.target.dataset.id);
             const product = products.find(p => p.id === id);
             if (product) {
                 const defaultQty = product.reorderQty || product.minStock || 10;
-                const qtyStr = prompt(`Reorder quantity for ${product.name}:`, defaultQty);
-                const qty = parseInt(qtyStr, 10);
-                if (!isNaN(qty) && qty > 0) {
-                    product.stock = (product.stock || 0) + qty;
-                    // If user used the default reorder quantity, keep it; otherwise persist new preference
-                    if (qty !== defaultQty) {
-                        product.reorderQty = qty;
+                customPrompt(`Reorder quantity for ${product.name}:`, defaultQty, (qtyStr) => {
+                    const qty = parseInt(qtyStr, 10);
+                    if (!isNaN(qty) && qty > 0) {
+                        product.stock = (product.stock || 0) + qty;
+                        if (qty !== defaultQty) {
+                            product.reorderQty = qty;
+                        }
+                        saveStock();
+                        saveProducts();
+                        updateStockAlerts();
+                        renderAdminTables();
+                        showToast(`Reordered ${qty} units of ${product.name}.`, 'success');
                     }
-                    saveStock();
-                    saveProducts();
-                    updateStockAlerts();
-                    renderAdminTables();
-                    showToast(`Reordered ${qty} units of ${product.name}.`, 'success');
-                }
+                });
             }
         } else if (e.target.matches('.approve-order-btn')) {
             const id = Number(e.target.dataset.id);
@@ -4729,6 +5404,28 @@ function initAdminPage() {
                 saveOrders(pendingOrders);
                 renderPendingOrders();
                 showToast(`Order #${order.id} has been rejected.`, 'error');
+            });
+        } else if (e.target.matches('.approve-refund-btn')) {
+            const id = e.target.dataset.id;
+            const refund = refundRequests.find(r => r.id === id);
+            if (!refund) return;
+
+            customConfirm(`Approve refund ${refund.id} (£${refund.total.toFixed(2)}) for ${refund.customer.name}?`, () => {
+                refund.status = 'approved';
+                saveRefunds(refundRequests);
+                renderRefundRequests();
+                showToast(`Refund ${refund.id} has been approved.`, 'success');
+            });
+        } else if (e.target.matches('.deny-refund-btn')) {
+            const id = e.target.dataset.id;
+            const refund = refundRequests.find(r => r.id === id);
+            if (!refund) return;
+
+            customConfirm(`Deny refund ${refund.id} for ${refund.customer.name}?`, () => {
+                refund.status = 'denied';
+                saveRefunds(refundRequests);
+                renderRefundRequests();
+                showToast(`Refund ${refund.id} has been denied.`, 'error');
             });
         } else if (e.target.matches('.edit-order-btn')) {
             const id = Number(e.target.dataset.id);
@@ -4848,9 +5545,9 @@ function initAdminPage() {
             if (!product.reviews.length) {
                 // generate dummy reviews
                 const sample = [
-                    { user: 'alex.t@example.com', date: '2026-02-10', rating: 5, text: 'Excellent fragrance!' },
-                    { user: 'jess.k@example.com', date: '2026-02-07', rating: 4, text: 'Nice scent, lasts a long time.' },
-                    { user: 'sam.w@example.com', date: '2026-02-05', rating: 4, text: 'Very good, will buy again.' }
+                    { user: 'alex.t@example.com', displayName: 'Alex T', date: '2026-02-10', rating: 5, text: 'Excellent fragrance!' },
+                    { user: 'jess.k@example.com', displayName: 'Jess K', date: '2026-02-07', rating: 4, text: 'Nice scent, lasts a long time.' },
+                    { user: 'sam.w@example.com', displayName: 'Sam W', date: '2026-02-05', rating: 4, text: 'Very good, will buy again.' }
                 ];
                 product.reviews = sample.map(r => ({ ...r }));
                 product.rating = Math.round(product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length);
@@ -4860,7 +5557,7 @@ function initAdminPage() {
                     product.reviews.map(r => `
                         <div class="review-item">
                             <div class="review-header">
-                                <h4>${r.user}</h4>
+                                <h4>${getReviewDisplayName(r)}</h4>
                                 <span class="review-rating">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
                             </div>
                             <div class="review-content">
@@ -4969,7 +5666,7 @@ function initAdminPage() {
 
     const downloadExcelReport = () => {
         if (typeof XLSX === 'undefined') {
-            alert('Unable to generate Excel report: SheetJS library not loaded.');
+            customAlert('Unable to generate Excel report: SheetJS library not loaded.');
             return;
         }
 

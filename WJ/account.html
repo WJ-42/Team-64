@@ -122,7 +122,15 @@
 
             <section class="profile-section">
                 <div class="profile-card">
-                    <h3>Profile Information</h3>
+                    <div class="profile-avatar-wrapper">
+                        <img id="profileAvatar" class="profile-avatar" src="" alt="Profile picture">
+                        <svg id="profileAvatarPlaceholder" class="profile-avatar-placeholder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="8" r="4"/>
+                            <path d="M4 20c0-4 4-7 8-7s8 3 8 7"/>
+                        </svg>
+                    </div>
+                    <h3 id="profileUsername" class="profile-username"></h3>
+                    <h3 class="profile-info-heading">Profile Information</h3>
                     <div class="profile-info">
                         <div class="profile-field">
                             <span class="profile-label">Email:</span>
@@ -133,7 +141,10 @@
                             <span class="profile-value" id="profileMemberSince"></span>
                         </div>
                     </div>
-                    <button id="logoutBtn" class="btn-secondary">Logout</button>
+                    <div class="profile-btn-group">
+                        <button id="editProfileBtn" class="btn-secondary">Edit Profile</button>
+                        <button id="logoutBtn" class="btn-secondary">Logout</button>
+                    </div>
                 </div>
             </section>
 
@@ -157,6 +168,71 @@
                     <!-- Wishlist items will be rendered here -->
                 </div>
             </section>
+        </div>
+
+        <!-- Edit Profile Modal -->
+        <div id="editProfileModal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Edit Profile</h2>
+                    <button class="modal-close" id="closeEditProfileModal">&times;</button>
+                </div>
+                <form id="editProfileForm" class="product-form" novalidate>
+                    <div class="form-grid">
+                        <div class="form-row full-width edit-profile-avatar-row">
+                            <label>Profile Picture</label>
+                            <div class="edit-profile-avatar-area">
+                                <img id="editProfileAvatarPreview" class="edit-profile-avatar-preview" src="" alt="Preview">
+                                <svg id="editProfileAvatarPlaceholder" class="edit-profile-avatar-preview-placeholder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <circle cx="12" cy="8" r="4"/>
+                                    <path d="M4 20c0-4 4-7 8-7s8 3 8 7"/>
+                                </svg>
+                                <div class="edit-profile-avatar-controls">
+                                    <div class="file-input-wrapper">
+                                        <input type="file" id="editProfilePicture" accept="image/*">
+                                        <span id="editProfileFileName">No file chosen</span>
+                                    </div>
+                                    <button type="button" class="btn-small" id="removeProfilePicture">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row full-width">
+                            <label for="editProfileUsername">Username</label>
+                            <input type="text" id="editProfileUsername" placeholder="Enter a display name">
+                        </div>
+
+                        <div class="form-row full-width">
+                            <label for="editProfileEmail">Email Address</label>
+                            <input type="email" id="editProfileEmail" placeholder="you@example.com">
+                            <span class="field-error" id="editEmailError"></span>
+                        </div>
+
+                        <div class="form-row full-width">
+                            <label for="editProfilePassword">New Password <span class="optional-label">(leave blank to keep current)</span></label>
+                            <input type="password" id="editProfilePassword" placeholder="Enter new password">
+                            <span class="field-error" id="editPasswordError"></span>
+                            <div class="password-requirements" id="editPasswordRequirements">
+                                <span class="req" id="editReqLength">&#10007; At least 8 characters</span>
+                                <span class="req" id="editReqUpper">&#10007; One uppercase letter</span>
+                                <span class="req" id="editReqLower">&#10007; One lowercase letter</span>
+                                <span class="req" id="editReqNumber">&#10007; One number</span>
+                            </div>
+                        </div>
+
+                        <div class="form-row full-width">
+                            <label for="editProfilePasswordConfirm">Confirm New Password</label>
+                            <input type="password" id="editProfilePasswordConfirm" placeholder="Re-enter new password">
+                            <span class="field-error" id="editPasswordConfirmError"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                        <button type="button" class="btn-secondary" id="cancelEditProfile">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </main>
 
