@@ -1,17 +1,19 @@
 # Team-64
 
-Waleed Ahmed 
+## Name                             ##GitHub              ##Responsibilites 
 
-Sara Begum 
+Waleed Ahmed                        @WJ-42                Responsible for DevOps, creating the project’s GitHub page and organising its files. Also had a role as back-end developer of the website.
 
-Omobolaji Adebola Ganiu 
+Sara Begum                          @sara12375            Responsible for DevOps, creating and managing the Trello board for the project. Also had a role as front-end developer building the AI chatbot and user profile pages. 
 
-Faalila Katharsa Shaik Mohamed 
+Omobolaji Adebola Ganiu             @Bowlix               Responsible for front-end and back-end development of the project. Helped with AI chatbot and created the checkout/payment pages.
 
-Jessica McEnery  
+Faalila Katharsa Shaik Mohamed      @Faalia               Responsible for front-end and back-end development of the project. Helped with AI chatbot and created the Wishlist page as well as past orders.
 
-Hayder Sayyid 
+Jessica McEnery                     @240177700            Responsible for DevOps and had a role as back-end developer. Created the main fragrance page and the different fragrances which would be on the website.
 
-Jabari Thompson 
+Hayder Sayyid                       @haychs13             Conducted QA testing on the website to ensure it functions correctly. Also had a role as a front-end developer.
 
-Hayyan Abdul-Awwal 
+Jabari Thompson                     @jabarithompson1      Responsible for back-end development of the project and created the “Contact Us” page.  
+
+Hayyan Abdul-Awwal                  @Hayyan2004           Contributed to the UI/UX design of the project, as well as having a role as a front-end developer on the “About Us” page
