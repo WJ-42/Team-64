@@ -18,6 +18,9 @@ Hayyan Abdul-Awwal                  (@Hayyan2004)           Contributed to the U
 
 #Language Breakdown
 JavaScript — 45.2%
+
 CSS — 29.3%
+
 HTML — 25.4%
+
 Java — 0.1%
