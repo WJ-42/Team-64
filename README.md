@@ -1,7 +1,5 @@
 # Team-64
 
-## Name                             GitHub                Responsibilites 
-
 Waleed Ahmed                        @WJ-42                Responsible for DevOps, creating the project’s GitHub page and organising its files. Also had a role as back-end developer of the website.
 
 Sara Begum                          @sara12375            Responsible for DevOps, creating and managing the Trello board for the project. Also had a role as front-end developer building the AI chatbot and user profile pages. 
