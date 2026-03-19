@@ -16,7 +16,7 @@ Jabari Thompson                     (@jabarithompson1)      Responsible for back
 
 Hayyan Abdul-Awwal                  (@Hayyan2004)           Contributed to the UI/UX design of the project, as well as having a role as a front-end developer on the “About Us” page
 
-#Language Breakdown
+# Language Breakdown
 JavaScript — 45.2%
 
 CSS — 29.3%
