@@ -1,6 +1,7 @@
 # Luminous Scents
 Luminous Scents is a luxury fragrance e-commerce website made as part of the CS2TP Team Project at Aston University. The idea behind it was to not just sell perfumes but to actually give users information on what goes into the fragrances they are buying.
 The website is focused on the e-commerce and retail side of luxury fragrances. Rather than a basic online shop, we wanted users to be able to explore what makes up each scent, get personalised recommendations and have a smooth shopping experience overall.
+
 Target Audience: Perfume enthusiasts and consumers who want to know more about what they are buying
 
 # Team-64
