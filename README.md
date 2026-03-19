@@ -1,6 +1,6 @@
 # Team-64
 
-## Name                             ##GitHub              ##Responsibilites 
+## Name                             GitHub                Responsibilites 
 
 Waleed Ahmed                        @WJ-42                Responsible for DevOps, creating the project’s GitHub page and organising its files. Also had a role as back-end developer of the website.
 
