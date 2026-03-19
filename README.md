@@ -15,3 +15,9 @@ Hayder Sayyid                       (@haychs13)             Conducted QA testing
 Jabari Thompson                     (@jabarithompson1)      Responsible for back-end development of the project and created the “Contact Us” page.  
 
 Hayyan Abdul-Awwal                  (@Hayyan2004)           Contributed to the UI/UX design of the project, as well as having a role as a front-end developer on the “About Us” page
+
+#Language Breakdown
+JavaScript — 45.2%
+CSS — 29.3%
+HTML — 25.4%
+Java — 0.1%
