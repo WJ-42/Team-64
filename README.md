@@ -36,6 +36,16 @@
 
 **Contact Form**: A contact form and information page to get in touch with the team 
 
+## Technology Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | HTML, CSS, JavaScript |
+| Backend | Java, Python |
+| Version Control | GitHub |
+| Task Management | Trello |
+| Deployment | Aston Web Server |
+
 # Language Breakdown
 *JavaScript* — 45.2%
 *CSS* — 29.3%
