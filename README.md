@@ -1,3 +1,8 @@
+# Luminous Scents
+Luminous Scents is a luxury fragrance e-commerce website made as part of the CS2TP Team Project at Aston University. The idea behind it was to not just sell perfumes but to actually give users information on what goes into the fragrances they are buying.
+The website is focused on the e-commerce and retail side of luxury fragrances. Rather than a basic online shop, we wanted users to be able to explore what makes up each scent, get personalised recommendations and have a smooth shopping experience overall.
+Target Audience: Perfume enthusiasts and consumers who want to know more about what they are buying
+
 # Team-64
 
 **Waleed Ahmed**                        (@WJ-42)                Responsible for DevOps, creating the project’s GitHub page and organising its files. Also had a role as back-end developer of the website.
@@ -10,7 +15,7 @@
 
 **Jessica McEnery**                     (@240177700)            Responsible for DevOps and had a role as back-end developer. Created the main fragrance page and the different fragrances which would be on the website.
 
-**Hayder Sayyid**                      (@haychs13)             Conducted QA testing on the website to ensure it functions correctly. Also had a role as a front-end developer.
+**Hayder Sayyid**                       (@haychs13)             Conducted QA testing on the website to ensure it functions correctly. Also had a role as a front-end developer.
 
 **Jabari Thompson**                     (@jabarithompson1)      Responsible for back-end development of the project and created the “Contact Us” page.  
 
