@@ -16,6 +16,11 @@ Jabari Thompson                     (@jabarithompson1)      Responsible for back
 
 Hayyan Abdul-Awwal                  (@Hayyan2004)           Contributed to the UI/UX design of the project, as well as having a role as a front-end developer on the “About Us” page
 
+# Features
+
+**Product Browsing**: Browse through a selection of perfumes that can be filtered by scent family (Oud, Citrus, Floral, Woody, Fresh)
+**User Accounts**: Manage profile, Option to create account or log in and an admin log in
+
 # Language Breakdown
 JavaScript — 45.2%
 
