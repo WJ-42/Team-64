@@ -19,13 +19,26 @@ Hayyan Abdul-Awwal                  (@Hayyan2004)           Contributed to the U
 # Features
 
 **Product Browsing**: Browse through a selection of perfumes that can be filtered by scent family (Oud, Citrus, Floral, Woody, Fresh)
+
 **User Accounts**: Manage profile, Option to create account or log in and an admin log in
+
+**Shopping Basket**: Add or remove products and you can adjust the quantity on the basket pageas well as the option to clear basket or proceed to checkout. 
+
+**AI Chatbot**: Lumi is a specialised Artifical intelligence fragrance assisstant that helps shoppers to find their perfect scent
+
+**Ingredient Pages**: Explore fragrance components, filter by notes and ingredients
+
+**Recommendation System**: Personalised scent suggestions based on quiz responses and purchase history
+
+**Admin Panel**: Restricted admin login with stock management and inventory controls
+
+**Dark / Light Mode**:Toggle between themes for user comfort
+
+**Contact Form**: Get in touch with the team directly through the site 
+
 
 # Language Breakdown
 JavaScript — 45.2%
-
 CSS — 29.3%
-
 HTML — 25.4%
-
 Java — 0.1%
