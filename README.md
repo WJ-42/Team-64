@@ -26,15 +26,15 @@
 
 **AI Chatbot**: Lumi is a specialised Artifical intelligence fragrance assisstant that helps shoppers to find their perfect scent
 
-**Ingredient Pages**: Explore fragrance components, filter by notes and ingredients
+**Ingredient Pages**: Browse and filter fragrance components and read about what goes into each scent
 
-**Recommendation System**: Personalised scent suggestions based on quiz responses and purchase history
+**Recommendation System**: Personalised scent suggestions based on quiz answers and previous purchases
 
-**Admin Panel**: Restricted admin login with stock management and inventory controls
+**Admin Panel**: Restricted admin access with the ability to manage stock and products
 
-**Dark / Light Mode**:Toggle between themes for user comfort
+**Dark / Light Mode**: Toggle between themes using the icon in the top right corner
 
-**Contact Form**: Get in touch with the team directly through the site 
+**Contact Form**: A contact form and information page to get in touch with the team 
 
 # Language Breakdown
 *JavaScript* — 45.2%
