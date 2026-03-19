@@ -36,6 +36,22 @@
 
 **Contact Form**: A contact form and information page to get in touch with the team 
 
+## Getting Started
+
+To run the project locally:
+
+1. Clone the repository
+```bash
+git clone https://github.com/WJ-42/Team-64.git
+```
+
+2. Navigate into the main project folder
+```bash
+cd Team-64/LuminousScents-MVP
+```
+
+3. Open `index.html` in your browser
+
 ## Technology Stack
 
 | Layer | Technology |
