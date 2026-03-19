@@ -4,6 +4,9 @@ The website is focused on the e-commerce and retail side of luxury fragrances. R
 
 Target Audience: Perfume enthusiasts and consumers who want to know more about what they are buying
 
+## Website Link:
+[cs2team64.cs2410-web01pvm.aston.ac.uk](http://cs2team64.cs2410-web01pvm.aston.ac.uk)
+
 # Team-64
 
 **Waleed Ahmed**                        (@WJ-42)                Responsible for DevOps, creating the project’s GitHub page and organising its files. Also had a role as back-end developer of the website.
