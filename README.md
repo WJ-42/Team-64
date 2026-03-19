@@ -67,3 +67,12 @@ cd Team-64/LuminousScents-MVP
 *CSS* — 29.3%
 *HTML* — 25.4%
 *Java* — 0.1%
+
+## Testing
+
+- **Unit Testing:** Testing individual features like login, basket, wishlist and admin controls
+- **Scenario Testing:** Simulating a full user journey from login through to checkout
+- **Exploratory Testing:** Going through the site without a set plan to find any unexpected issues
+- **Usability Testing:** Getting real users to interact with the site and share feedback
+
+
