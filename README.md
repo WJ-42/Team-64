@@ -61,16 +61,6 @@ cd Team-64/LuminousScents-MVP
 
 3. Open `index.html` in your browser
 
-## Technology Stack
-
-| Layer | Technology |
-|---|---|
-| Frontend | HTML, CSS, JavaScript |
-| Backend | Java, Python |
-| Version Control | GitHub |
-| Task Management | Trello |
-| Deployment | Aston Web Server |
-
 # Language Breakdown
 *JavaScript* — 45.2%
 *CSS* — 29.3%
